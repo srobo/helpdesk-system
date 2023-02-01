@@ -1,0 +1,21 @@
+[flake8]
+exclude =
+    .git,
+    .pybuild,
+    .eggs,
+    __pycache__,
+    .venv
+
+ignore =
+    #Don't require docstrings on magic methods.
+    D105,
+    #Don't require docstrings for __init__ methods.
+    D107
+    #Don't require imperative mood docstrings.
+    D401
+    # Allow linebreaks before / after binary operators
+    W503
+    W504
+    B009  # Allow getattr with a constant attribute value
+
+max_line_length = 120
