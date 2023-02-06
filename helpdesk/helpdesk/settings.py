@@ -99,6 +99,7 @@ SERVER_EMAIL = EMAIL.get('FROM_EMAIL')
 
 INSTALLED_APPS = [
     'accounts',
+    'teams',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
