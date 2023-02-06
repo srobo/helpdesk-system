@@ -5,20 +5,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Team',
+            name="Team",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tla', models.CharField(max_length=3, unique=True, validators=[django.core.validators.RegexValidator('^[A-Z]{3}\\d*$', 'Must match TLA format.')], verbose_name='TLA')),
-                ('name', models.CharField(max_length=100, verbose_name='Team Name')),
-                ('is_rookie', models.BooleanField(verbose_name='Is Rookie')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "tla",
+                    models.CharField(
+                        max_length=3,
+                        unique=True,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^[A-Z]{3}\\d*$", "Must match TLA format."
+                            )
+                        ],
+                        verbose_name="TLA",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, verbose_name="Team Name")),
+                ("is_rookie", models.BooleanField(verbose_name="Is Rookie")),
             ],
         ),
     ]
