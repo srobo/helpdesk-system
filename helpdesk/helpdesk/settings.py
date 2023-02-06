@@ -98,6 +98,7 @@ SERVER_EMAIL = EMAIL.get('FROM_EMAIL')
 #
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,6 +139,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'helpdesk.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
