@@ -1,0 +1,67 @@
+{% extends "base_app.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}#{{object.id}} {{ object.title }}{% endblock %}
+{% block title %}#{{object.id}} {{ object.title }}{% endblock %}
+
+{% block content %}
+<div class="container column is-10">
+    <div class="columns">
+        <div class="column">
+            {{ object.assignee }}
+        </div>
+        <div class="column">
+            {{ object.team }}
+        </div>
+        <div class="column">
+            {% if object.resolved_at %}
+            Resolved: {{ object.resolved_at }}
+            {% else %}
+            Open
+            {% endif %}
+        </div>
+        <div class="column">
+            {% if object.resolved_at %}
+            <button class="button">Re-open</button>
+            {% else %}
+            <button class="button is-warning js-modal-trigger" data-target="modal-escalate">Escalate</button>
+            <button class="button">Close</button>
+            {% endif %}
+        </div>
+    </div>
+    <div id="modal-escalate" class="modal">
+        <div class="modal-background"></div>
+        
+        <div class="modal-content">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Escalate Ticket</p>
+            <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <form class="block" method="post">
+                    {% csrf_token %}
+                    {{ escalate_form|crispy }}
+                    <input class="button is-primary" type="submit" value="Update Profile">
+                </form>                
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success">Escalate Ticket</button>
+                <button class="button">Cancel</button>
+            </footer>
+        </div>
+        
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    {% for comment in object.comments.all %}
+    <article class="panel">
+        <p class="panel-heading title-">
+          Updated at {{ comment.created_at }} by {{ comment.author }}
+        </p>
+        <a class="panel-block">
+          <p>{{comment.content}}</p>
+        </a>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

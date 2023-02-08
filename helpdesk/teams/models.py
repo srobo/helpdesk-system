@@ -5,7 +5,7 @@ from django.db import models
 class Team(models.Model):
     tla = models.CharField(
         "TLA",
-        max_length=3,
+        max_length=4,
         unique=True,
         validators=[
             RegexValidator(r"^[A-Z]{3}\d*$", "Must match TLA format."),
@@ -16,3 +16,6 @@ class Team(models.Model):
 
     def __str__(self) -> str:
         return f"{self.tla} - {self.name}"
+
+    def active_tickets(self):
+        return self.tickets.filter(resolved_at__isnull=True)

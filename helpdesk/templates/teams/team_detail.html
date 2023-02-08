@@ -1,0 +1,8 @@
+{% extends "base_app.html" %}
+
+{% block page_title %}{{ object.name }}{% endblock %}
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+{% include "inc/ticket_table.html" with tickets=object.tickets.all %}
+{% endblock %}

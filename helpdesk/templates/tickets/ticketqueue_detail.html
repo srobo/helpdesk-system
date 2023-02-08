@@ -1,0 +1,38 @@
+{% extends "base_app.html" %}
+
+{% block page_title %}Tickets{% endblock %}
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="columns">
+    <div class="column is-one-quarter">
+        <aside class="menu" style="padding-top: 2em;">
+            <ul class="menu-list">
+              <li>
+                <a href="{% url 'tickets:ticket_assigned_list' %}">My Tickets</a>
+              </li>
+            </ul>
+            <p class="menu-label">
+              Queues
+            </p>
+            <ul class="menu-list">
+              {% for queue in ticket_queues %}
+              <li>
+                {% if queue.slug == object.slug %}
+                    <a class="is-active" href="{% url 'tickets:queue_detail' queue.slug %}">{{ queue.name }}</a>
+                {% else %}
+                    <a href="{% url 'tickets:queue_detail' queue.slug %}">{{ queue.name }}</a>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+      <h2 class="title">{{object.name}}</h2>
+      {% include "inc/ticket_table.html" with tickets=object.tickets.all show_tla=True %}
+    </div>
+  </div>
+</div>
+{% endblock %}

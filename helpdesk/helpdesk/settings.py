@@ -100,6 +100,8 @@ INSTALLED_APPS = [
     "accounts",
     "teams",
     "tickets",
+    "crispy_forms",
+    "crispy_bulma",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -133,6 +135,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "helpdesk.context_processors.settings_context",
             ],
         },
     },
@@ -177,9 +180,14 @@ STATIC_ROOT = str(BASE_DIR) + "/static"
 STATIC_URL = f"/{BASE_PATH}static/"
 
 # Authentication URLs
-LOGIN_URL = "/{}login/".format(BASE_PATH)
+LOGIN_URL = "/{}auth/login/".format(BASE_PATH)
+LOGOUT_REDIRECT_URL = "/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Crispy
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
+CRISPY_TEMPLATE_PACK = "bulma"

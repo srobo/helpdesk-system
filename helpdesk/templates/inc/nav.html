@@ -1,0 +1,47 @@
+<nav class="navbar is-info" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{% url 'home' %}">
+        {{ SYSTEM_TITLE }}
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="navbar-start">
+      <a class="navbar-item" href="{% url 'tickets:queue_default' %}">
+        Tickets
+      </a>
+      <a class="navbar-item" href="{% url 'teams:team_list' %}">
+        Teams
+      </a>
+    </div>
+    {% endif %}
+  
+    <div class="navbar-end">
+        {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                {{ user.get_full_name }}
+                </a>
+        
+                <div class="navbar-dropdown">
+                    {% if user.is_staff %}
+                    <a class="navbar-item" href="{% url 'admin:index' %}">
+                      Admin
+                    </a>
+                    {% endif %}
+                    <hr class="navbar-divider">
+                    <a class="navbar-item" href="{% url 'logout' %}">
+                        Log out
+                    </a>
+                </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </nav>

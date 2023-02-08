@@ -17,3 +17,6 @@ pytest-django
 mypy
 django-stubs[compatible-mypy]
 types-setuptools
+
+faker
+freezegun

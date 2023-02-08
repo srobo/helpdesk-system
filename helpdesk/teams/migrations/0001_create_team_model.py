@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 (
                     "tla",
                     models.CharField(
-                        max_length=3,
+                        max_length=4,
                         unique=True,
                         validators=[
                             django.core.validators.RegexValidator(
