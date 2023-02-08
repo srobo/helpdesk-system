@@ -18,7 +18,7 @@
             <a href="{% url 'teams:team_detail' ticket.team.tla %}">{{ ticket.team.tla }}</a>
           </td>
         {% endif %}
-        <td>{{ ticket.title }}</td>
+        <td><a href="{% url 'tickets:ticket_detail' ticket.id %}">{{ ticket.title }}</a></td>
         <td>{% if ticket.resolved_at %}Yes{% else %}No{% endif %}</td>
         <td>{{ ticket.assignee|default_if_none:"Unassigned" }}</td>
         <td>{{ ticket.updated_at }}</td>
