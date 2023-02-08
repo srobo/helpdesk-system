@@ -1,3 +1,4 @@
+crispy-bulma
 django>=3.2.14,<3.3  # LTS
 django-crispy-forms
-crispy-bulma
+django-filter

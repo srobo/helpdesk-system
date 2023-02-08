@@ -24,12 +24,15 @@ django==3.2.17
     # via
     #   -r requirements.txt
     #   crispy-bulma
+    #   django-filter
     #   django-stubs
     #   django-stubs-ext
 django-crispy-forms==1.14.0
     # via
     #   -r requirements.txt
     #   crispy-bulma
+django-filter==22.1
+    # via -r requirements.txt
 django-stubs[compatible-mypy]==1.14.0
     # via -r requirements-dev.in
 django-stubs-ext==0.7.0

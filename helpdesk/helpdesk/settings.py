@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "tickets",
     "crispy_forms",
     "crispy_bulma",
+    'django_filters',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

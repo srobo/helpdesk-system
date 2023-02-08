@@ -1,8 +1,10 @@
 from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, RedirectView, ListView
+from django.views.generic import DetailView, RedirectView
+from django_filters.views import FilterView
 
+from .filters import TicketFilter
 from .models import TicketQueue, Ticket
 
 
@@ -22,7 +24,9 @@ class TicketQueueDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class AssignedTicketListView(LoginRequiredMixin, ListView):
+class AssignedTicketListView(LoginRequiredMixin, FilterView):
+
+    filterset_class = TicketFilter  # TODO: Use the magic stuff to get this
     
     def get_queryset(self):
         return self.request.user.tickets
@@ -31,7 +35,6 @@ class AssignedTicketListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['ticket_queues'] = TicketQueue.objects.all()
         return context
-
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
