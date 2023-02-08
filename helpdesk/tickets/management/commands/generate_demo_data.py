@@ -93,6 +93,7 @@ class Command(BaseCommand):
                 if team.active_tickets().count() == 0 or random.random() < chance_multiple:
                     team.tickets.create(
                         title=self.faker.sentence(),
+                        description=self.faker.text(),
                         queue=self.default_queue,
                         opened_by=random.choice(self.users),
                     )
@@ -116,7 +117,7 @@ class Command(BaseCommand):
                 continue
             
             if random.random() < 0.1:
-                ticket.mark_resolved()
+                ticket.mark_resolved(ticket.assignee)
                 continue
             
             if random.random() < 0.5:

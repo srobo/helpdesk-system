@@ -33,8 +33,8 @@ class Ticket(models.Model):
     opened_by = models.ForeignKey(
         "accounts.User",
         on_delete=models.PROTECT,
-        related_name=None,
-        related_query_name=None,
+        related_name="opened_tickets",
+        related_query_name="opened_tickets",
     )
     assignee = models.ForeignKey(
         "accounts.User",
@@ -47,15 +47,18 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     resolved_at = models.DateTimeField("Resolved Time", null=True, blank=True)
+    resolved_by = models.ForeignKey("accounts.User", on_delete=models.PROTECT, null=True, related_name="resolved_tickets", related_query_name="resolved_tickets")
 
     class Meta:
         ordering = ['created_at']
 
+
     def __str__(self) -> str:
         return f"#{self.id} - {self.title}"
     
-    def mark_resolved(self) -> None:
+    def mark_resolved(self, user) -> None:
         self.resolved_at = timezone.now()
+        self.resolved_by = user
         self.save()
 
 

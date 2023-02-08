@@ -54,14 +54,21 @@
     </div>
 
     {% for comment in object.comments.all %}
-    <article class="panel">
-        <p class="panel-heading title-">
-          Updated at {{ comment.created_at }} by {{ comment.author }}
-        </p>
-        <a class="panel-block">
-          <p>{{comment.content}}</p>
-        </a>
+    <article class="message">
+        <div class="message-header">
+            <p>{{ comment.created_at }} - {{ comment.author }}</p>
+        </div>
+        <div class="message-body">
+            {{comment.content}}
+        </div>
     </article>
     {% endfor %}
+    {% if object.resolved_at %}
+    <article class="message is-success">
+        <div class="message-header">
+            <p>Resolved at {{ object.resolved_at }} by {{ object.resolved_by }}</p>
+        </div>
+    </article>
+    {% endif %}
 </div>
 {% endblock %}
