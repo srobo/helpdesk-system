@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -12,9 +12,6 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
-if TYPE_CHECKING:
-    from tickets.models import Ticket
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -98,6 +95,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     ) -> None:
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def active_tickets(self) -> models.QuerySet[Ticket]:
-        return self.tickets.filter(resolved_at__isnull=True)

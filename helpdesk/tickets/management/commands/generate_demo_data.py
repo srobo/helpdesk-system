@@ -91,7 +91,7 @@ class Command(BaseCommand):
         for team in Team.objects.all():
             if random.random() < chance:
                 if (
-                    team.active_tickets().count() == 0
+                    team.tickets.filter(resolved_at__isnull=True).count() == 0
                     or random.random() < chance_multiple
                 ):
                     team.tickets.create(
@@ -103,12 +103,13 @@ class Command(BaseCommand):
 
     def _assign_free_users(self) -> None:
         for user in User.objects.all():
-            if user.active_tickets().count() == 0:
+            if user.tickets.filter(resolved_at__isnull=True).count() == 0:
                 # Naively assume that the user only gets ticket from their default queue
                 # Also assume that a user only picks up one ticket at a time.
                 assert user.default_ticket_queue
                 ticket = (
-                    user.default_ticket_queue.active_tickets()
+                    user.default_ticket_queue.tickets
+                    .filter(resolved_at__isnull=True)
                     .filter(assignee__isnull=True)
                     .first()
                 )

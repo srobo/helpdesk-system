@@ -16,9 +16,6 @@ class TicketQueue(models.Model):
     def __str__(self) -> str:
         return f"Ticket Queue: {self.name}"
 
-    def active_tickets(self) -> models.QuerySet[Ticket]:
-        return self.tickets.filter(resolved_at__isnull=True)
-
 
 class Ticket(models.Model):
     title = models.CharField(max_length=120)
