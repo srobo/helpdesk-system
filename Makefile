@@ -6,7 +6,7 @@ MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=helpdesk accounts teams tickets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: type check lint
+all: type test check lint
 
 lint: 
 	$(CMD) flake8 $(PYMODULE) $(TESTS)
@@ -21,10 +21,10 @@ type:
 	cd helpdesk && mypy $(APPS)
 
 test: | $(PYMODULE)
-	cd helpdesk && pytest --cov=. $(APPS) $(PYMODULE)
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE)
 
 test-cov:
-	cd helpdesk && pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
 
 isort:
 	$(CMD) isort $(PYMODULE) $(TESTS)
