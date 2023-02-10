@@ -25,17 +25,35 @@ class CustomUserAdmin(UserAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'name', 'password1', 'password2'),
-        }),
-        ("Competition", {
-            'classes': ('wide',),
-            'fields': ('default_ticket_queue', ),
-        })
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "name", "password1", "password2"),
+            },
+        ),
+        (
+            "Competition",
+            {
+                "classes": ("wide",),
+                "fields": ("default_ticket_queue",),
+            },
+        ),
     )
-    list_display = ("username", "name", "default_ticket_queue", "is_staff", "is_superuser")
-    list_filter = ("default_ticket_queue", "is_staff", "is_superuser", "is_active", "groups")
+    list_display = (
+        "username",
+        "name",
+        "default_ticket_queue",
+        "is_staff",
+        "is_superuser",
+    )
+    list_filter = (
+        "default_ticket_queue",
+        "is_staff",
+        "is_superuser",
+        "is_active",
+        "groups",
+    )
     search_fields = ("username", "name", "last_name", "email")
 
 

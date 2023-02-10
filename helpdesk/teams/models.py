@@ -1,5 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.core.validators import RegexValidator
 from django.db import models
+
+if TYPE_CHECKING:
+    from tickets.models import Ticket
 
 
 class Team(models.Model):
@@ -17,5 +24,5 @@ class Team(models.Model):
     def __str__(self) -> str:
         return f"{self.tla} - {self.name}"
 
-    def active_tickets(self):
+    def active_tickets(self) -> models.QuerySet[Ticket]:
         return self.tickets.filter(resolved_at__isnull=True)

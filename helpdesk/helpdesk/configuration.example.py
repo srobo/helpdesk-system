@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, Union
+from __future__ import annotations
 
 #########################
 #                       #
@@ -11,7 +11,7 @@ from typing import Dict, List, Tuple, Union
 #
 # Example: ALLOWED_HOSTS = ['helpdesk.example.com', 'helpdesk.internal.local']
 
-ALLOWED_HOSTS: List[str] = []
+ALLOWED_HOSTS: list[str] = []
 
 # Database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
@@ -40,7 +40,7 @@ SECRET_KEY = ""
 
 # Specify one or more name and email address tuples representing Helpdesk administrators. These people will be notified
 # of application errors (assuming correct email settings are provided).
-ADMINS: List[Tuple[str, str]] = [
+ADMINS: list[tuple[str, str]] = [
     # ('John Doe', 'jdoe@example.com'),
 ]
 
@@ -53,7 +53,7 @@ BASE_PATH = ""
 # on a production system.
 DEBUG = False
 
-EMAIL: Dict[str, Union[str, int, bool]] = {
+EMAIL: dict[str, str | int | bool] = {
     # 'SERVER': '',
     # 'USERNAME': '',
     # 'PASSWORD': '',

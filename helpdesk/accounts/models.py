@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
@@ -8,6 +12,9 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+if TYPE_CHECKING:
+    from tickets.models import Ticket
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -48,10 +55,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-    
+
     # Helpdesk Specific Fields
     default_ticket_queue = models.ForeignKey(
-        'tickets.TicketQueue',
+        "tickets.TicketQueue",
         null=True,
         on_delete=models.PROTECT,
         related_query_name=None,
@@ -69,26 +76,28 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
-    def get_full_name(self):
+    def get_full_name(self) -> str:
         """
         Return the first_name plus the last_name, with a space in between.
         """
         return self.name
-    
-    def __str__(self):
+
+    def __str__(self) -> str:
         return self.name
 
-    def get_short_name(self):
+    def get_short_name(self) -> str:
         """Return the short name for the user."""
         return self.name
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
+    def email_user(
+        self, subject: str, message: str, from_email: str | None = None, **kwargs: Any
+    ) -> None:
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    def active_tickets(self):
+    def active_tickets(self) -> models.QuerySet[Ticket]:
         return self.tickets.filter(resolved_at__isnull=True)

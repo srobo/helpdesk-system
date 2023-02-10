@@ -10,4 +10,4 @@ class TeamListView(LoginRequiredMixin, ListView):
 
 class TeamDetailView(LoginRequiredMixin, DetailView):
     model = Team
-    slug_field = 'tla'
+    slug_field = "tla"

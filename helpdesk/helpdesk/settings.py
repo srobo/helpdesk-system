@@ -1,8 +1,11 @@
 import platform
 from pathlib import Path
 
+import django_stubs_ext
 from django.core.exceptions import ImproperlyConfigured
 from pkg_resources import parse_version
+
+django_stubs_ext.monkeypatch()
 
 #
 # Environment setup
@@ -40,7 +43,7 @@ except ImportError as e:  # pragma: nocover
 for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
     if not hasattr(configuration, parameter):
         raise ImproperlyConfigured(  # pragma: nocover
-            "Required parameter {} is missing from configuration.py.".format(parameter)
+            f"Required parameter {parameter} is missing from configuration.py."
         )
 
 # Set required parameters
@@ -102,7 +105,7 @@ INSTALLED_APPS = [
     "tickets",
     "crispy_forms",
     "crispy_bulma",
-    'django_filters',
+    "django_filters",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -181,7 +184,7 @@ STATIC_ROOT = str(BASE_DIR) + "/static"
 STATIC_URL = f"/{BASE_PATH}static/"
 
 # Authentication URLs
-LOGIN_URL = "/{}auth/login/".format(BASE_PATH)
+LOGIN_URL = f"/{BASE_PATH}auth/login/"
 LOGOUT_REDIRECT_URL = "/"
 
 # Default primary key field type

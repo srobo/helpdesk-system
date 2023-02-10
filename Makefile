@@ -3,10 +3,10 @@
 CMD:=
 PYMODULE:=helpdesk
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
-APPS:=helpdesk
+APPS:=helpdesk accounts teams tickets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: type test check lint
+all: type check lint
 
 lint: 
 	$(CMD) flake8 $(PYMODULE) $(TESTS)
