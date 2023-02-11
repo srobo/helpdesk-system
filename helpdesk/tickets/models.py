@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from django.db import models
-from django.utils import timezone
-
-if TYPE_CHECKING:
-    from accounts.models import User
 
 
 class TicketQueue(models.Model):
@@ -50,25 +44,12 @@ class Ticket(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    resolved_at = models.DateTimeField("Resolved Time", null=True, blank=True)
-    resolved_by = models.ForeignKey(
-        "accounts.User",
-        on_delete=models.PROTECT,
-        null=True,
-        related_name="resolved_tickets",
-        related_query_name="resolved_tickets",
-    )
 
     class Meta:
         ordering = ["created_at"]
 
     def __str__(self) -> str:
         return f"#{self.id} - {self.title}"
-
-    def mark_resolved(self, user: User) -> None:
-        self.resolved_at = timezone.now()
-        self.resolved_by = user
-        self.save()
 
 
 class TicketComment(models.Model):
@@ -93,3 +74,22 @@ class TicketComment(models.Model):
 
     def __str__(self) -> str:
         return f"Comment on #{self.ticket.id} at {self.created_at} by {self.author}"
+
+
+class TicketResolution(models.Model):
+
+    ticket = models.OneToOneField(
+        Ticket,
+        on_delete=models.CASCADE,
+        related_name="resolution",
+        related_query_name="resolution",
+    )
+    comment = models.TextField(blank=True)
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+    )
+    resolved_at = models.DateTimeField("Resolution Time", auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"#{self.ticket.id} resolved by {self.user} at {self.resolved_at}"

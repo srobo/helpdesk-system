@@ -1,74 +1,70 @@
 {% extends "base_app.html" %}
 {% load crispy_forms_tags %}
 
-{% block page_title %}#{{object.id}} {{ object.title }}{% endblock %}
-{% block title %}#{{object.id}} {{ object.title }}{% endblock %}
+{% block page_title %}
+{% if object.resolution %}
+<span class="tag is-info is-large is-rounded">Resolved</span>
+{% else %}
+<span class="tag is-primary is-large is-rounded">Open</span>
+{% endif %}
+{{ object.title }} #{{object.id}}
+{% endblock %}
+{% block title %}{{ object.title }} #{{object.id}}{% endblock %}
 
 {% block content %}
-<div class="container column is-10">
-    <div class="columns">
-        <div class="column">
-            {{ object.assignee }}
-        </div>
-        <div class="column">
-            {{ object.team }}
-        </div>
-        <div class="column">
-            {% if object.resolved_at %}
-            Resolved: {{ object.resolved_at }}
-            {% else %}
-            Open
-            {% endif %}
-        </div>
-        <div class="column">
-            {% if object.resolved_at %}
-            <button class="button">Re-open</button>
-            {% else %}
-            <button class="button is-warning js-modal-trigger" data-target="modal-escalate">Escalate</button>
-            <button class="button">Close</button>
-            {% endif %}
-        </div>
+<div class="container columns">
+    <div class="column is-one-quarter">
+        <article class="panel is-info">
+            <a class="panel-block">
+              {% if object.assignee %}
+              Assigned to: {{ object.assignee }}
+              {% else %}
+              Unassigned
+              {% endif %}
+            </a>
+            <a class="panel-block" href="{% url 'teams:team_detail' object.team.tla %}">
+              {{ object.team }}
+            </a>
+            <a class="panel-block" href="{% url 'tickets:queue_detail' object.queue.slug %}">
+                {{ object.queue }}
+            </a>
+          </article>
     </div>
-    <div id="modal-escalate" class="modal">
-        <div class="modal-background"></div>
-        
-        <div class="modal-content">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Escalate Ticket</p>
-            <button class="delete" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-                <form class="block" method="post">
-                    {% csrf_token %}
-                    {{ escalate_form|crispy }}
-                    <input class="button is-primary" type="submit" value="Update Profile">
-                </form>                
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-success">Escalate Ticket</button>
-                <button class="button">Cancel</button>
-            </footer>
-        </div>
-        
-        <button class="modal-close is-large" aria-label="close"></button>
-    </div>
+    <div class="column">
+        <article class="message is-info">
+            <div class="message-header">
+                <p>Opened at {{ object.created_at }} by {{ object.opened_by }}</p>
+            </div>
+            {% if object.description %}
+            <div class="message-body">
+                {{object.description|linebreaks}}
+            </div>
+            {% endif %}
+        </article>
 
-    {% for comment in object.comments.all %}
-    <article class="message">
-        <div class="message-header">
-            <p>{{ comment.created_at }} - {{ comment.author }}</p>
-        </div>
-        <div class="message-body">
-            {{comment.content}}
-        </div>
-    </article>
-    {% endfor %}
-    {% if object.resolved_at %}
-    <article class="message is-success">
-        <div class="message-header">
-            <p>Resolved at {{ object.resolved_at }} by {{ object.resolved_by }}</p>
-        </div>
-    </article>
-    {% endif %}
+        {% for comment in object.comments.all %}
+        <article class="message">
+            <div class="message-header">
+                <p>{{ comment.created_at }} - {{ comment.author }}</p>
+            </div>
+            <div class="message-body">
+                {{comment.content|linebreaks}}
+            </div>
+        </article>
+        {% endfor %}
+
+        {% if object.resolution %}
+            <article class="message is-success">
+                <div class="message-header">
+                    <p>Resolved at {{ object.resolution.resolved_at }} by {{ object.resolution.user }}</p>
+                </div>
+                {% if object.resolution.comment %}
+                <div class="message-body">
+                    {{object.resolution.comment|linebreaks}}
+                </div>
+                {% endif %}
+            </article>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

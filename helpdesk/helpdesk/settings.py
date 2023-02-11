@@ -58,8 +58,8 @@ if BASE_PATH:
     BASE_PATH = (
         BASE_PATH.strip("/") + "/"
     )  # Enforce trailing slash only  # pragma: nocover
-DATE_FORMAT = getattr(configuration, "DATE_FORMAT", "N j, Y")
-DATETIME_FORMAT = getattr(configuration, "DATETIME_FORMAT", "N j, Y g:i a")
+DATE_FORMAT = getattr(configuration, "DATE_FORMAT", "Y-m-d")
+DATETIME_FORMAT = getattr(configuration, "DATETIME_FORMAT", "Y-m-d H:i")
 DEBUG = getattr(configuration, "DEBUG", False)
 EMAIL = getattr(configuration, "EMAIL", {})
 SHORT_DATE_FORMAT = getattr(configuration, "SHORT_DATE_FORMAT", "Y-m-d")
@@ -173,7 +173,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-gb"
 USE_I18N = True
-USE_L10N = True
+USE_L10N = False
 USE_TZ = True
 
 

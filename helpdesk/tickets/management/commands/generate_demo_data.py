@@ -9,7 +9,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandParser
 from faker import Faker
 from teams.models import Team
-from tickets.models import Ticket, TicketQueue
+from tickets.models import Ticket, TicketQueue, TicketResolution
 
 COMP_DAYS = [datetime.date(2023, 4, 1), datetime.date(2023, 4, 2)]
 COMP_OPEN_TIME = datetime.time(9)
@@ -91,7 +91,7 @@ class Command(BaseCommand):
         for team in Team.objects.all():
             if random.random() < chance:
                 if (
-                    team.tickets.filter(resolved_at__isnull=True).count() == 0
+                    team.tickets.filter(resolution__isnull=True).count() == 0
                     or random.random() < chance_multiple
                 ):
                     team.tickets.create(
@@ -103,13 +103,13 @@ class Command(BaseCommand):
 
     def _assign_free_users(self) -> None:
         for user in User.objects.all():
-            if user.tickets.filter(resolved_at__isnull=True).count() == 0:
+            if user.tickets.filter(resolution__isnull=True).count() == 0:
                 # Naively assume that the user only gets ticket from their default queue
                 # Also assume that a user only picks up one ticket at a time.
                 assert user.default_ticket_queue
                 ticket = (
                     user.default_ticket_queue.tickets
-                    .filter(resolved_at__isnull=True)
+                    .filter(resolution__isnull=True)
                     .filter(assignee__isnull=True)
                     .first()
                 )
@@ -119,7 +119,7 @@ class Command(BaseCommand):
 
     def _ticket_actions(self) -> None:
         for ticket in Ticket.objects.filter(
-            assignee__isnull=False, resolved_at__isnull=True
+            assignee__isnull=False, resolution__isnull=True
         ):
             if ticket.queue == self.default_queue and random.random() < 0.2:
                 ticket.queue = self.escalated_queue
@@ -130,7 +130,10 @@ class Command(BaseCommand):
             assert ticket.assignee
 
             if random.random() < 0.1:
-                ticket.mark_resolved(ticket.assignee)
+                TicketResolution.objects.create(
+                    ticket=ticket,
+                    user=ticket.assignee,
+                )
                 continue
 
             if random.random() < 0.5:
