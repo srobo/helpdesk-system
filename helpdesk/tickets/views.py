@@ -3,12 +3,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, RedirectView
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
 
 from .filters import TicketFilter
-from .models import Ticket, TicketQueue
+from .forms import TicketCommentSubmitForm
+from .models import Ticket, TicketQueue, TicketResolution
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet
@@ -53,3 +57,44 @@ class AssignedTicketListView(LoginRequiredMixin, FilterView):
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
+
+    def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
+        return super().get_context_data(
+            comment_form=TicketCommentSubmitForm(),
+            **kwargs,
+        )
+
+
+class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
+
+    http_method_names = ['post', 'put']
+    model = Ticket
+    form_class = TicketCommentSubmitForm
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+
+    def form_valid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        ticket = self.get_object()
+        ticket.comments.create(
+            content=form.cleaned_data['comment'],
+            author=self.request.user,
+        )
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
+
+    def form_invalid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+        return HttpResponse("Please fill out the form correctly.")
+
+
+class TicketResolveFormView(TicketSubmitCommentFormView):
+
+    def form_valid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        ticket = self.get_object()
+        TicketResolution.objects.create(
+            ticket=ticket,
+            user=self.request.user,
+            comment=form.cleaned_data['comment'],
+        )
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
