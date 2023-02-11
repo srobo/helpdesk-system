@@ -33,6 +33,8 @@ django==3.2.17
     #   django-filter
     #   django-stubs
     #   django-stubs-ext
+    #   django-tables2
+    #   django-tables2-bulma-template
 django-crispy-forms==1.14.0
     # via
     #   -r requirements.txt
@@ -50,6 +52,12 @@ django-stubs-ext==0.7.0
     # via
     #   -r requirements.txt
     #   django-stubs
+django-tables2==2.5.2
+    # via
+    #   -r requirements.txt
+    #   django-tables2-bulma-template
+django-tables2-bulma-template==0.2.0
+    # via -r requirements.txt
 djangorestframework-stubs==1.8.0
     # via django-filter-stubs
 exceptiongroup==1.1.0

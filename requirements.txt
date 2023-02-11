@@ -14,6 +14,8 @@ django==3.2.17
     #   crispy-bulma
     #   django-filter
     #   django-stubs-ext
+    #   django-tables2
+    #   django-tables2-bulma-template
 django-crispy-forms==1.14.0
     # via
     #   -r requirements.in
@@ -21,6 +23,12 @@ django-crispy-forms==1.14.0
 django-filter==22.1
     # via -r requirements.in
 django-stubs-ext==0.7.0
+    # via -r requirements.in
+django-tables2==2.5.2
+    # via
+    #   -r requirements.in
+    #   django-tables2-bulma-template
+django-tables2-bulma-template==0.2.0
     # via -r requirements.in
 pytz==2022.7.1
     # via django

@@ -1,8 +1,9 @@
 {% extends "base_app.html" %}
+{% load render_table from django_tables2 %}
 
 {% block page_title %}Teams{% endblock %}
 {% block title %}Teams{% endblock %}
 
 {% block content %}
-{% include 'inc/team_table.html' with teams=object_list %}
+{% render_table table %}
 {% endblock %}

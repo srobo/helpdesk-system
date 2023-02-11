@@ -106,6 +106,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bulma",
     "django_filters",
+    'django_tables2',
+    'django_tables2_bulma_template',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -195,3 +197,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Crispy
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 CRISPY_TEMPLATE_PACK = "bulma"
+
+# Django Tables 2
+DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"

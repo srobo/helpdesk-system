@@ -3,3 +3,5 @@ django>=3.2.14,<3.3  # LTS
 django-crispy-forms
 django-filter
 django-stubs-ext
+django-tables2
+django-tables2-bulma-template
