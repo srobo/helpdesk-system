@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from django.db import models
+from django.urls import reverse_lazy
 
 
 class TicketQueue(models.Model):
@@ -50,6 +51,9 @@ class Ticket(models.Model):
 
     def __str__(self) -> str:
         return f"#{self.id} - {self.title}"
+
+    def get_absolute_url(self) -> str:
+        return reverse_lazy('tickets:ticket_detail', kwargs={'pk': self.id})
 
 
 class TicketComment(models.Model):

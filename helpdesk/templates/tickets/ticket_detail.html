@@ -11,6 +11,12 @@
 {% endblock %}
 {% block title %}{{ object.title }} #{{object.id}}{% endblock %}
 
+{% block page_buttons %}
+<a class="button is-warning" href="{% url 'tickets:ticket_edit' object.id %}">
+    Edit Details
+</a>
+{% endblock %}
+
 {% block content %}
 <div class="container columns">
     <div class="column is-one-fifth">

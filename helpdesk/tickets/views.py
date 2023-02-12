@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, RedirectView
+from django.views.generic import DetailView, RedirectView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
@@ -70,6 +70,11 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
             comment_form=TicketCommentSubmitForm(),
             **kwargs,
         )
+
+
+class TicketUpdateView(LoginRequiredMixin, UpdateView):
+    model = Ticket
+    fields = ('title', 'assignee', 'queue', 'team', 'description')
 
 
 class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
