@@ -1,0 +1,19 @@
+{% extends "base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}Teams{% endblock %}
+{% block title %}Teams{% endblock %}
+
+{% block content %}
+<div class="container columns">
+    <div class="column is-one-fifth">
+        <form class="block" method="get">
+            {{ filter.form | crispy }}
+            <input class="button is-primary" type="submit" value="Filter">
+        </form>
+    </div>
+    <div class="column">
+        {% render_table table %}
+    </div>
+{% endblock %}
