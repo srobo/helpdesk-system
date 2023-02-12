@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% block body %}
 <main>
@@ -7,8 +7,10 @@
         <div class="hero-body">
           <div class="container">
             <div class="columns is-centered">
-              <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-                <img class="block" src="https://srobo.github.io/style/assets/logo.svg" />
+              <div class="column is-5-tablet is-6-desktop is-6-widescreen">
+                <div class="block has-text-centered">
+                  <img style="max-width: 50%;" src="https://srobo.github.io/style/assets/logo.svg" />
+                </div>
                 {% block content %}{% endblock %}
               </div>
             </div>
