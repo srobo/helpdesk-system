@@ -1,4 +1,5 @@
 {% extends "base_app.html" %}
+{% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
 
 {% block page_title %}Tickets{% endblock %}
@@ -29,7 +30,7 @@
     <div class="column">
       <h2 class="title">My Tickets</h2>
       <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
-      {% include "inc/ticket_table.html" with tickets=object_list.all show_tla=True %}
+      {% render_table table %}
     </div>
   </div>
 </div>

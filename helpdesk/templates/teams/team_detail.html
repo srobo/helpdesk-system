@@ -1,8 +1,20 @@
 {% extends "base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
 
-{% block page_title %}{{ object.name }}{% endblock %}
-{% block title %}{{ object.name }}{% endblock %}
+{% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
+{% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block content %}
-{% include "inc/ticket_table.html" with tickets=object.tickets.all %}
+<div class="container columns">
+    <div class="column is-one-fifth">
+        <form class="block" method="get">
+            {{ filter.form | crispy }}
+            <input class="button is-primary" type="submit" value="Filter">
+        </form>
+    </div>
+    <div class="column">
+        {% render_table table %}
+    </div>
+</div>
 {% endblock %}

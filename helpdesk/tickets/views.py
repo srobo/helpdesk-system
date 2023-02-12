@@ -9,10 +9,12 @@ from django.views.generic import DetailView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
 
 from .filters import TicketFilter
 from .forms import TicketCommentSubmitForm
 from .models import Ticket, TicketQueue, TicketResolution
+from .tables import TicketTable
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet
@@ -33,8 +35,12 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
             return reverse_lazy("tickets:ticket_assigned_list")
 
 
-class TicketQueueDetailView(LoginRequiredMixin, DetailView):
+class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
     model = TicketQueue
+    table_class = TicketTable
+
+    def get_table_data(self) -> QuerySet[Ticket]:
+        return self.get_object().tickets.all()
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -42,8 +48,9 @@ class TicketQueueDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class AssignedTicketListView(LoginRequiredMixin, FilterView):
+class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = TicketFilter
+    table_class = TicketTable
 
     def get_queryset(self) -> QuerySet[Ticket]:
         assert self.request.user.is_authenticated
