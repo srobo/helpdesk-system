@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 (
                     "resolved_at",
                     models.DateTimeField(
-                        auto_now_add=True, verbose_name="Resolution Time"
+                        auto_now_add=True, verbose_name="Resolution Time",
                     ),
                 ),
                 (

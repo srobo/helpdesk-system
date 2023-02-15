@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Validate Python version
 if parse_version(platform.python_version()) < parse_version("3.9.0"):  # pragma: nocover
     raise RuntimeError(
-        f"Helpdesk requires Python 3.9 or higher (current: Python {platform.python_version()})"
+        f"Helpdesk requires Python 3.9 or higher (current: Python {platform.python_version()})",
     )
 
 #
@@ -35,7 +35,7 @@ try:
 except ImportError as e:  # pragma: nocover
     if getattr(e, "name") == "configuration":
         raise ImproperlyConfigured(
-            "Configuration file is not present. Please define helpdesk/helpdesk/configuration.py per the documentation."  # noqa: E501
+            "Configuration file is not present. Please define helpdesk/helpdesk/configuration.py per the documentation.",  # noqa: E501
         ) from None
     raise
 
@@ -43,7 +43,7 @@ except ImportError as e:  # pragma: nocover
 for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
     if not hasattr(configuration, parameter):
         raise ImproperlyConfigured(  # pragma: nocover
-            f"Required parameter {parameter} is missing from configuration.py."
+            f"Required parameter {parameter} is missing from configuration.py.",
         )
 
 # Set required parameters

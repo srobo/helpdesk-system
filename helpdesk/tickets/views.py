@@ -10,6 +10,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, FormMixin, ProcessFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+
 from teams.models import Team
 
 from .filters import TicketFilter
@@ -31,7 +32,7 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
         # ticket_queue can be None if no queues exist.
         if ticket_queue:
             return reverse_lazy(
-                "tickets:queue_detail", kwargs={"slug": ticket_queue.slug}
+                "tickets:queue_detail", kwargs={"slug": ticket_queue.slug},
             )
         else:
             return reverse_lazy("tickets:ticket_assigned_list")
@@ -91,24 +92,24 @@ class TicketCreateForQueueView(TicketCreateView):
     def get_initial(self) -> dict[str, Any]:
         try:
             return {
-                "queue": TicketQueue.objects.get(slug=self.kwargs["slug"])
+                "queue": TicketQueue.objects.get(slug=self.kwargs["slug"]),
             }
         except KeyError:
             return {}
         except TicketQueue.DoesNotExist:
-            raise Http404("No such queue")
+            raise Http404("No such queue") from None
 
 
 class TicketCreateForTeamView(TicketCreateView):
     def get_initial(self) -> dict[str, Any]:
         try:
             return {
-                "team": Team.objects.get(tla=self.kwargs["slug"])
+                "team": Team.objects.get(tla=self.kwargs["slug"]),
             }
         except KeyError:
             return {}
         except Team.DoesNotExist:
-            raise Http404("No such team")
+            raise Http404("No such team") from None
 
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):

@@ -10,7 +10,7 @@ DATABASE = {
     "NAME": "db.sqlite",
 }
 
-SECRET_KEY = "django-insecure-rT1%IHNOY&jAn9b-7(uoOdlVKb(giEcBhMK$6+sGp3UO-X^FPe"
+SECRET_KEY = "django-insecure-rT1%IHNOY&jAn9b-7(uoOdlVKb(giEcBhMK$6+sGp3UO-X^FPe"  # noqa: S105
 
 DEBUG = True
 

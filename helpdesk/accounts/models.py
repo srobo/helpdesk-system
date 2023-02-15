@@ -29,7 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=150,
         unique=True,
         help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
         ),
         validators=[username_validator],
         error_messages={
@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=True,
         help_text=_(
             "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
+            "Unselect this instead of deleting accounts.",
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name
 
     def email_user(
-        self, subject: str, message: str, from_email: str | None = None, **kwargs: Any
+        self, subject: str, message: str, from_email: str | None = None, **kwargs: Any,
     ) -> None:
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)

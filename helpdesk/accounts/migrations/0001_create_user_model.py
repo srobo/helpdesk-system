@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 (
                     "last_login",
                     models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
+                        blank=True, null=True, verbose_name="last login",
                     ),
                 ),
                 (
@@ -43,13 +43,13 @@ class Migration(migrations.Migration):
                     "username",
                     models.CharField(
                         error_messages={
-                            "unique": "A user with that username already exists."
+                            "unique": "A user with that username already exists.",
                         },
                         help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
                         max_length=150,
                         unique=True,
                         validators=[
-                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                            django.contrib.auth.validators.UnicodeUsernameValidator(),
                         ],
                         verbose_name="username",
                     ),
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 (
                     "email",
                     models.EmailField(
-                        blank=True, max_length=254, verbose_name="email address"
+                        blank=True, max_length=254, verbose_name="email address",
                     ),
                 ),
                 (
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 (
                     "date_joined",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
+                        default=django.utils.timezone.now, verbose_name="date joined",
                     ),
                 ),
             ],

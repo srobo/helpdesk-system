@@ -11,7 +11,7 @@ class TicketTable(tables.Table):
         'teams:team_detail',
         args=[tables.A('team.tla')],
         accessor=tables.A('team.tla'),
-        verbose_name="Team"
+        verbose_name="Team",
     )
     assignee = tables.Column()
     resolution = tables.TemplateColumn("{% if record.resolution %}Resolved{% else %}Open{% endif %}")

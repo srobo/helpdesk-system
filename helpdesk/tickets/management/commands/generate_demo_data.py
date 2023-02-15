@@ -4,10 +4,11 @@ import random
 from pathlib import Path
 
 import freezegun
-from accounts.models import User
 from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandParser
 from faker import Faker
+
+from accounts.models import User
 from teams.models import Team
 from tickets.models import Ticket, TicketQueue, TicketResolution
 
@@ -119,7 +120,7 @@ class Command(BaseCommand):
 
     def _ticket_actions(self) -> None:
         for ticket in Ticket.objects.filter(
-            assignee__isnull=False, resolution__isnull=True
+            assignee__isnull=False, resolution__isnull=True,
         ):
             if ticket.queue == self.default_queue and random.random() < 0.2:
                 ticket.queue = self.escalated_queue
