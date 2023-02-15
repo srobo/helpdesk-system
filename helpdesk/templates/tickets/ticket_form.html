@@ -2,12 +2,26 @@
 {% load crispy_forms_tags %}
 
 {% block page_title %}
-Edit: {{ object.title }} #{{object.id}}
+    {% if create %}
+        New Ticket
+    {% else %}
+        Edit: {{ object.title }} #{{object.id}}
+    {% endif %}
 {% endblock %}
-{% block title %}Edit: #{{ object.id}}{% endblock %}
+{% block title %}
+    {% if create %}
+        New Ticket
+    {% else %}
+        Edit: #{{object.id}}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-<p>Some but not all details for a ticket can be edited after it has been created. If you need to edit something that cannot be edited here, contact an adminstrator or create a new ticket.</p>
+{% if create %}
+<p>Most tickets should be assigned after they are created so that teams do not skip the queue. Please do not assign tickets to a volunteer unless you know that there are no other teams waiting in the queue.</p>
+{% else %}
+<p>If you need to edit something that cannot be edited here, contact an administrator or create a new ticket.</p>
+{% endif %}
 <form class="block" method="post">
     {% csrf_token %}
     {{form|crispy}}

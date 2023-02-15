@@ -4,6 +4,12 @@
 {% block page_title %}Tickets{% endblock %}
 {% block title %}{{ object.name }}{% endblock %}
 
+{% block page_buttons %}
+<a class="button is-primary" href="{% url 'tickets:queue_create_ticket' object.slug %}">
+    New Ticket
+</a>
+{% endblock %}
+
 {% block content %}
 <div class="container">
   <div class="columns">

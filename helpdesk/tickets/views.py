@@ -3,13 +3,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import FormMixin, ProcessFormView
+from django.views.generic.edit import CreateView, FormMixin, ProcessFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+from teams.models import Team
 
 from .filters import TicketFilter
 from .forms import TicketCommentSubmitForm
@@ -17,6 +18,7 @@ from .models import Ticket, TicketQueue, TicketResolution
 from .tables import TicketTable
 
 if TYPE_CHECKING:
+    from django import forms
     from django.db.models import QuerySet
 
 
@@ -70,6 +72,43 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
             comment_form=TicketCommentSubmitForm(),
             **kwargs,
         )
+
+
+class TicketCreateView(LoginRequiredMixin, CreateView):
+    model = Ticket
+    fields = ('title', 'assignee', 'queue', 'team', 'description')
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """The same template is used for updating tickets."""
+        return super().get_context_data(create=True, **kwargs)
+
+    def form_valid(self, form: forms.Form) -> HttpResponse:
+        form.instance.opened_by = self.request.user  # type: ignore[attr-defined]
+        return super().form_valid(form)
+
+
+class TicketCreateForQueueView(TicketCreateView):
+    def get_initial(self) -> dict[str, Any]:
+        try:
+            return {
+                "queue": TicketQueue.objects.get(slug=self.kwargs["slug"])
+            }
+        except KeyError:
+            return {}
+        except TicketQueue.DoesNotExist:
+            raise Http404("No such queue")
+
+
+class TicketCreateForTeamView(TicketCreateView):
+    def get_initial(self) -> dict[str, Any]:
+        try:
+            return {
+                "team": Team.objects.get(tla=self.kwargs["slug"])
+            }
+        except KeyError:
+            return {}
+        except Team.DoesNotExist:
+            raise Http404("No such team")
 
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
