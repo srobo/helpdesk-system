@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     AssignedTicketListView,
     RedirectToDefaultTicketQueue,
-    TicketCreateForQueueView,
+    TicketCreateView,
     TicketDetailView,
     TicketQueueDetailView,
     TicketResolveFormView,
@@ -18,8 +18,8 @@ urlpatterns = [
     path(
         "assigned-to-me", AssignedTicketListView.as_view(), name="ticket_assigned_list",
     ),
+    path("new", TicketCreateView.as_view(), name="ticket_create"),
     path("<slug:slug>", TicketQueueDetailView.as_view(), name="queue_detail"),
-    path("<slug:slug>/new", TicketCreateForQueueView.as_view(), name="queue_create_ticket"),
     path("ticket/<int:pk>", TicketDetailView.as_view(), name="ticket_detail"),
     path("ticket/<int:pk>/edit", TicketUpdateView.as_view(), name="ticket_edit"),
     path("ticket/<int:pk>/comment", TicketSubmitCommentFormView.as_view(), name="ticket_comment"),

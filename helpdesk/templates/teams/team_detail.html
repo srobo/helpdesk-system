@@ -6,7 +6,7 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<a class="button is-primary" href="{% url 'teams:team_create_ticket' object.tla %}">
+<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
     New Ticket
 </a>
 {% endblock %}

@@ -24,23 +24,26 @@
   
     <div class="navbar-end">
         {% if user.is_authenticated %}
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                {{ user.get_full_name }}
-                </a>
+          <a class="navbar-item" href="{% url 'tickets:ticket_create' %}">
+            New Ticket
+          </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              {{ user.get_full_name }}
+            </a>
         
-                <div class="navbar-dropdown">
-                    {% if user.is_staff %}
-                    <a class="navbar-item" href="{% url 'admin:index' %}">
-                      Admin
-                    </a>
-                    {% endif %}
-                    <a class="navbar-item" href="{% url 'password_change' %}">Change Password</a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item" href="{% url 'logout' %}">
-                        Log out
-                    </a>
-                </div>
+            <div class="navbar-dropdown">
+              {% if user.is_staff %}
+              <a class="navbar-item" href="{% url 'admin:index' %}">
+                Admin
+              </a>
+              {% endif %}
+              <a class="navbar-item" href="{% url 'password_change' %}">Change Password</a>
+              <hr class="navbar-divider">
+              <a class="navbar-item" href="{% url 'logout' %}">
+                  Log out
+              </a>
+            </div>
           </div>
         {% endif %}
       </div>

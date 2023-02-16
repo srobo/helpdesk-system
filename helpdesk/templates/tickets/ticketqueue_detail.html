@@ -5,7 +5,7 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<a class="button is-primary" href="{% url 'tickets:queue_create_ticket' object.slug %}">
+<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
     New Ticket
 </a>
 {% endblock %}
