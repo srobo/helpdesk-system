@@ -2,8 +2,12 @@
 {% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
 
-{% block page_title %}Tickets{% endblock %}
+{% block page_title %}My Tickets{% endblock %}
 {% block title %}My Tickets{% endblock %}
+
+{% block page_buttons %}
+<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -28,8 +32,6 @@
         </aside>
     </div>
     <div class="column">
-      <h2 class="title">My Tickets</h2>
-      <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
       {% render_table table %}
     </div>
   </div>

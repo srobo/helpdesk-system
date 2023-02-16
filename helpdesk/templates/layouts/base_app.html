@@ -3,10 +3,16 @@
 {% block body %}
   {% include "inc/nav.html" %}
   <main>
-    <div class="container" style="margin-top: 2em;">
-      <div class="columns">
+    <div class="container" style="margin-top: 1em;">
+      <div class="columns is-flex is-vcentered">
         <div class="column">
-          <h2 class="title">{% block page_title %}{% endblock %}</h2>
+          <h2 class="title" style="margin-bottom: 0.3em;">{% block page_title %}{% endblock %}</h2>
+          <nav class="breadcrumb" aria-label="breadcrumbs" style="margin-left: 0.5em;">
+            <ul>
+              <li><a href="#">Components</a></li>
+              <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
+            </ul>
+          </nav>
         </div>
         <div class="column is-one-quarter has-text-right">
           {% block page_buttons %}{% endblock %}
