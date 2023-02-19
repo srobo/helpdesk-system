@@ -7,7 +7,7 @@ from .models import Ticket, TicketComment, TicketQueue, TicketResolution
 
 
 class TicketQueueAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug")
+    list_display = ("name", "slug", "display_priority")
 
 
 class TicketCommentAdmin(admin.StackedInline):

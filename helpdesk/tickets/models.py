@@ -7,6 +7,10 @@ from django.urls import reverse_lazy
 class TicketQueue(models.Model):
     name = models.CharField("Ticket Queue Name", max_length=32)
     slug = models.SlugField("Slug", max_length=32)
+    display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
+
+    class Meta:
+        ordering = ["-display_priority", "name"]
 
     def __str__(self) -> str:
         return f"Ticket Queue: {self.name}"
