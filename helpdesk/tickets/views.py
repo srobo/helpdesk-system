@@ -59,7 +59,13 @@ class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
 
     def get_queryset(self) -> QuerySet[Ticket]:
         assert self.request.user.is_authenticated
-        return self.request.user.tickets.all()
+
+        # Hack: if resolved is not in a query parameter, filter out resolved
+        # tickets as a default value.
+        if "resolved" in self.request.GET:
+            return self.request.user.tickets.all()
+        else:
+            return self.request.user.tickets.filter(resolution__isnull=True)
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)

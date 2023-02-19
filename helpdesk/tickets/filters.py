@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 import django_filters
 
 from teams.models import Team
@@ -8,6 +10,11 @@ from .models import Ticket, TicketQueue
 
 
 class TicketFilter(django_filters.FilterSet):
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.form.initial["resolved"] = False
+
     resolved = django_filters.BooleanFilter(
         "resolution", "isnull", exclude=True, label="Resolved",
     )
