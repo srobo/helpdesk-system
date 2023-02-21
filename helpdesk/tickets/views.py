@@ -15,7 +15,7 @@ from accounts.models import User
 from helpdesk.utils import get_object_or_none
 from teams.models import Team
 
-from .filters import TicketFilter
+from .filters import AssignedQueueTicketFilter, QueueTicketFilter
 from .forms import TicketCommentSubmitForm
 from .models import Ticket, TicketQueue, TicketResolution
 from .tables import TicketTable
@@ -42,7 +42,6 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
 
 class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
     model = TicketQueue
-    filterset_class = TicketFilter
     table_class = TicketTable
 
     def get_ticket_queryset(self) -> QuerySet[Ticket]:
@@ -53,10 +52,10 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
             queryset = queryset.filter(resolution__isnull=True)
         return queryset
     
-    def get_ticket_filter(self) -> TicketFilter:
+    def get_ticket_filter(self) -> QueueTicketFilter:
         queryset = self.get_ticket_queryset()
         
-        return TicketFilter(
+        return QueueTicketFilter(
             data=self.request.GET or None,
             request=self.request,
             queryset=queryset,
@@ -74,7 +73,7 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
 
 
 class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
-    filterset_class = TicketFilter
+    filterset_class = AssignedQueueTicketFilter
     table_class = TicketTable
     template_name = "tickets/ticketqueue_assigned.html"
 
