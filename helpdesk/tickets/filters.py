@@ -13,8 +13,10 @@ from .models import Ticket, TicketQueue
 class BaseTicketFilter(django_filters.FilterSet):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+        initial_resolution = kwargs.pop("initial_resolution", False)
         super().__init__(*args, **kwargs)
-        self.form.initial["resolved"] = False
+        if initial_resolution is not None:
+            self.form.initial["resolved"] = initial_resolution
 
     resolved = django_filters.BooleanFilter(
         "resolution", "isnull", exclude=True, label="Resolved",
@@ -56,4 +58,17 @@ class QueueTicketFilter(BaseTicketFilter):
         fields: list[str] = []
 
 
-# TODO: TeamTicketFilter for team pages
+class TeamTicketFilter(BaseTicketFilter):
+    """Ticket filter for a team page."""
+
+    assignee = django_filters.ModelChoiceFilter(
+        queryset=User.objects.all(), field_name="assignee", to_field_name="username",
+    )
+
+    queue = django_filters.ModelChoiceFilter(
+        queryset=TicketQueue.objects.all(), field_name="queue", to_field_name="slug",
+    )
+
+    class Meta:
+        model = Ticket
+        fields: list[str] = []
