@@ -14,7 +14,10 @@ class TicketTable(tables.Table):
         verbose_name="Team",
     )
     assignee = tables.Column()
-    resolution = tables.TemplateColumn("{% if record.resolution %}Resolved{% else %}Open{% endif %}")
+    resolution = tables.TemplateColumn(
+        "{% if record.resolution %}Resolved{% else %}Open{% endif %}",
+        verbose_name="Status",
+    )
     actions = tables.LinkColumn('tickets:ticket_detail', args=[tables.A('id')], text="View")
 
     class Meta:
