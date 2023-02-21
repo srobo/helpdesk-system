@@ -42,30 +42,52 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
 
 class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
     model = TicketQueue
+    filterset_class = TicketFilter
     table_class = TicketTable
 
+    def get_ticket_queryset(self) -> QuerySet[Ticket]:
+        queryset = self.get_object().tickets.all()
+        # Hack: if resolved is not in a query parameter, filter out resolved
+        # tickets as a default value.
+        if "resolved" not in self.request.GET:
+            queryset = queryset.filter(resolution__isnull=True)
+        return queryset
+    
+    def get_ticket_filter(self) -> TicketFilter:
+        queryset = self.get_ticket_queryset()
+        
+        return TicketFilter(
+            data=self.request.GET or None,
+            request=self.request,
+            queryset=queryset,
+        )
+
     def get_table_data(self) -> QuerySet[Ticket]:
-        return self.get_object().tickets.all()
+        data_filter = self.get_ticket_filter()
+        return data_filter.qs
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["ticket_queues"] = TicketQueue.objects.all()
+        context["filter"] = self.get_ticket_filter()
         return context
 
 
 class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = TicketFilter
     table_class = TicketTable
+    template_name = "tickets/ticketqueue_assigned.html"
 
     def get_queryset(self) -> QuerySet[Ticket]:
         assert self.request.user.is_authenticated
+        queryset = self.request.user.tickets.all()
 
         # Hack: if resolved is not in a query parameter, filter out resolved
         # tickets as a default value.
-        if "resolved" in self.request.GET:
-            return self.request.user.tickets.all()
-        else:
-            return self.request.user.tickets.filter(resolution__isnull=True)
+        if "resolved" not in self.request.GET:
+            queryset = queryset.filter(resolution__isnull=True)
+
+        return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
