@@ -8,6 +8,14 @@ class TicketQueue(models.Model):
     name = models.CharField("Ticket Queue Name", max_length=32)
     slug = models.SlugField("Slug", max_length=32)
     display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
+    escalation_queue = models.ForeignKey(
+        'tickets.TicketQueue',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='escalates_to',
+        related_query_name='escalates_to',
+    )
 
     class Meta:
         ordering = ["-display_priority", "name"]
@@ -58,6 +66,10 @@ class Ticket(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={'pk': self.id})
+
+    @property
+    def is_escalatable(self) -> bool:
+        return self.queue.escalation_queue is not None
 
 
 class TicketComment(models.Model):

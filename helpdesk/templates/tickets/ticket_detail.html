@@ -12,6 +12,14 @@
 {% block title %}{{ object.title }} #{{object.id}}{% endblock %}
 
 {% block page_buttons %}
+{% if object.is_escalatable %}
+<form method="post" style="display: inline;">
+    {% csrf_token %}
+    <button class="button is-danger" type="submit" formaction="{% url 'tickets:ticket_escalate' object.id %}">
+        Escalate
+    </button>
+</form>
+{% endif %}
 <a class="button is-warning" href="{% url 'tickets:ticket_edit' object.id %}">
     Edit Details
 </a>

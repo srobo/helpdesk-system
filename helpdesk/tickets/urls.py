@@ -5,6 +5,7 @@ from .views import (
     RedirectToDefaultTicketQueue,
     TicketCreateView,
     TicketDetailView,
+    TicketEscalateFormView,
     TicketQueueDetailView,
     TicketResolveFormView,
     TicketSubmitCommentFormView,
@@ -24,4 +25,5 @@ urlpatterns = [
     path("ticket/<int:pk>/edit", TicketUpdateView.as_view(), name="ticket_edit"),
     path("ticket/<int:pk>/comment", TicketSubmitCommentFormView.as_view(), name="ticket_comment"),
     path("ticket/<int:pk>/resolve", TicketResolveFormView.as_view(), name="ticket_resolve"),
+    path("ticket/<int:pk>/escalate", TicketEscalateFormView.as_view(), name="ticket_escalate"),
 ]

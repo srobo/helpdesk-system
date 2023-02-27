@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, RedirectView, UpdateView
@@ -127,6 +128,33 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
     model = Ticket
     fields = ('title', 'assignee', 'queue', 'team', 'description')
+
+class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
+
+    http_method_names = ['post', 'put']
+    model = Ticket
+    form_class = Form
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+
+    def form_valid(self, form: Form) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        ticket: Ticket = self.get_object()
+        if ticket.queue.escalation_queue:
+            ticket.assignee = None
+            ticket.queue = ticket.queue.escalation_queue
+            ticket.save()
+            ticket.comments.create(
+                content=f"Escalated to {ticket.queue}",
+                author=self.request.user,
+            )
+            return HttpResponseRedirect(redirect_to=self.get_success_url())
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self, form: Form) -> HttpResponse:
+        return HttpResponse("Please fill out the form correctly.")
 
 
 class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
