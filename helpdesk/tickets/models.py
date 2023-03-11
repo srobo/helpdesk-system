@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 
 class TicketQueue(models.Model):
     name = models.CharField("Ticket Queue Name", max_length=32)
-    slug = models.SlugField("Slug", max_length=32)
+    slug = models.SlugField("Slug", max_length=32, unique=True)
     display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
     escalation_queue = models.ForeignKey(
         'tickets.TicketQueue',
