@@ -156,6 +156,25 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
     def form_invalid(self, form: Form) -> HttpResponse:
         return HttpResponse("Please fill out the form correctly.")
 
+class TicketAssignToCurrentUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
+
+    http_method_names = ['post', 'put']
+    model = Ticket
+    form_class = Form
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+
+    def form_valid(self, form: Form) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        ticket: Ticket = self.get_object()
+        ticket.assignee = self.request.user
+        ticket.save(update_fields=["assignee"])
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
+
+    def form_invalid(self, form: Form) -> HttpResponse:
+        return HttpResponse("Please fill out the form correctly.")
+
 
 class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
 

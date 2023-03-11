@@ -20,6 +20,14 @@
     </button>
 </form>
 {% endif %}
+{% if not object.assignee %}
+<form method="post" style="display: inline;">
+    {% csrf_token %}
+    <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_assign_to_current_user' object.id %}">
+        Assign to me
+    </button>
+</form>
+{% endif %}
 <a class="button is-warning" href="{% url 'tickets:ticket_edit' object.id %}">
     Edit Details
 </a>
