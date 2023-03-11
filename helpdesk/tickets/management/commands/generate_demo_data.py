@@ -1,18 +1,15 @@
-import csv
 import datetime
 import random
-from pathlib import Path
 
 import freezegun
-from django.core.management import call_command
-from django.core.management.base import BaseCommand, CommandParser
+from django.core.management.base import BaseCommand
 from faker import Faker
 
 from accounts.models import User
 from teams.models import Team
 from tickets.models import Ticket, TicketQueue, TicketResolution
 
-COMP_DAYS = [datetime.date(2023, 4, 1), datetime.date(2023, 4, 2)]
+COMP_DAYS = [datetime.date(2022, 4, 1), datetime.date(2022, 4, 2)]
 COMP_OPEN_TIME = datetime.time(9)
 COMP_CLOSE_TIME = datetime.time(17)
 
@@ -20,53 +17,27 @@ COMP_CLOSE_TIME = datetime.time(17)
 class Command(BaseCommand):
     help = "Generate demo data."  # noqa: A003
 
-    def add_arguments(self, parser: CommandParser) -> None:
-        parser.add_argument("teams_data", type=Path)
-
-    def _generate_teams(self, teams_data: Path) -> list[Team]:
-        Team.objects.all().delete()
-        with teams_data.resolve().open("r") as fh:
-            return [
-                Team.objects.create(
-                    tla=row["TLA"],
-                    name=row["School / Institution Name"],
-                    is_rookie=row["Competed Before"].startswith("No"),
-                )
-                for row in csv.DictReader(fh)
-                if row["TLA"]
-            ]
-
     def _generate_queues(self) -> list[TicketQueue]:
         queues = []
-        queues.append(TicketQueue.objects.create(name="Helpdesk", slug="helpdesk"))
-        queues.append(TicketQueue.objects.create(name="Kit Experts", slug="experts"))
+        queues.append(TicketQueue.objects.get_or_create(name="Helpdesk", slug="helpdesk")[0])
+        queues.append(TicketQueue.objects.get_or_create(name="Kit Experts", slug="experts")[0])
         return queues
 
     def _generate_users(self) -> list[User]:
-        user = User.objects.create(
-            username="user",
-            name="Demo User",
-            is_staff=True,
-            is_superuser=True,
-            default_ticket_queue=random.choice(self.queues),
-        )
-        user.set_password("password")
-        user.save()
-        return [user] + [
-            User.objects.create(
-                username=self.faker.email(),
-                name=self.faker.name(),
-                is_staff=True,
-                is_superuser=True,
-                default_ticket_queue=random.choice(self.queues),
-            )
-            for _ in range(2, random.randint(3, 8))
-        ]
+        if User.objects.count() < 2:
+            for _ in range(2, random.randint(3, 8)):
+                User.objects.create(
+                    username=self.faker.email(),
+                    name=self.faker.name(),
+                    is_staff=True,
+                    is_superuser=True,
+                    default_ticket_queue=random.choice(self.queues),
+                )
+        return list(User.objects.all())
 
     def handle(
         self,
         *,
-        teams_data: Path,
         verbosity: int,
         settings: str,
         pythonpath: str,
@@ -75,9 +46,7 @@ class Command(BaseCommand):
         force_color: bool,
         skip_checks: bool,
     ) -> None:
-        call_command("flush")
         self.faker = Faker()
-        self.teams = self._generate_teams(teams_data)
         self.queues = self._generate_queues()
         self.default_queue = self.queues[0]
         self.escalated_queue = self.queues[1]
