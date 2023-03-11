@@ -4,14 +4,21 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form | crispy }}
+  <figure class="image is-128x128 inline-block" style="margin: 0 auto 2em auto;">
+    <img src="https://srobo.github.io/style/assets/logo.svg" width="50%" />
+  </figure>
+  <h2 class="title has-text-centered">{{ SYSTEM_TITLE }}</h2>
+  <form method="post" style="margin: 1em 0;">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <div class="control">
+      <button class="button is-info is-fullwidth" type="submit">Log In</button>
+    </div>
+  </form>
   <div class="control">
-    <button class="button is-info is-fullwidth" type="submit">Log In</button>
+    <button class="button is-warning is-fullwidth" type="submit">Sign Up</button>
   </div>
-</form>
-<p class="block has-text-centered" style="margin-top: 2em;">
-  <a href="{% url 'password_reset' %}">Forgotten Password</a>
-</p>
+  <p class="block has-text-centered" style="margin-top: 2em;">
+    <a href="{% url 'password_reset' %}">Forgotten Password</a>
+  </p>
 {% endblock %}
