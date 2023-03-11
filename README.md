@@ -2,6 +2,14 @@
 
 A system for managing a helpdesk.
 
+## Production
+
+If SRComp is live, you can sync teams and pit locations using a management command:
+
+```bash
+./manage.py import_from_srcomp --srcomp_url "https://srcomp.studentrobotics.org/comp-api"
+```
+
 ## Development
 
 This is a Django application.
