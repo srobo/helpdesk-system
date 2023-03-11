@@ -5,6 +5,14 @@ from django.db import models
 from django.urls import reverse_lazy
 
 
+class TeamPitLocation(models.Model):
+
+    name = models.CharField("Name", max_length=100)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Team(models.Model):
     tla = models.CharField(
         "TLA",
@@ -16,6 +24,7 @@ class Team(models.Model):
     )
     name = models.CharField("Team Name", max_length=100)
     is_rookie = models.BooleanField("Is Rookie")
+    pit_location = models.ForeignKey(TeamPitLocation, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
         return f"{self.tla} - {self.name}"

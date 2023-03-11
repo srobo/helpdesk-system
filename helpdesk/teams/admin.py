@@ -1,6 +1,10 @@
 from django.contrib import admin
 
-from teams.models import Team
+from teams.models import Team, TeamPitLocation
+
+
+class TeamPitLocationAdmin(admin.ModelAdmin):
+    list_display = ("name", )
 
 
 class TeamAdmin(admin.ModelAdmin):
@@ -8,4 +12,5 @@ class TeamAdmin(admin.ModelAdmin):
     list_filter = ("is_rookie",)
 
 
+admin.site.register(TeamPitLocation, TeamPitLocationAdmin)
 admin.site.register(Team, TeamAdmin)

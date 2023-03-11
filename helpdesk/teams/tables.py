@@ -12,5 +12,5 @@ class TeamTable(tables.Table):
 
     class Meta:
         model = Team
-        exclude = ("id", )
+        exclude = ("id", "pit_location")
         order_by = "tla"
