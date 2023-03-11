@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 class TeamPitLocation(models.Model):
 
     name = models.CharField("Name", max_length=100)
+    slug = models.CharField("Slug", max_length=30)
 
     def __str__(self) -> str:
         return self.name
