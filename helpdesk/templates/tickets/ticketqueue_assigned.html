@@ -14,29 +14,7 @@
 {% block content %}
 <div class="container">
   <div class="columns">
-    <div class="column is-one-fifth">
-        <aside class="menu" style="padding-top: 2em;">
-            <ul class="menu-list">
-              <li>
-                <a class="is-active" href="{% url 'tickets:ticket_assigned_list' %}">My Tickets</a>
-              </li>
-            </ul>
-            <p class="menu-label">
-              Queues
-            </p>
-            <ul class="menu-list">
-              {% for queue in ticket_queues %}
-              <li>
-                <a href="{% url 'tickets:queue_detail' queue.slug %}">{{ queue.name }}</a>
-              </li>
-              {% endfor %}
-            </ul>
-        </aside>
-    </div>
-    <div class="column">
-      {% render_table table %}
-    </div>
-  </div>
+    {% render_table table %}
 </div>
 {% include "inc/modals/filter.html" %}
 {% endblock %}

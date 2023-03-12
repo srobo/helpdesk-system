@@ -13,8 +13,11 @@
     <div class="navbar-menu" id="navMenu">
       {% if user.is_authenticated %}
         <div class="navbar-start">
+          <a class="navbar-item" href="{% url 'tickets:ticket_assigned_list' %}">
+            My Tickets
+          </a>
           <a class="navbar-item" href="{% url 'tickets:queue_default' %}">
-            Tickets
+            Queues
           </a>
           <a class="navbar-item" href="{% url 'teams:team_list' %}">
             Teams

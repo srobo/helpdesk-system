@@ -1,8 +1,8 @@
 {% extends "layouts/base_app.html" %}
 {% load render_table from django_tables2 %}
 
-{% block page_title %}{{ object.name }}{% endblock %}
-{% block title %}{{ object.name }}{% endblock %}
+{% block page_title %}Queue: {{ object.name }}{% endblock %}
+{% block title %}Queue: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
 <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
@@ -16,11 +16,6 @@
   <div class="columns">
     <div class="column is-one-fifth">
         <aside class="menu" style="padding-top: 2em;">
-            <ul class="menu-list">
-              <li>
-                <a href="{% url 'tickets:ticket_assigned_list' %}">My Tickets</a>
-              </li>
-            </ul>
             <p class="menu-label">
               Queues
             </p>
