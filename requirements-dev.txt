@@ -131,6 +131,8 @@ tomli==2.0.1
     #   mypy
     #   pyproject-hooks
     #   pytest
+types-dj-database-url==1.2.0.1
+    # via -r requirements-dev.in
 types-docutils==0.19.1.2
     # via types-setuptools
 types-pytz==2022.7.1.0
