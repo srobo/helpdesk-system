@@ -66,6 +66,8 @@ faker==16.7.0
     # via -r requirements-dev.in
 freezegun==1.2.2
     # via -r requirements-dev.in
+gunicorn==20.1.0
+    # via -r requirements.txt
 idna==3.4
     # via
     #   -r requirements.txt

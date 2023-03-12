@@ -5,4 +5,5 @@ django-filter
 django-stubs-ext
 django-tables2
 django-tables2-bulma-template
+gunicorn
 requests
