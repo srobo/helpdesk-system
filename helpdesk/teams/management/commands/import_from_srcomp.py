@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 tla=tla,
                 defaults={
                     "name": team_data["name"],
-                    "is_rookie": False,
+                    "is_rookie": team_data.get("rookie", False),
                     "pit_location": TeamPitLocation.objects.get(slug=team_data["location"]["name"]),
                 },
             )
