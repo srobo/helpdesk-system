@@ -4,6 +4,8 @@ A system for managing a helpdesk.
 
 ## Production
 
+This repository is automatically deployed to [Fly](fly.io) using blue-green deployments.
+
 If SRComp is live, you can sync teams and pit locations using a management command:
 
 ```bash
