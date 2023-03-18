@@ -10,12 +10,12 @@ DATABASE = dj_database_url.config(
     conn_health_checks=True,
 )
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "insecure")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = False
 
 EMAIL = {
-    "BACKEND": "django.core.mail.backends.console.EmailBackend",
+    "BACKEND": "django.core.mail.backends.dummy.EmailBackend",
 }
 
 SYSTEM_TITLE = "SR2023 Helpdesk"
