@@ -1,46 +1,26 @@
-{% extends "account/base.html" %}
-
+{% extends "layouts/base_hero.html" %}
+{% load crispy_forms_tags %}
 {% load i18n %}
-{% load account socialaccount %}
+{% load socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block title %}Log In{% endblock %}
 
 {% block content %}
-
-<h1>{% trans "Sign In" %}</h1>
-
-{% get_providers as socialaccount_providers %}
-
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
-
-<div class="socialaccount_ballot">
-
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
-
-  <div class="login-or">{% trans 'or' %}</div>
-
-</div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
+  <figure class="image is-128x128 inline-block" style="margin: 0 auto 2em auto;">
+    <img src="https://srobo.github.io/style/assets/logo.svg" width="50%" />
+  </figure>
+  <h2 class="title has-text-centered">{{ SYSTEM_TITLE }}</h2>
+  <form method="post" style="margin: 1em 0;">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <div class="control">
+      <button class="button is-info is-fullwidth" type="submit">Log In</button>
+    </div>
+    <div class="control" style="margin-top: 1em;">
+      <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
+    </div>
+  </form>
+  <div class="control">
+    <button class="button is-warning is-fullwidth" type="submit">Sign Up</button>
+  </div>
 {% endblock %}

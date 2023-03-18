@@ -10,20 +10,13 @@
     <img src="https://srobo.github.io/style/assets/logo.svg" width="50%" />
   </figure>
   <h2 class="title has-text-centered">{{ SYSTEM_TITLE }}</h2>
+  <h3 class="subtitle has-text-centered">Sign In Via Google</h3>
+  <p class="has-text-centered">Non-SR Google accounts will not work. If you do not have an SR Google Account, please go back and sign up.</p>
   <form method="post" style="margin: 1em 0;">
     {% csrf_token %}
     {{ form | crispy }}
     <div class="control">
-      <button class="button is-info is-fullwidth" type="submit">Log In</button>
-    </div>
-    <div class="control" style="margin-top: 1em;">
-      <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
+      <button class="button is-info is-fullwidth" type="submit">Continue</button>
     </div>
   </form>
-  <div class="control">
-    <button class="button is-warning is-fullwidth" type="submit">Sign Up</button>
-  </div>
-  <p class="block has-text-centered" style="margin-top: 2em;">
-    <a href="{% url 'password_reset' %}">Forgotten Password</a>
-  </p>
 {% endblock %}
