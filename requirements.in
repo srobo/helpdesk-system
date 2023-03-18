@@ -1,5 +1,5 @@
 crispy-bulma
-django>=3.2.14,<3.3  # LTS
+django>=3.2.18,<3.3  # LTS
 django-crispy-forms
 django-filter
 django-stubs-ext
