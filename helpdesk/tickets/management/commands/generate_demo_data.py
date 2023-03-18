@@ -28,7 +28,8 @@ class Command(BaseCommand):
             for _ in range(2, random.randint(3, 8)):
                 User.objects.create(
                     username=self.faker.email(),
-                    name=self.faker.name(),
+                    first_name=self.faker.first_name(),
+                    last_name=self.faker.last_name(),
                     is_staff=True,
                     is_superuser=True,
                     default_ticket_queue=random.choice(self.queues),

@@ -8,7 +8,7 @@ from .models import User
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("name", "email")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
         (_("Competition"), {"fields": ("default_ticket_queue",)}),
         (
             _("Permissions"),
@@ -29,7 +29,7 @@ class CustomUserAdmin(UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "name", "password1", "password2"),
+                "fields": ("username", "first_name", "last_name", "password1", "password2"),
             },
         ),
         (
@@ -42,7 +42,8 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display = (
         "username",
-        "name",
+        "first_name",
+        "last_name",
         "default_ticket_queue",
         "is_staff",
         "is_superuser",
@@ -54,7 +55,7 @@ class CustomUserAdmin(UserAdmin):
         "is_active",
         "groups",
     )
-    search_fields = ("username", "name", "last_name", "email")
+    search_fields = ("username", "first_name", "last_name", "email")
 
 
 admin.site.register(User, CustomUserAdmin)
