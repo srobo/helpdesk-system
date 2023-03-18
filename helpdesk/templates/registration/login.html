@@ -1,5 +1,7 @@
 {% extends "layouts/base_hero.html" %}
 {% load crispy_forms_tags %}
+{% load i18n %}
+{% load socialaccount %}
 
 {% block title %}Log In{% endblock %}
 
@@ -13,6 +15,9 @@
     {{ form | crispy }}
     <div class="control">
       <button class="button is-info is-fullwidth" type="submit">Log In</button>
+    </div>
+    <div class="control" style="margin-top: 1em;">
+      <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
     </div>
   </form>
   <div class="control">

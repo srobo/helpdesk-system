@@ -108,6 +108,10 @@ INSTALLED_APPS = [
     "django_filters",
     'django_tables2',
     'django_tables2_bulma_template',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -126,9 +130,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "helpdesk.urls"
+
+SITE_ID = 1
 
 TEMPLATES = [
     {
@@ -200,3 +211,18 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 # Django Tables 2
 DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
+
+# Django AllAuth
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+    },
+}

@@ -21,7 +21,7 @@ from tickets.views import RedirectToDefaultTicketQueue
 urlpatterns = [
     path("", RedirectToDefaultTicketQueue.as_view(), name="home"),
     path("admin/", admin.site.urls),
-    path("auth/", include("django.contrib.auth.urls")),
+    path('auth/', include('allauth.urls')),
     path("teams/", include("teams.urls", namespace="teams")),
     path("tickets/", include("tickets.urls", namespace="tickets")),
 ]
