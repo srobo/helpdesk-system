@@ -10,7 +10,7 @@ DATABASE = dj_database_url.config(
     conn_health_checks=True,
 )
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "insecure")
 
 DEBUG = False
 
