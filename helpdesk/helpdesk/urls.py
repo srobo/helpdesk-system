@@ -22,6 +22,7 @@ urlpatterns = [
     path("", RedirectToDefaultTicketQueue.as_view(), name="home"),
     path("admin/", admin.site.urls),
     path('auth/', include('allauth.urls')),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
     path("teams/", include("teams.urls", namespace="teams")),
     path("tickets/", include("tickets.urls", namespace="tickets")),
 ]
