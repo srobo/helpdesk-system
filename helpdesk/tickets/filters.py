@@ -72,3 +72,15 @@ class TeamTicketFilter(BaseTicketFilter):
     class Meta:
         model = Ticket
         fields: list[str] = []
+
+
+class TicketFilter(TeamTicketFilter):
+    """Ticket filter for all tickets."""
+
+    team = django_filters.ModelChoiceFilter(
+        queryset=Team.objects.all(), field_name="team", to_field_name="tla",
+    )
+
+    class Meta:
+        model = Ticket
+        fields: list[str] = []

@@ -16,7 +16,7 @@ from accounts.models import User
 from helpdesk.utils import get_object_or_none
 from teams.models import Team
 
-from .filters import AssignedQueueTicketFilter, QueueTicketFilter
+from .filters import AssignedQueueTicketFilter, QueueTicketFilter, TicketFilter
 from .forms import TicketCommentSubmitForm
 from .models import Ticket, TicketQueue, TicketResolution
 from .tables import TicketTable
@@ -93,6 +93,13 @@ class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context["ticket_queues"] = TicketQueue.objects.all()
         return context
+    
+
+class TicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
+    filterset_class = TicketFilter
+    table_class = TicketTable
+    template_name = "tickets/tickets_all.html"
+    queryset = Ticket.objects.all()
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
