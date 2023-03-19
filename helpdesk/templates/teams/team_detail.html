@@ -14,6 +14,12 @@
 {% block content %}
 <div class="container columns">
     <div class="column is-one-fifth">
+        <p>
+            Pit Location:
+            <a href="{% url 'teams:team_list' %}?pit_location={{ object.pit_location.id }}">
+                {{ object.pit_location }}
+            </a>
+        </p>
         <form class="block" method="get">
             {{ filter.form | crispy }}
             <input class="button is-primary" type="submit" value="Filter">
