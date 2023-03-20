@@ -37,7 +37,7 @@ class SearchResult(TypedDict):
     url: str
 
 
-class SearchView(SingleTableMixin, TemplateView):
+class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
     
     template_name = "search.html"
     table_class = SearchTable
