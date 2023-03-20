@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from tickets.views import RedirectToDefaultTicketQueue
+from .views import RedirectToDefaultTicketQueue, SearchView
 
 urlpatterns = [
     path("", RedirectToDefaultTicketQueue.as_view(), name="home"),
+    path("search/", SearchView.as_view(), name="search"),
     path("admin/", admin.site.urls),
     path('auth/', include('allauth.urls')),
     path("accounts/", include("accounts.urls", namespace="accounts")),

@@ -1,8 +1,9 @@
 from django.urls import path
 
+from helpdesk.views import RedirectToDefaultTicketQueue
+
 from .views import (
     AssignedTicketListView,
-    RedirectToDefaultTicketQueue,
     TicketAssignToCurrentUserFormView,
     TicketCreateView,
     TicketDetailView,

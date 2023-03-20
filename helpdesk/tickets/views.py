@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, RedirectView, UpdateView
+from django.views.generic import DetailView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, FormMixin, ProcessFormView
 from django_filters.views import FilterView
@@ -24,21 +24,6 @@ from .tables import TicketTable
 if TYPE_CHECKING:
     from django import forms
     from django.db.models import QuerySet
-
-
-class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
-    def get_redirect_url(self, *arg: Any, **kwargs: Any) -> str | None:
-        assert self.request.user.is_authenticated
-        if not (ticket_queue := self.request.user.default_ticket_queue):
-            ticket_queue = TicketQueue.objects.first()
-
-        # ticket_queue can be None if no queues exist.
-        if ticket_queue:
-            return reverse_lazy(
-                "tickets:queue_detail", kwargs={"slug": ticket_queue.slug},
-            )
-        else:
-            return reverse_lazy("tickets:ticket_assigned_list")
 
 
 class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
