@@ -1,0 +1,13 @@
+{% extends "layouts/base_app.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}Update Profile{% endblock %}
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<form class="block" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="button is-primary" type="submit" value="Update">
+</form>
+{% endblock %}

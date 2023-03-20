@@ -1,12 +1,14 @@
 from django.urls import path
 
+from helpdesk.views import RedirectToDefaultTicketQueue
+
 from .views import (
     AssignedTicketListView,
-    RedirectToDefaultTicketQueue,
     TicketAssignToCurrentUserFormView,
     TicketCreateView,
     TicketDetailView,
     TicketEscalateFormView,
+    TicketListView,
     TicketQueueDetailView,
     TicketResolveFormView,
     TicketSubmitCommentFormView,
@@ -21,6 +23,7 @@ urlpatterns = [
         "assigned-to-me", AssignedTicketListView.as_view(), name="ticket_assigned_list",
     ),
     path("new", TicketCreateView.as_view(), name="ticket_create"),
+    path("all", TicketListView.as_view(), name="ticket_all"),
     path("<slug:slug>", TicketQueueDetailView.as_view(), name="queue_detail"),
     path("ticket/<int:pk>", TicketDetailView.as_view(), name="ticket_detail"),
     path("ticket/<int:pk>/edit", TicketUpdateView.as_view(), name="ticket_edit"),

@@ -7,8 +7,8 @@ from django.core.exceptions import ImproperlyConfigured
 from pkg_resources import parse_version
 
 if sentry_dsn := os.environ.get("SENTRY_DSN"):
-    import sentry_sdk  # type: ignore[import]
-    from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore[import]
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
         dsn=sentry_dsn,

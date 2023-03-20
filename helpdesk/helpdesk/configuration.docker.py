@@ -4,6 +4,7 @@ import dj_database_url
 
 ALLOWED_HOSTS = ["*"]
 
+BASE_PATH = "helpdesk/"
 
 DATABASE = dj_database_url.config(
     conn_max_age=600,

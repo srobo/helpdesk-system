@@ -31,4 +31,4 @@ class Team(models.Model):
         return f"{self.tla} - {self.name}"
 
     def get_absolute_url(self) -> str:
-        return reverse_lazy('teams:team_detail', kwargs={'tla': self.tla})
+        return reverse_lazy('teams:team_detail', args=[self.tla])
