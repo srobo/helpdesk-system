@@ -21,3 +21,4 @@ EMAIL = {
 
 SYSTEM_TITLE = "SR2023 Helpdesk"
 VOLUNTEER_SIGNUP_CODE = os.environ.get("VOLUNTEER_SIGNUP_CODE")
+BASE_PATH="/helpdesk/"
