@@ -5,28 +5,20 @@
 {% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
-{% block page_buttons %}
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-    New Ticket
-</a>
-{% endblock %}
-
 {% block content %}
+{% include "inc/nav/team-tabs.html" with active="tickets" team=object %}
 <div class="container columns">
+    <div class="column">
+        {% render_table table %}
+    </div>
     <div class="column is-one-fifth">
-        <p>
-            Pit Location:
-            <a href="{% url 'teams:team_list' %}?pit_location={{ object.pit_location.id }}">
-                {{ object.pit_location }}
-            </a>
-        </p>
+        <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
+            New Ticket
+        </a>
         <form class="block" method="get">
             {{ filter.form | crispy }}
             <input class="button is-primary" type="submit" value="Filter">
         </form>
-    </div>
-    <div class="column">
-        {% render_table table %}
     </div>
 </div>
 {% endblock %}

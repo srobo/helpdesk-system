@@ -1,0 +1,18 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
+{% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
+
+{% block content %}
+{% include "inc/nav/team-tabs.html" with active="about" team=object %}
+<div class="container">
+    <div class="box">
+        <p><strong>Team Name:</strong> {{object.name}}</p>
+        <p><strong>TLA:</strong> {{object.tla}}</p>
+        <p><strong>Rookie:</strong> {{object.is_rookie}}</p>
+        <p><strong>Pit Location:</strong> {{object.pit_location}}</p>
+    </div>
+</div>
+{% endblock %}

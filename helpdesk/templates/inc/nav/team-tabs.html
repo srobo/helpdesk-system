@@ -1,0 +1,28 @@
+<div class="tabs is-centered">
+    <ul>
+        <li {% if active == "about" %}class="is-active"{% endif %}>
+            <a href="{% url 'teams:team_detail_about' team.tla %}">
+                <span class="icon is-small"><i class="fas fa-circle-info" aria-hidden="true"></i></span>
+                <span>About</span>
+            </a>
+        </li>
+        <li {% if active == "tickets" %}class="is-active"{% endif %}>
+            <a href="{% url 'teams:team_detail_tickets' team.tla %}">
+                <span class="icon is-small"><i class="fas fa-ticket" aria-hidden="true"></i></span>
+                <span>Tickets</span>
+            </a>
+        </li>
+        <li {% if active == "comments" %}class="is-active"{% endif %}></li>
+            <a href="#">
+                <span class="icon is-small"><i class="fas fa-comment" aria-hidden="true"></i></span>
+                <span>Comments</span>
+            </a>
+        </li>
+        <li {% if active == "timeline" %}class="is-active"{% endif %}></li>
+            <a href="{% url 'teams:team_detail_timeline' team.tla %}">
+                <span class="icon is-small"><i class="fas fa-timeline" aria-hidden="true"></i></span>
+                <span>Timeline</span>
+            </a>
+        </li>
+    </ul>
+</div>

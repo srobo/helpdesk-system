@@ -1,0 +1,24 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
+{% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
+
+{% block content %}
+{% include "inc/nav/team-tabs.html" with active="timeline" team=object %}
+<div class="container">
+    {% for entry in entries %}
+        <article class="message {{entry.entry_style_info}}">
+            <div class="message-header">
+                <p>{{entry.entry_type}} {{ entry.entry_timestamp }}</p>
+            </div>
+            {% if entry.entry_content %}
+                <div class="message-body">
+                    {{entry.entry_content|linebreaks}}
+                </div>
+            {% endif %}
+        </article>
+    {% endfor %}
+</div>
+{% endblock %}
