@@ -1,4 +1,4 @@
-{% extends "layouts/base_hero_wide.html" %}
+{% extends "layouts/base_hero.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}Sign Up{% endblock %}
@@ -9,6 +9,7 @@
   </figure>
   <h2 class="title has-text-centered">Sign Up</h2>
   <p class="has-text-centered">This system is for volunteer use only.</p>
+  {% include "inc/parts/messages.html" %}
   <form method="post" style="margin: 1em 0;">
     {% csrf_token %}
     {{ form | crispy }}
