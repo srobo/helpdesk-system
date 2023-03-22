@@ -9,6 +9,8 @@ class User(AbstractUser):
     # Helpdesk Specific Fields
     default_ticket_queue = models.ForeignKey(
         "tickets.TicketQueue",
+        help_text="If no queue is selected, the Teams list will be used as the default",
+        blank=True,
         null=True,
         on_delete=models.PROTECT,
         related_query_name=None,
