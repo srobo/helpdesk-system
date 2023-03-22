@@ -19,9 +19,10 @@ class ProfileMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
+        profile_complete = getattr(request.user, "first_name", None) and getattr(request.user, "last_name", None)
         if all([
             request.user.is_authenticated,
-            not getattr(request.user, "default_ticket_queue", None),
+            not profile_complete,
             self._request_requires_profile(request),
         ]):
             messages.info(request, 'Welcome! Please set up your profile to continue')
