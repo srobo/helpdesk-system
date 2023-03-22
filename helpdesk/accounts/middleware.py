@@ -19,7 +19,7 @@ class ProfileMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
-        profile_complete = getattr(request.user, "first_name", None) and getattr(request.user, "last_name", None)
+        profile_complete = getattr(request.user, "first_name", None)
         if all([
             request.user.is_authenticated,
             not profile_complete,
