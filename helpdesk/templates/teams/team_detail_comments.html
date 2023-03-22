@@ -1,0 +1,31 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
+{% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
+
+{% block content %}
+{% include "inc/nav/team-tabs.html" with active="comments" team=object %}
+{% for comment in object.comments.all %}
+    <article class="message">
+        <div class="message-header">
+            <p>{{ comment.created_at }} - {{ comment.author }}</p>
+        </div>
+        <div class="message-body">
+            {{comment.content|linebreaks}}
+        </div>
+    </article>
+{% endfor %}
+<article class="message is-info">
+    <div class="message-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <div class="control">
+              <button class="button is-info" type="submit" formaction="{% url 'teams:team_detail_comments_post' object.tla %}">Comment</button>
+            </div>
+        </form>
+    </div>
+</article>
+{% endblock %}

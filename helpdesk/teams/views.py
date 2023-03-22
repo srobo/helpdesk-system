@@ -4,10 +4,15 @@ from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import CharField, F, QuerySet, Value
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, RedirectView
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
+from helpdesk.forms import CommentSubmitForm
 from tickets.filters import TeamTicketFilter
 from tickets.models import Ticket, TicketComment, TicketResolution
 from tickets.tables import TicketTable
@@ -32,6 +37,41 @@ class TeamDetailAboutView(LoginRequiredMixin, DetailView):
     model = Team
     slug_field = "tla"
     template_name_suffix = "_detail_about"
+
+class TeamDetailCommentsView(LoginRequiredMixin, DetailView):
+
+    model = Team
+    slug_field = "tla"
+    template_name_suffix = "_detail_comments"
+
+    def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
+        return super().get_context_data(
+            comment_form=CommentSubmitForm(),
+            **kwargs,
+        )
+    
+class TeamSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
+
+    http_method_names = ['post', 'put']
+    model = Team
+    slug_field = "tla"
+    form_class = CommentSubmitForm
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('teams:team_detail_comments', kwargs={"slug": self.get_object().tla})
+
+    def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        team = self.get_object()
+        team.comments.create(
+            content=form.cleaned_data['comment'],
+            author=self.request.user,
+        )
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
+
+    def form_invalid(self, form: CommentSubmitForm) -> HttpResponse:
+        return HttpResponse("Please fill out the form correctly.")
+
 
 class TeamDetailTicketsView(LoginRequiredMixin, SingleTableMixin, DetailView):
     model = Team

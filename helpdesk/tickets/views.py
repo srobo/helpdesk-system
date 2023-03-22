@@ -13,11 +13,11 @@ from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from accounts.models import User
+from helpdesk.forms import CommentSubmitForm
 from helpdesk.utils import get_object_or_none
 from teams.models import Team
 
 from .filters import AssignedQueueTicketFilter, QueueTicketFilter, TicketFilter
-from .forms import TicketCommentSubmitForm
 from .models import Ticket, TicketQueue, TicketResolution
 from .tables import TicketTable
 
@@ -92,7 +92,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
         return super().get_context_data(
-            comment_form=TicketCommentSubmitForm(),
+            comment_form=CommentSubmitForm(),
             **kwargs,
         )
 
@@ -172,12 +172,12 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
 
     http_method_names = ['post', 'put']
     model = Ticket
-    form_class = TicketCommentSubmitForm
+    form_class = CommentSubmitForm
 
     def get_success_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
 
-    def form_valid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+    def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated
         ticket = self.get_object()
         ticket.comments.create(
@@ -186,13 +186,13 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
         )
         return HttpResponseRedirect(redirect_to=self.get_success_url())
 
-    def form_invalid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+    def form_invalid(self, form: CommentSubmitForm) -> HttpResponse:
         return HttpResponse("Please fill out the form correctly.")
 
 
 class TicketResolveFormView(TicketSubmitCommentFormView):
 
-    def form_valid(self, form: TicketCommentSubmitForm) -> HttpResponse:
+    def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated
         ticket = self.get_object()
         TicketResolution.objects.create(
