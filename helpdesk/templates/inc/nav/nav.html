@@ -30,6 +30,7 @@
     
       <div class="navbar-end">
           {% if user.is_authenticated %}
+            {% include "inc/parts/search_bar.html" %}
             <a class="navbar-item" href="{% url 'tickets:ticket_create' %}">
               New Ticket
             </a>

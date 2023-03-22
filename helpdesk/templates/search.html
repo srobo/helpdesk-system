@@ -6,5 +6,11 @@
 {% block title %}Search: {{ q }}{% endblock %}
 
 {% block content %}
+<form class="control has-icons-right is-fullwidth" action="{% url 'search' %}">
+    <input class="input" type="search" name="q" placeholder="Search..." value="{{q}}">
+    <span class="icon is-small is-right">
+        <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+    </span>
+</form>
 {% render_table table %}
 {% endblock %}
