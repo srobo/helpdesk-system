@@ -3,8 +3,9 @@ from __future__ import annotations
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import CreateView, UpdateView
 
+from .forms import SignupForm
 from .models import User
 
 
@@ -19,3 +20,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy("accounts:profile_update")
+
+
+class SignupView(CreateView):
+    form_class = SignupForm
+    success_url = reverse_lazy('account_login')
+    template_name = 'accounts/signup.html'
