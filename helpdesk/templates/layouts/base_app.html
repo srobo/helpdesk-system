@@ -12,14 +12,7 @@
           {% block page_buttons %}{% endblock %}
         </div>
       </div>
-      {% if messages %}
-          {% for message in messages %}
-          <div {% if message.tags %} class="notification {{ message.tags }}"{% else %} class="notification"{% endif %}>
-            <button class="delete"></button>
-            {{ message }}
-          </div>
-          {% endfor %}
-      {% endif %}
+      {% include "inc/parts/messages.html" %}
       {% block content %}
       {% endblock %}
     </div>
