@@ -1,0 +1,21 @@
+{% extends "layouts/base_hero.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+  <figure class="image is-128x128 inline-block" style="margin: 0 auto 2em auto;">
+    <img src="https://srobo.github.io/style/assets/logo.svg" width="50%" />
+  </figure>
+  <h2 class="title has-text-centered">{{ SYSTEM_TITLE }}</h2>
+  {% include "inc/parts/messages.html" %}
+  <p class="has-text-centered block">This signup page is closed.</p>
+  <div class="control block">
+    <a class="button is-warning is-fullwidth" type="submit" href="{% url 'accounts:signup' %}">Go to Sign Up</a>
+  </div>
+  <div class="control block" style="margin-top: 1em;">
+    <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
+  </div>
+{% endblock %}

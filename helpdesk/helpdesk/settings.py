@@ -236,6 +236,7 @@ DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
 
 # Django AllAuth
 
+ACCOUNT_ADAPTER = 'helpdesk.account_adapter.AccountAdapter'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
