@@ -30,5 +30,9 @@ class ProfileMiddleware:
 
     def _request_requires_profile(self, request: HttpRequest) -> bool:
         path_info = resolve(request.path_info)
+
+        if path_info.app_name == "admin":
+            return False
+
         path = (path_info.app_name or None, path_info.url_name)
         return path not in self.EXCLUDED_PATHS
