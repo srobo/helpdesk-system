@@ -248,3 +248,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     },
 }
+
+# Application
+
+VOLUNTEER_SIGNUP_CODE = getattr(configuration, "VOLUNTEER_SIGNUP_CODE")

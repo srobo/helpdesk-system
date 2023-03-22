@@ -17,3 +17,5 @@ DEBUG = True
 EMAIL = {
     "BACKEND": "django.core.mail.backends.console.EmailBackend",
 }
+
+VOLUNTEER_SIGNUP_CODE = "testing"
