@@ -13,7 +13,7 @@ from tickets.models import Ticket, TicketComment, TicketResolution
 from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
-from .models import Team
+from .models import Team, TeamComment
 from .tables import TeamTable
 
 
@@ -94,7 +94,16 @@ class TeamDetailTimelineView(LoginRequiredMixin, DetailView):
             entry_content=F("comment"),
             entry_style_info=Value('is-success', output_field=CharField()),
         ).values(*fields)
-        return comments.union(resolutions, tickets).order_by("-entry_timestamp")
+
+        team_comments = TeamComment.objects.filter(team=self.object).order_by().annotate(
+            entry_type=Value('Team Comment', output_field=CharField()),
+            entry_timestamp=F("created_at"),
+            entry_user=F("author"),
+            entry_content=F("content"),
+            entry_style_info=Value('', output_field=CharField()),
+        ).values(*fields)
+
+        return comments.union(resolutions, tickets, team_comments).order_by("-entry_timestamp")
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         return super().get_context_data(entries=self.get_entries(), **kwargs)
