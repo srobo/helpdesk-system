@@ -32,3 +32,27 @@ class Team(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse_lazy('teams:team_detail', args=[self.tla])
+
+
+class TeamComment(models.Model):
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        related_query_name="comments",
+    )
+    content = models.TextField()
+    author = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        related_name="team_comments",
+        related_query_name="team_comments",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self) -> str:
+        return f"Comment on {self.team.name} at {self.created_at} by {self.author}"
