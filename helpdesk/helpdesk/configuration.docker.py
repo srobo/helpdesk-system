@@ -21,3 +21,4 @@ EMAIL = {
 
 SYSTEM_TITLE = "SR2023 Helpdesk"
 VOLUNTEER_SIGNUP_CODE = os.environ.get("VOLUNTEER_SIGNUP_CODE")
+SRCOMP_HTTP_BASE_URL = "https://srcomp.studentrobotics.org/comp-api"
