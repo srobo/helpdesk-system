@@ -19,6 +19,7 @@ from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
 from .models import Team, TeamComment
+from .srcomp import srcomp
 from .tables import TeamTable
 
 
@@ -37,6 +38,10 @@ class TeamDetailAboutView(LoginRequiredMixin, DetailView):
     model = Team
     slug_field = "tla"
     template_name_suffix = "_detail_about"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        score_info = srcomp.get_score_info_for_team(self.object.tla)
+        return super().get_context_data(score_info=score_info, **kwargs)
 
 class TeamDetailCommentsView(LoginRequiredMixin, DetailView):
 

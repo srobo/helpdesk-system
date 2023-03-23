@@ -1,3 +1,4 @@
+cachetools
 crispy-bulma
 django>=3.2.18,<3.3  # LTS
 django-allauth

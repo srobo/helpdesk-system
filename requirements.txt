@@ -6,6 +6,8 @@
 #
 asgiref==3.6.0
     # via django
+cachetools==5.3.0
+    # via -r requirements.in
 certifi==2022.12.7
     # via
     #   requests

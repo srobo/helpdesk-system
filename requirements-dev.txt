@@ -12,6 +12,8 @@ attrs==22.2.0
     # via pytest
 build==0.10.0
     # via pip-tools
+cachetools==5.3.0
+    # via -r requirements.txt
 certifi==2022.12.7
     # via
     #   -r requirements.txt
@@ -176,6 +178,8 @@ tomli==2.0.1
     #   mypy
     #   pyproject-hooks
     #   pytest
+types-cachetools==5.3.0.4
+    # via -r requirements-dev.in
 types-dj-database-url==1.2.0.1
     # via -r requirements-dev.in
 types-docutils==0.19.1.2

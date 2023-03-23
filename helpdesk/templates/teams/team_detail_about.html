@@ -14,5 +14,13 @@
         <p><strong>Rookie:</strong> {{object.is_rookie}}</p>
         <p><strong>Pit Location:</strong> {{object.pit_location}}</p>
     </div>
+
+    {% if score_info %}
+    <div class="box">
+        <p><strong>League Position:</strong> {{score_info.league_pos}}</p>
+        <p><strong>League Points:</strong> {{score_info.league_score}}</p>
+        <p><strong>Game Points:</strong> {{score_info.game_score}}</p>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

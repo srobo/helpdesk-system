@@ -252,4 +252,5 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Application
 
+SRCOMP_HTTP_BASE_URL = getattr(configuration, "SRCOMP_HTTP_BASE_URL", None)
 VOLUNTEER_SIGNUP_CODE = getattr(configuration, "VOLUNTEER_SIGNUP_CODE")

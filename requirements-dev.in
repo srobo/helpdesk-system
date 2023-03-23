@@ -10,6 +10,7 @@ pytest-django
 mypy
 django-stubs[compatible-mypy]
 django-filter-stubs
+types-cachetools
 types-dj-database-url
 types-setuptools
 
