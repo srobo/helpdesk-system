@@ -1,5 +1,6 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from django.http import HttpRequest
+from django.urls import reverse
 
 
 class AccountAdapter(DefaultAccountAdapter):
@@ -13,4 +14,7 @@ class AccountAdapter(DefaultAccountAdapter):
 
         (Comment reproduced from the overridden method.)
         """
-        return False
+        if request.path.rstrip("/") == reverse("account_signup").rstrip("/"):
+            return False
+        return True
+
