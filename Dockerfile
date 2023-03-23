@@ -24,4 +24,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "helpdesk.asgi:application"]
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--lifespan", "off", "helpdesk.asgi:application"]
