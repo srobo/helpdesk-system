@@ -5,6 +5,12 @@
 {% block page_title %}{{object.tla}}: {{ object.name }}{% endblock %}
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
+{% block page_buttons %}
+<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
+    New Ticket for {{ object.tla }}
+</a>
+{% endblock %}
+
 {% block content %}
 {% include "inc/nav/team-tabs.html" with active="comments" team=object %}
 {% for comment in object.comments.all %}
