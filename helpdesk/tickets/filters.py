@@ -7,24 +7,23 @@ import django_filters
 from accounts.models import User
 from teams.models import Team
 
-from .models import Ticket, TicketQueue
+from .models import Ticket, TicketQueue, TicketStatus
 
 
 class BaseTicketFilter(django_filters.FilterSet):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        initial_resolution = kwargs.pop("initial_resolution", False)
-        super().__init__(*args, **kwargs)
-        if initial_resolution is not None:
-            self.form.initial["resolved"] = initial_resolution
+         initial_status = kwargs.pop("initial_status", None)
+         super().__init__(*args, **kwargs)
+         if initial_status is not None:
+             self.form.initial["status"] = initial_status
 
-    resolved = django_filters.BooleanFilter(
-        "resolution", "isnull", exclude=True, label="Resolved",
-    )
+    status = django_filters.ChoiceFilter(label="Status", choices=TicketStatus.choices)
 
     class Meta:
         model = Ticket
         fields: list[str] = []
+
 
 class AssignedQueueTicketFilter(BaseTicketFilter):
     """Ticket filter for My Tickets page."""

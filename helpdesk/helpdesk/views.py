@@ -45,7 +45,7 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
 
     def _get_filters(self, q: str) -> dict[type[Ticket] | type[Team], Q]:
         return {
-            Ticket: Q(title__icontains=q, comments__content__icontains=q),
+            Ticket: Q(title__icontains=q) | Q(events__comment__icontains=q),
             Team: Q(tla__icontains=q) | Q(name__icontains=q),
         }
     
