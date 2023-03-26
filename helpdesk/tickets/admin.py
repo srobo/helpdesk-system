@@ -1,48 +1,24 @@
-from collections.abc import Generator
-from typing import Any
-
 from django.contrib import admin
 
-from .models import Ticket, TicketComment, TicketQueue, TicketResolution
+from .models import Ticket, TicketEvent, TicketQueue
 
 
 class TicketQueueAdmin(admin.ModelAdmin):
     list_display = ("name", "slug", "display_priority")
 
 
-class TicketCommentAdmin(admin.StackedInline):
-    model = TicketComment
+class TicketEventAdmin(admin.StackedInline):
+    model = TicketEvent
     extra = 1
 
     readonly_fields = ('created_at', )
 
 
-class TicketResolutionAdmin(admin.StackedInline):
-    model = TicketResolution
-
-    readonly_fields = ('resolved_at', )
-
-
-class ResolvedFilter(admin.EmptyFieldListFilter):
-
-    def choices(self, changelist: Any) -> Generator[dict[str, Any], None, None]:
-        for lookup, title in (
-            (None, 'All'),
-            ('1', 'Unresolved'),
-            ('0', 'Resolved'),
-        ):
-            yield {
-                'selected': self.lookup_val == lookup,
-                'query_string': changelist.get_query_string({self.lookup_kwarg: lookup}),
-                'display': title,
-            }
-
-
 class TicketAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "team", "queue")
-    list_filter = ("queue", ("resolution", ResolvedFilter), "team")
+    list_filter = ("queue", "team")
 
-    inlines = (TicketResolutionAdmin, TicketCommentAdmin)
+    inlines = (TicketEventAdmin, )
 
     can_delete = False
 

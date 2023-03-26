@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("title", models.CharField(max_length=120)),
-                ("description", models.TextField()),
+                ("description", models.TextField(default="")),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
@@ -47,6 +47,7 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.PROTECT,
                         related_name="opened_tickets",
                         related_query_name="opened_tickets",
+                        default=1,
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),

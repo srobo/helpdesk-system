@@ -18,7 +18,8 @@ from helpdesk.utils import get_object_or_none
 from teams.models import Team
 
 from .filters import AssignedQueueTicketFilter, QueueTicketFilter, TicketFilter
-from .models import Ticket, TicketQueue, TicketResolution
+from .forms import TicketCreationForm
+from .models import Ticket, TicketQueue, TicketStatus
 from .tables import TicketTable
 
 if TYPE_CHECKING:
@@ -31,11 +32,7 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
     table_class = TicketTable
 
     def get_ticket_queryset(self) -> QuerySet[Ticket]:
-        queryset = self.get_object().tickets.all()
-        # Hack: if resolved is not in a query parameter, filter out resolved
-        # tickets as a default value.
-        if "resolved" not in self.request.GET:
-            queryset = queryset.filter(resolution__isnull=True)
+        queryset = self.get_object().tickets.with_status()
         return queryset
     
     def get_ticket_filter(self) -> QueueTicketFilter:
@@ -65,14 +62,8 @@ class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
 
     def get_queryset(self) -> QuerySet[Ticket]:
         assert self.request.user.is_authenticated
-        queryset = self.request.user.tickets.all()
-
-        # Hack: if resolved is not in a query parameter, filter out resolved
-        # tickets as a default value.
-        if "resolved" not in self.request.GET:
-            queryset = queryset.filter(resolution__isnull=True)
-
-        return queryset
+        queryset = self.request.user.tickets.with_status()
+        return queryset.all()
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -84,11 +75,14 @@ class TicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = TicketFilter
     table_class = TicketTable
     template_name = "tickets/tickets_all.html"
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects.with_status().all()
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
+
+    def get_queryset(self) -> QuerySet[Ticket]:
+        return Ticket.objects.with_status().all()
 
     def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
         return super().get_context_data(
@@ -99,7 +93,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
 
 class TicketCreateView(LoginRequiredMixin, CreateView):
     model = Ticket
-    fields = ('title', 'assignee', 'queue', 'team', 'description')
+    form_class = TicketCreationForm
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """The same template is used for updating tickets."""
@@ -113,13 +107,18 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         }
 
     def form_valid(self, form: forms.Form) -> HttpResponse:
-        form.instance.opened_by = self.request.user  # type: ignore[attr-defined]
-        return super().form_valid(form)
-
+        resp =  super().form_valid(form)
+        ticket = form.instance # type: ignore[attr-defined]
+        ticket.events.create(
+            new_status=TicketStatus.OPEN,
+            user=self.request.user,
+            comment=form.cleaned_data["description"],
+        )
+        return resp
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
     model = Ticket
-    fields = ('title', 'assignee', 'queue', 'team', 'description')
+    fields = ('title', 'assignee', 'queue', 'team')
 
 class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
 
@@ -137,9 +136,9 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
             ticket.assignee = None
             ticket.queue = ticket.queue.escalation_queue
             ticket.save()
-            ticket.comments.create(
-                content=f"Escalated to {ticket.queue}",
-                author=self.request.user,
+            ticket.events.create(  # TODO: Maybe use an event for escalation?
+                comment=f"Escalated to {ticket.queue}",
+                user=self.request.user,
             )
             return HttpResponseRedirect(redirect_to=self.get_success_url())
         else:
@@ -173,6 +172,7 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
     http_method_names = ['post', 'put']
     model = Ticket
     form_class = CommentSubmitForm
+    new_status = ""
 
     def get_success_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
@@ -180,9 +180,10 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
     def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated
         ticket = self.get_object()
-        ticket.comments.create(
-            content=form.cleaned_data['comment'],
-            author=self.request.user,
+        ticket.events.create(
+            new_status=self.new_status,
+            comment=form.cleaned_data['comment'],
+            user=self.request.user,
         )
         return HttpResponseRedirect(redirect_to=self.get_success_url())
 
@@ -192,12 +193,9 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
 
 class TicketResolveFormView(TicketSubmitCommentFormView):
 
-    def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
-        assert self.request.user.is_authenticated
-        ticket = self.get_object()
-        TicketResolution.objects.create(
-            ticket=ticket,
-            user=self.request.user,
-            comment=form.cleaned_data['comment'],
-        )
-        return HttpResponseRedirect(redirect_to=self.get_success_url())
+    new_status = TicketStatus.RESOLVED
+
+
+class TicketReOpenFormView(TicketSubmitCommentFormView):
+
+    new_status = TicketStatus.OPEN

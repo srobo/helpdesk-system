@@ -10,6 +10,7 @@ from .views import (
     TicketEscalateFormView,
     TicketListView,
     TicketQueueDetailView,
+    TicketReOpenFormView,
     TicketResolveFormView,
     TicketSubmitCommentFormView,
     TicketUpdateView,
@@ -28,6 +29,7 @@ urlpatterns = [
     path("ticket/<int:pk>", TicketDetailView.as_view(), name="ticket_detail"),
     path("ticket/<int:pk>/edit", TicketUpdateView.as_view(), name="ticket_edit"),
     path("ticket/<int:pk>/comment", TicketSubmitCommentFormView.as_view(), name="ticket_comment"),
+    path("ticket/<int:pk>/reopen", TicketReOpenFormView.as_view(), name="ticket_reopen"),
     path("ticket/<int:pk>/resolve", TicketResolveFormView.as_view(), name="ticket_resolve"),
     path("ticket/<int:pk>/escalate", TicketEscalateFormView.as_view(), name="ticket_escalate"),
     path(
