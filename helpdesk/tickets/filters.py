@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 import django_filters
 
 from accounts.models import User
@@ -9,6 +11,12 @@ from .models import Ticket, TicketQueue, TicketStatus
 
 
 class BaseTicketFilter(django_filters.FilterSet):
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+         initial_status = kwargs.pop("initial_status", None)
+         super().__init__(*args, **kwargs)
+         if initial_status is not None:
+             self.form.initial["status"] = initial_status
 
     status = django_filters.ChoiceFilter(label="Status", choices=TicketStatus.choices)
 
