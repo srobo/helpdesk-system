@@ -5,16 +5,15 @@
 {% block page_title %}Teams{% endblock %}
 {% block title %}Teams{% endblock %}
 
+{% block page_buttons %}
+<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+{% endblock %}
+
 {% block content %}
 <div class="container columns">
-    <div class="column is-one-fifth">
-        <form class="block" method="get">
-            {{ filter.form | crispy }}
-            <input class="button is-primary" type="submit" value="Filter">
-        </form>
-    </div>
     <div class="column">
         {% render_table table %}
     </div>
 </div>
+{% include "inc/modals/filter.html" %}
 {% endblock %}
