@@ -17,6 +17,7 @@ class User(AbstractUser):
         related_name=None,
         verbose_name="Default Ticket Queue",
     )
+    onboarded_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.get_full_name() or self.get_short_name() or self.get_username()
