@@ -22,7 +22,7 @@ class TicketQueue(models.Model):
         ordering = ["-display_priority", "name"]
 
     def __str__(self) -> str:
-        return f"Ticket Queue: {self.name}"
+        return self.name
 
 
 class TicketManager(models.Manager):
