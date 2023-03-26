@@ -11,7 +11,7 @@
     </div>
     
     <div class="navbar-menu" id="navMenu">
-      {% if user.is_authenticated %}
+      {% if user.is_authenticated and user.onboarded_at %}
         <div class="navbar-start">
           <a class="navbar-item" href="{% url 'tickets:ticket_assigned_list' %}">
             My Tickets
@@ -29,14 +29,17 @@
       {% endif %}
     
       <div class="navbar-end">
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and user.onboarded_at %}
             {% include "inc/parts/search_bar.html" %}
             <a class="navbar-item" href="{% url 'tickets:ticket_create' %}">
               New Ticket
             </a>
+          {% endif %}
+
+          {% if user.is_authenticated %}
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
-                {{ user.get_full_name }}
+                {{ user.get_full_name|default:"Welcome!" }}
               </a>
           
               <div class="navbar-dropdown is-right">
@@ -45,8 +48,10 @@
                   Admin
                 </a>
                 {% endif %}
+                {% if user.onboarded_at %}
                 <a class="navbar-item" href="{% url 'accounts:profile_update' %}">My Profile</a>
                 <a class="navbar-item" href="{% url 'account_set_password' %}">Change Password</a>
+                {% endif %}
                 <hr class="navbar-divider">
                 <a class="navbar-item" href="{% url 'account_logout' %}">
                     Log out
