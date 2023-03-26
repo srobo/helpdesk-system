@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ticket, TicketEvent, TicketQueue
+from .models import Ticket, TicketEvent, TicketEventAssigneeChange, TicketQueue
 
 
 class TicketQueueAdmin(admin.ModelAdmin):
@@ -13,7 +13,6 @@ class TicketEventAdmin(admin.StackedInline):
 
     readonly_fields = ('created_at', )
 
-
 class TicketAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "team", "queue")
     list_filter = ("queue", "team")
@@ -23,5 +22,10 @@ class TicketAdmin(admin.ModelAdmin):
     can_delete = False
 
 
+class TicketEventAssigneeChangeAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "user")
+
+
 admin.site.register(Ticket, TicketAdmin)
 admin.site.register(TicketQueue, TicketQueueAdmin)
+admin.site.register(TicketEventAssigneeChange, TicketEventAssigneeChangeAdmin)

@@ -48,14 +48,6 @@ class Ticket(models.Model):
         related_name="tickets",
         related_query_name="tickets",
     )
-    assignee = models.ForeignKey(
-        "accounts.User",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="tickets",
-        related_query_name="tickets",
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -103,6 +95,29 @@ class TicketStatus(models.TextChoices):
     RESOLVED = "RS", "Resolved"
 
 
+class TicketEventAssigneeChange(models.Model):
+    """
+    For a given ticket event, this model exists iff the assignee changed.
+    
+    We need a separate table for this so that we can differentiate
+    between changing of an assignee and removal.
+
+    One instance of this model exists per user.
+    """
+    user = models.OneToOneField(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self) -> str:
+        if self.user:
+            return f"Assignee changed to {self.user}"
+        else:
+            return "Unassigned"
+
+
 class TicketEvent(models.Model):
     ticket = models.ForeignKey(
         Ticket,
@@ -121,14 +136,24 @@ class TicketEvent(models.Model):
         choices=TicketStatus.choices,
         blank=True,
     )
+    assignee_change = models.ForeignKey(
+        TicketEventAssigneeChange,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=models.Q(~models.Q(new_status__exact="") | ~models.Q(comment__exact="")),
-                name="at_least_event_or_comment_set",
+                check=models.Q(
+                    ~models.Q(new_status__exact="") |
+                    ~models.Q(comment__exact="") |
+                    models.Q(assignee_change__isnull=False),
+                ),
+                name="valid_event",
             ),
         ]
 
@@ -137,5 +162,5 @@ class TicketEvent(models.Model):
 
     def clean(self) -> None:
         """Ensure that an event has at least a comment or status change."""
-        if not (self.new_status or self.comment):
+        if not (self.new_status or self.comment or self.assignee_change):
             raise ValidationError("Please provide at least a status update or comment.")
