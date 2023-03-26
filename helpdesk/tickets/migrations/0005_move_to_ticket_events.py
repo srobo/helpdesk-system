@@ -41,7 +41,7 @@ def create_events(apps: StateApps, schema_editor: BaseDatabaseSchemaEditor) -> N
             new_status="RS",
             user=resolution.user,
             comment=resolution.comment,
-            created_at=comment.created_at,
+            created_at=resolution.resolved_at,
         )
 
 
