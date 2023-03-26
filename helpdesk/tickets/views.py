@@ -12,7 +12,6 @@ from django.views.generic.edit import CreateView, FormMixin, ProcessFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-from accounts.models import User
 from helpdesk.forms import CommentSubmitForm
 from helpdesk.utils import get_object_or_none
 from teams.models import Team
@@ -109,7 +108,6 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
     
     def get_initial(self) -> dict[str, Any]:
         return {
-            "assignee": get_object_or_none(User, username=self.request.GET.get("assignee")),
             "team": get_object_or_none(Team, tla=self.request.GET.get("team")),
             "queue": get_object_or_none(TicketQueue, slug=self.request.GET.get("queue")),
         }

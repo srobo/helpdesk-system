@@ -6,9 +6,6 @@
 
 {% block page_buttons %}
 <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?assignee={{ user.username }}">
-  New Ticket
-</a>
 {% endblock %}
 
 {% block content %}
