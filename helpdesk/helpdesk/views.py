@@ -12,10 +12,10 @@ from django_tables2 import SingleTableMixin
 
 from helpdesk.tables import SearchTable
 from teams.models import Team
-from tickets.models import Ticket
+from tickets.models import Ticket, TicketQueue
 
 
-class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
+class DefaultHomeView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *arg: Any, **kwargs: Any) -> str | None:
         assert self.request.user.is_authenticated
 
@@ -26,6 +26,26 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
             )
         else:
             return reverse_lazy("teams:team_list")
+
+
+class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *arg: Any, **kwargs: Any) -> str | None:
+        assert self.request.user.is_authenticated
+
+        # Redirect the user to a default queue if they have one
+        if not (ticket_queue := self.request.user.default_ticket_queue):
+            try:
+                ticket_queue = TicketQueue.objects.order_by("-display_priority").first()
+            except TicketQueue.DoesNotExist:
+                ticket_queue = None
+
+        # If no queues exist, redirect to teams list.
+        if not ticket_queue:
+            return reverse_lazy("teams:team_list")
+
+        return reverse_lazy(
+            "tickets:queue_detail", kwargs={"slug": ticket_queue.slug},
+        )
 
 
 class SearchResult(TypedDict):

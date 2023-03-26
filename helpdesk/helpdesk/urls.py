@@ -17,10 +17,10 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import RedirectToDefaultTicketQueue, SearchView
+from .views import DefaultHomeView, SearchView
 
 urlpatterns = [
-    path(f"{settings.BASE_PATH}", RedirectToDefaultTicketQueue.as_view(), name="home"),
+    path(f"{settings.BASE_PATH}", DefaultHomeView.as_view(), name="home"),
     path(f"{settings.BASE_PATH}search/", SearchView.as_view(), name="search"),
     path(f"{settings.BASE_PATH}admin/", admin.site.urls),
     path(f'{settings.BASE_PATH}auth/', include('allauth.urls')),
