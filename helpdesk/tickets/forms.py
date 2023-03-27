@@ -2,12 +2,15 @@ from django import forms
 
 from accounts.models import User
 
-from .models import Ticket
+from .models import Ticket, TicketQueue
 
 
 class TicketCreationForm(forms.ModelForm):
 
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": "5"}))
+
+    # Exclude queues that are escalated.
+    queue = forms.ModelChoiceField(queryset=TicketQueue.objects.filter(escalates_to__isnull=True))
 
     class Meta:
         model = Ticket
