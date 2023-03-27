@@ -64,8 +64,13 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
         return self.request.GET.get("q", "")
 
     def _get_filters(self, q: str) -> dict[type[Ticket] | type[Team], Q]:
+        try:
+            ticket_id = int(q)
+        except ValueError:
+            ticket_id = None
+
         return {
-            Ticket: Q(title__icontains=q) | Q(events__comment__icontains=q),
+            Ticket: Q(title__icontains=q) | Q(events__comment__icontains=q) | Q(id=ticket_id),
             Team: Q(tla__icontains=q) | Q(name__icontains=q),
         }
     
@@ -73,7 +78,7 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
         filters = self._get_filters(q)
         return sum(
             [
-                model.objects.filter(q_filter).count()
+                model.objects.filter(q_filter).distinct().count()
                 for model, q_filter in filters.items()
             ],
         )
@@ -84,7 +89,7 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
         for team in Team.objects.filter(filters[Team]):
             yield SearchResult(result_type='team', title=team.name, url=team.get_absolute_url())
 
-        for ticket in Ticket.objects.filter(filters[Ticket]):
+        for ticket in Ticket.objects.filter(filters[Ticket]).distinct():
             yield SearchResult(result_type='ticket', title=ticket.title, url=ticket.get_absolute_url())
 
     def get_table_data(self) -> Generator[SearchResult, None, None]:

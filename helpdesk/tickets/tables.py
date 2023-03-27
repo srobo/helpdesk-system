@@ -14,7 +14,10 @@ class TicketTable(tables.Table):
         verbose_name="Team",
     )
     status = tables.Column()
-    assignee = tables.Column()
+    assignee_id = tables.TemplateColumn(
+        verbose_name="Assignee",
+        template_code="{{record.assignee|default:\"-\"}}",
+    )
     actions = tables.LinkColumn('tickets:ticket_detail', args=[tables.A('id')], text="View")
 
     class Meta:

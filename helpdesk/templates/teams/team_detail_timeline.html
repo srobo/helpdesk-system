@@ -14,6 +14,7 @@
 {% block content %}
 {% include "inc/nav/team-tabs.html" with active="timeline" team=object %}
 <div class="container">
+    <p class="block">This page is experimental, full details can be found on individual tickets.</p>
     {% for entry in entries %}
         <article class="message {{entry.entry_style_info}}">
             <div class="message-header">

@@ -13,7 +13,7 @@ from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
-from tickets.filters import TeamTicketFilter
+from tickets.filters import TicketFilter
 from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
 
@@ -85,12 +85,12 @@ class TeamDetailTicketsView(LoginRequiredMixin, SingleTableMixin, DetailView):
     template_name_suffix = "_detail_tickets"
 
     def get_ticket_queryset(self) -> QuerySet[Ticket]:
-        return self.get_object().tickets.with_status()
+        return self.get_object().tickets.with_event_fields()
     
-    def get_ticket_filter(self) -> TeamTicketFilter:
+    def get_ticket_filter(self) -> TicketFilter:
         queryset = self.get_ticket_queryset()
         
-        return TeamTicketFilter(
+        return TicketFilter(
             data=self.request.GET or None,
             request=self.request,
             queryset=queryset,

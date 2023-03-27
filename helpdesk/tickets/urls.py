@@ -4,7 +4,7 @@ from helpdesk.views import RedirectToDefaultTicketQueue
 
 from .views import (
     AssignedTicketListView,
-    TicketAssignToCurrentUserFormView,
+    TicketAssignToUserFormView,
     TicketCreateView,
     TicketDetailView,
     TicketEscalateFormView,
@@ -33,8 +33,8 @@ urlpatterns = [
     path("ticket/<int:pk>/resolve", TicketResolveFormView.as_view(), name="ticket_resolve"),
     path("ticket/<int:pk>/escalate", TicketEscalateFormView.as_view(), name="ticket_escalate"),
     path(
-        "ticket/<int:pk>/assign-to-me",
-        TicketAssignToCurrentUserFormView.as_view(),
-        name="ticket_assign_to_current_user",
+        "ticket/<int:pk>/assign",
+        TicketAssignToUserFormView.as_view(),
+        name="ticket_assign_to_user",
     ),
 ]

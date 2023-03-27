@@ -16,9 +16,9 @@ from helpdesk.forms import CommentSubmitForm
 from helpdesk.utils import get_object_or_none
 from teams.models import Team
 
-from .filters import AssignedQueueTicketFilter, QueueTicketFilter, TicketFilter
-from .forms import TicketCreationForm
-from .models import Ticket, TicketQueue, TicketStatus
+from .filters import TicketFilter
+from .forms import TicketAssignForm, TicketCreationForm
+from .models import Ticket, TicketEventAssigneeChange, TicketQueue, TicketStatus
 from .tables import TicketTable
 
 if TYPE_CHECKING:
@@ -31,17 +31,17 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
     table_class = TicketTable
 
     def get_ticket_queryset(self) -> QuerySet[Ticket]:
-        queryset = self.get_object().tickets.with_status()
+        queryset = self.get_object().tickets.with_event_fields()
         # Hack: if resolved is not in a query parameter, filter out resolved
         # tickets as a default value.
         if "status" not in self.request.GET:
             queryset = queryset.filter(status=TicketStatus.OPEN)
         return queryset
     
-    def get_ticket_filter(self) -> QueueTicketFilter:
+    def get_ticket_filter(self) -> TicketFilter:
         queryset = self.get_ticket_queryset()
         
-        return QueueTicketFilter(
+        return TicketFilter(
             data=self.request.GET or None,
             request=self.request,
             queryset=queryset,
@@ -60,12 +60,12 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
 
 
 class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
-    filterset_class = AssignedQueueTicketFilter
+    filterset_class = TicketFilter
     table_class = TicketTable
     template_name = "tickets/ticketqueue_assigned.html"
 
-    def get_ticket_queryset(self) -> QuerySet[Ticket]:
-        queryset = self.get_object().tickets.with_status()
+    def get_queryset(self) -> QuerySet[Ticket]:
+        queryset = Ticket.objects.with_event_fields().filter(assignee_id=self.request.user.id)
         # Hack: if resolved is not in a query parameter, filter out resolved
         # tickets as a default value.
         if "status" not in self.request.GET:
@@ -82,18 +82,19 @@ class TicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = TicketFilter
     table_class = TicketTable
     template_name = "tickets/tickets_all.html"
-    queryset = Ticket.objects.with_status().all()
+    queryset = Ticket.objects.with_event_fields().all()
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
 
     def get_queryset(self) -> QuerySet[Ticket]:
-        return Ticket.objects.with_status().all()
+        return Ticket.objects.with_event_fields().all()
 
     def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
         return super().get_context_data(
             comment_form=CommentSubmitForm(),
+            assign_form=TicketAssignForm(initial={"user": self.object.assignee}),
             **kwargs,
         )
 
@@ -124,7 +125,7 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
     model = Ticket
-    fields = ('title', 'assignee', 'queue', 'team')
+    fields = ('title', 'queue', 'team')
 
 class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
 
@@ -139,10 +140,10 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
         assert self.request.user.is_authenticated
         ticket: Ticket = self.get_object()
         if ticket.queue.escalation_queue:
-            ticket.assignee = None
             ticket.queue = ticket.queue.escalation_queue
             ticket.save()
             ticket.events.create(  # TODO: Maybe use an event for escalation?
+                assignee_change=TicketEventAssigneeChange.objects.get_or_create(user=None)[0],
                 comment=f"Escalated to {ticket.queue}",
                 user=self.request.user,
             )
@@ -153,11 +154,15 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
     def form_invalid(self, form: Form) -> HttpResponse:
         return HttpResponse("Please fill out the form correctly.")
 
-class TicketAssignToCurrentUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
+
+class TicketAssignToUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
 
     http_method_names = ['post', 'put']
     model = Ticket
-    form_class = Form
+    form_class = TicketAssignForm
+
+    def get_queryset(self) -> QuerySet[Ticket]:
+        return Ticket.objects.with_event_fields().all()
 
     def get_success_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
@@ -165,8 +170,16 @@ class TicketAssignToCurrentUserFormView(LoginRequiredMixin, FormMixin, SingleObj
     def form_valid(self, form: Form) -> HttpResponse:
         assert self.request.user.is_authenticated
         ticket: Ticket = self.get_object()
-        ticket.assignee = self.request.user
-        ticket.save(update_fields=["assignee"])
+        new_assignee = form.cleaned_data["user"]
+
+        if ticket.assignee != new_assignee:
+            # Only post a change if the user changed.
+            assignee_change, _ = TicketEventAssigneeChange.objects.get_or_create(user=new_assignee)
+            ticket.events.create(
+                assignee_change=assignee_change,
+                comment=form.cleaned_data.get("comment", None),
+                user=self.request.user,
+            )
         return HttpResponseRedirect(redirect_to=self.get_success_url())
 
     def form_invalid(self, form: Form) -> HttpResponse:

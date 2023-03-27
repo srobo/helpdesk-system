@@ -4,6 +4,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse_lazy
 
+from accounts.models import User
+from helpdesk.utils import get_object_or_none
+
 
 class TicketQueue(models.Model):
     name = models.CharField("Ticket Queue Name", max_length=32)
@@ -24,13 +27,34 @@ class TicketQueue(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class TicketQuerySet(models.QuerySet['Ticket']):
 
-class TicketManager(models.Manager):
-    def with_status(self) -> TicketManager:
+    def with_status(self) -> TicketQuerySet:
         events = TicketEvent.objects.exclude(new_status__exact="").filter(
             ticket_id=models.OuterRef("pk"),
         ).order_by("-created_at")
         return self.annotate(status=models.Subquery(events.values("new_status")[:1]))
+    
+    def with_assignee(self) -> TicketQuerySet:
+        events = TicketEvent.objects.annotate(
+            assignee=models.F("assignee_change__user"),
+        ).filter(
+            ticket_id=models.OuterRef("pk"),
+            assignee_change__isnull=False,
+        ).order_by("-created_at")
+        return self.annotate(assignee_id=models.Subquery(events.values("assignee")[:1]))
+    
+    def with_event_fields(self) -> TicketQuerySet:
+        return self.with_assignee().with_status()
+
+
+class TicketManager(models.Manager):
+    
+    def get_queryset(self) -> TicketQuerySet:  # type: ignore[override]
+        return TicketQuerySet(self.model, using=self._db)
+
+    def with_event_fields(self) -> TicketQuerySet:
+        return self.get_queryset().with_event_fields()
 
 
 class Ticket(models.Model):
@@ -63,11 +87,20 @@ class Ticket(models.Model):
         return reverse_lazy('tickets:ticket_detail', kwargs={'pk': self.id})
     
     @property
+    def assignee(self) -> User | None:
+        """
+        Get the assignee of this ticket.
+
+        Must be called only when the Ticket has with_event_fields()
+        """
+        return get_object_or_none(User, pk=self.assignee_id)  # type: ignore[attr-defined]
+    
+    @property
     def status_name(self) -> str:
         """
         Get the name of the status.
         
-        Must be called only when the Ticket has with_status()
+        Must be called only when the Ticket has with_event_fields()
         """
         lookups = {val: name for val, name in TicketStatus.choices}
         return lookups.get(self.status, "Unknown")  # type: ignore[attr-defined]
@@ -77,7 +110,7 @@ class Ticket(models.Model):
         """
         Get the CSS class of the status.
         
-        Must be called only when the Ticket has with_status()
+        Must be called only when the Ticket has with_event_fields()
         """
         lookup = {
             TicketStatus.RESOLVED: "is-info",

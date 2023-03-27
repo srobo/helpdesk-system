@@ -16,10 +16,12 @@
     </button>
 </form>
 {% endif %}
-{% if not object.assignee %}
+<button class="button is-info js-modal-trigger" data-target="modal-assign-ticket">Assign Ticket</button>
+{% if object.assignee != user %}
 <form method="post" style="display: inline;">
     {% csrf_token %}
-    <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_assign_to_current_user' object.id %}">
+    <input type="hidden" name="user" value="{{ user.username }}"/>
+    <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_assign_to_user' object.id %}">
         Assign to me
     </button>
 </form>
@@ -51,48 +53,37 @@
     <div class="column">
         {% for event in object.events.all %}
             {% if event.new_status == "OP" %}
-                <article class="message is-info">
-                    <div class="message-header">
-                        <p>Opened at {{ event.created_at }} by {{ event.user }}</p>
-                    </div>
-                    {% if event.comment %}
-                    <div class="message-body">
-                        {{event.comment|linebreaks}}
-                    </div>
-                    {% endif %}
-                </article>
+                <article class="message is-info">       
             {% elif event.new_status == "RS" %}
                 <article class="message is-success">
-                    <div class="message-header">
-                        <p>Resolved at {{ event.created_at }} by {{ event.user }}</p>
-                    </div>
-                    {% if event.comment %}
-                    <div class="message-body">
-                        {{event.comment|linebreaks}}
-                    </div>
-                    {% endif %}
-                </article>
             {% else %}
-                <article class="message">
-                    <div class="message-header">
-                        <p>{{ event.created_at }} - {{ event.user }}</p>
-                    </div>
-                    <div class="message-body">
-                        {{event.comment|linebreaks}}
-                    </div>
-                </article>
+            <article class="message">
             {% endif %}
-        {% endfor %}
+                <div class="message-header">
+                    <p>
+                        {% if event.new_status == "OP" %}
+                            Opened at {{ event.created_at }} by {{ event.user }}       
+                        {% elif event.new_status == "RS" %}
+                            Resolved at {{ event.created_at }} by {{ event.user }}
+                        {% else %}
+                            {{ event.created_at }} - {{ event.user }}
+                        {% endif %}
+                        {% if event.assignee_change %}
+                            {% if event.assignee_change.user %}
+                            - Assigned to {{ event.assignee_change.user }}
+                            {% else %}
+                            - Unassigned
+                            {% endif %}
+                        {% endif %}
 
-        {% for comment in object.comments.all %}
-        <article class="message">
-            <div class="message-header">
-                <p>{{ comment.created_at }} - {{ comment.author }}</p>
-            </div>
-            <div class="message-body">
-                {{comment.content|linebreaks}}
-            </div>
-        </article>
+                    </p>
+                </div>
+                <div class="message-body">
+                    {% if event.comment %}
+                        {{event.comment|linebreaks}}
+                    {% endif %}
+                </div>
+            </article>
         {% endfor %}
 
         <article class="message is-info">
@@ -114,4 +105,5 @@
         </article>
     </div>
 </div>
+{% include "inc/modals/assign_ticket.html" %}
 {% endblock %}
