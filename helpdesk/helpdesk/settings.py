@@ -122,6 +122,7 @@ SERVER_EMAIL = EMAIL.get("FROM_EMAIL")
 
 INSTALLED_APPS = [
     "accounts",
+    "display",
     "teams",
     "tickets",
     "crispy_forms",

@@ -25,6 +25,7 @@ urlpatterns = [
     path(f"{settings.BASE_PATH}admin/", admin.site.urls),
     path(f'{settings.BASE_PATH}auth/', include('allauth.urls')),
     path(f"{settings.BASE_PATH}accounts/", include("accounts.urls", namespace="accounts")),
+    path(f"{settings.BASE_PATH}display/", include("display.urls", namespace="display")),
     path(f"{settings.BASE_PATH}teams/", include("teams.urls", namespace="teams")),
     path(f"{settings.BASE_PATH}tickets/", include("tickets.urls", namespace="tickets")),
 ]

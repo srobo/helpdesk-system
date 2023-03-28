@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse_lazy
@@ -121,6 +123,10 @@ class Ticket(models.Model):
     @property
     def is_escalatable(self) -> bool:
         return self.queue.escalation_queue is not None
+    
+    @property
+    def last_updated(self) -> datetime:
+        return max(self.updated_at, self.created_at, *self.events.values_list("created_at", flat=True))
 
 
 class TicketStatus(models.TextChoices):
