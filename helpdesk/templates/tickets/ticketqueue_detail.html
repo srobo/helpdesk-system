@@ -23,10 +23,12 @@
               {% for queue in ticket_queues %}
               <li>
                 {% if queue.slug == object.slug %}
-                    <a class="is-active" href="{% url 'tickets:queue_detail' queue.slug %}">{{ queue.name }}</a>
+                    <a class="is-active" href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% else %}
-                    <a href="{% url 'tickets:queue_detail' queue.slug %}">{{ queue.name }}</a>
+                    <a href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% endif %}
+                        {{ queue.name }} {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
+                    </a>
               </li>
               {% endfor %}
             </ul>

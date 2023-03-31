@@ -28,6 +28,10 @@ class TicketQueue(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+    def attention_count(self) -> int:
+        tickets = self.tickets.with_event_fields().exclude(status=TicketStatus.RESOLVED, assignee_id__isnull=False)
+        return tickets.count()
 
 class TicketQuerySet(models.QuerySet['Ticket']):
 

@@ -6,7 +6,7 @@ MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=helpdesk accounts display teams tickets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: type test lint check
+all: type test lint
 
 lint: 
 	$(CMD) ruff check $(PYMODULE)
