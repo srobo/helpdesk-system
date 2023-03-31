@@ -13,6 +13,7 @@ from helpdesk.utils import get_object_or_none
 class TicketQueue(models.Model):
     name = models.CharField("Ticket Queue Name", max_length=32)
     slug = models.SlugField("Slug", max_length=32, unique=True)
+    description = models.CharField("Description", max_length=100)
     display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
     escalation_queue = models.ForeignKey(
         'tickets.TicketQueue',
@@ -27,6 +28,8 @@ class TicketQueue(models.Model):
         ordering = ["-display_priority", "name"]
 
     def __str__(self) -> str:
+        if self.description:
+            return f"{self.name} - {self.description}"
         return self.name
     
     def attention_count(self) -> int:
