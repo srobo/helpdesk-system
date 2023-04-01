@@ -34,7 +34,9 @@ class TicketQueue(models.Model):
         return self.name
     
     def attention_count(self) -> int:
-        tickets = self.tickets.with_event_fields().exclude(status=TicketStatus.RESOLVED, assignee_id__isnull=False)
+        tickets = self.tickets.with_event_fields().exclude(
+            models.Q(status=TicketStatus.RESOLVED) | models.Q(assignee_id__isnull=False),
+        )
         return tickets.count()
 
 class TicketQuerySet(models.QuerySet['Ticket']):
