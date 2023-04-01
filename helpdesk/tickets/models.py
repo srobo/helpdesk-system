@@ -15,6 +15,7 @@ class TicketQueue(models.Model):
     slug = models.SlugField("Slug", max_length=32, unique=True)
     description = models.CharField("Description", max_length=100)
     display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
+    show_in_overview = models.BooleanField("Show in Display Overview", default=True)
     escalation_queue = models.ForeignKey(
         'tickets.TicketQueue',
         on_delete=models.SET_NULL,

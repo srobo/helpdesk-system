@@ -10,7 +10,7 @@ class HelpdeskDisplayView(TemplateView):
     template_name = "display/helpdesk.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        qs = Ticket.objects.with_event_fields().exclude(status=TicketStatus.RESOLVED)
+        qs = Ticket.objects.with_event_fields().exclude(status=TicketStatus.RESOLVED, queue__show_in_overview=False)
         in_progress = qs.filter(assignee_id__isnull=False)
         unassigned = qs.filter(assignee_id__isnull=True)
 
