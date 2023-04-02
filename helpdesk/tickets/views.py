@@ -193,6 +193,9 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
     form_class = CommentSubmitForm
     new_status = ""
 
+    def get_queryset(self) -> QuerySet[Ticket]:
+        return super().get_queryset().with_event_fields()  # type: ignore[attr-defined]
+
     def get_success_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
 
@@ -213,6 +216,23 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
 class TicketResolveFormView(TicketSubmitCommentFormView):
 
     new_status = TicketStatus.RESOLVED
+
+    def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        ticket = self.get_object()
+
+        if ticket.assignee_id is None:
+            assignee_change, _ = TicketEventAssigneeChange.objects.get_or_create(user=self.request.user)
+        else:
+            assignee_change = None
+
+        ticket.events.create(
+            new_status=self.new_status,
+            comment=form.cleaned_data['comment'],
+            user=self.request.user,
+            assignee_change=assignee_change,
+        )
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
 
 
 class TicketReOpenFormView(TicketSubmitCommentFormView):
