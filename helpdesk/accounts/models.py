@@ -21,3 +21,6 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.get_full_name() or self.get_short_name() or self.get_username()
+
+    class Meta:
+        ordering = ["first_name", "last_name"]
