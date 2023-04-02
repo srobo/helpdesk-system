@@ -38,6 +38,12 @@ class TicketQueue(models.Model):
             models.Q(status=TicketStatus.RESOLVED) | models.Q(assignee_id__isnull=False),
         )
         return tickets.count()
+    
+    def in_progress_count(self) -> int:
+        tickets = self.tickets.with_event_fields().exclude(
+            models.Q(status=TicketStatus.OPEN, assignee_id__isnull=False),
+        )
+        return tickets.count()
 
 class TicketQuerySet(models.QuerySet['Ticket']):
 

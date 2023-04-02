@@ -27,7 +27,10 @@
                 {% else %}
                     <a href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% endif %}
-                        {{ queue.name }} {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
+                        {{ queue.name }}
+                        {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
+                        {% if queue.in_progress_count %}<span class="tag is-info is-rounded">{{queue.in_progress_count}}</span>{% endif %}
+                        
                     </a>
               </li>
               {% endfor %}
