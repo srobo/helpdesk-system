@@ -4,7 +4,7 @@ A system for managing a helpdesk.
 
 ## Production
 
-This repository is automatically deployed to [Fly](fly.io) using blue-green deployments.
+In general, the [Django deployment guidelines](https://docs.djangoproject.com/en/4.2/howto/deployment/) should be followed.
 
 If SRComp is live, you can sync teams and pit locations using a management command:
 
