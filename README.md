@@ -24,10 +24,14 @@ This is a Django application.
 6. `cp helpdesk/configuration.dev.py helpdesk/configuration.py`
 7. `./manage.py migrate`
 8. `./manage.py createsuperuser`
-9. `./manager.py runserver`
+9. `./manage.py runserver`
 
 The `Makefile` contains commands that can be used to run tests and linting:
 
 - `make lint` - Lint
 - `make test` - Run unit tests
 - `make type` - Type checking
+
+## SR2023 Deployment
+
+This system was deployed for the helpdesk at the SR2023 competition as an experiment and received positive feedback. It was deployed on a 512MB 1 core machine on [Fly](https://fly.io) with a separate Postgres database server of the same specifications.
