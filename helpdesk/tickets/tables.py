@@ -9,8 +9,8 @@ class TicketTable(tables.Table):
     title = tables.LinkColumn('tickets:ticket_detail', args=[tables.A('id')])
     team = tables.LinkColumn(
         'teams:team_detail',
-        args=[tables.A('team.tla')],
-        accessor=tables.A('team.tla'),
+        args=[tables.A('team__tla')],
+        accessor=tables.A('team__tla'),
         verbose_name="Team",
     )
     status = tables.Column()
