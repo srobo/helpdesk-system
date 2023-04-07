@@ -4,7 +4,6 @@ from typing import Any
 
 import django_filters
 
-from accounts.models import User
 from teams.models import Team
 
 from .models import Ticket, TicketQueue, TicketStatus
@@ -19,10 +18,10 @@ class TicketFilter(django_filters.FilterSet):
              self.form.initial["status"] = initial_status
 
     status = django_filters.ChoiceFilter(label="Status", choices=TicketStatus.choices)
-    assignee_id = django_filters.ChoiceFilter(
-        label="Assignee",
-        choices=[(user.id, user.get_full_name()) for user in User.objects.all()],
-    )
+    # assignee_id = django_filters.ChoiceFilter(
+    #     label="Assignee",
+    #     choices=[(user.id, user.get_full_name()) for user in User.objects.all()],
+    # )
     queue = django_filters.ModelChoiceFilter(
         queryset=TicketQueue.objects.all(), field_name="queue", to_field_name="slug",
     )

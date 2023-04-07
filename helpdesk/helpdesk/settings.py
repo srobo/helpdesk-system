@@ -1,30 +1,9 @@
-import os
 import platform
 from pathlib import Path
 
 import django_stubs_ext
 from django.core.exceptions import ImproperlyConfigured
 from pkg_resources import parse_version
-
-if sentry_dsn := os.environ.get("SENTRY_DSN"):
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-
-    sentry_sdk.init(
-        dsn=sentry_dsn,
-        integrations=[
-            DjangoIntegration(),
-        ],
-
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
-        traces_sample_rate=1.0,
-
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True,
-    )
 
 django_stubs_ext.monkeypatch()
 
