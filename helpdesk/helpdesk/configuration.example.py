@@ -73,13 +73,4 @@ SYSTEM_TITLE = "Helpdesk"
 # Time zone (default: UTC)
 TIME_ZONE = "UTC"
 
-# Date/time formatting. See the following link for supported formats:
-# https://docs.djangoproject.com/en/stable/ref/templates/builtins/#date
-DATE_FORMAT = "Y-m-d"
-SHORT_DATE_FORMAT = "Y-m-d"
-TIME_FORMAT = "Y-m-d"
-SHORT_TIME_FORMAT = "H:i:s"
-DATETIME_FORMAT = "Y-m-d H:i:s"
-SHORT_DATETIME_FORMAT = "Y-m-d H:i"
-
 VOLUNTEER_SIGNUP_CODE = "testing"
