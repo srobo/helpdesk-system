@@ -20,7 +20,7 @@ cryptography==39.0.2
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
-django==3.2.18
+django==4.2
     # via
     #   -r requirements.in
     #   crispy-bulma
@@ -55,8 +55,6 @@ pyjwt[crypto]==2.6.0
     # via django-allauth
 python3-openid==3.2.0
     # via django-allauth
-pytz==2022.7.1
-    # via django
 requests==2.28.2
     # via
     #   -r requirements.in
