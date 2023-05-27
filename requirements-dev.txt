@@ -40,7 +40,7 @@ defusedxml==0.7.1
     # via
     #   -r requirements.txt
     #   python3-openid
-django==4.2
+django==4.2.1
     # via
     #   -r requirements.txt
     #   crispy-bulma
