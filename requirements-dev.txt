@@ -40,7 +40,7 @@ defusedxml==0.7.1
     # via
     #   -r requirements.txt
     #   python3-openid
-django==4.2.1
+django==4.2.3
     # via
     #   -r requirements.txt
     #   crispy-bulma
@@ -77,8 +77,6 @@ django-tables2-bulma-template==0.2.0
     # via -r requirements.txt
 djangorestframework-stubs==1.8.0
     # via django-filter-stubs
-exceptiongroup==1.1.0
-    # via pytest
 faker==16.7.0
     # via -r requirements-dev.in
 freezegun==1.2.2
@@ -157,13 +155,7 @@ sqlparse==0.4.4
     #   -r requirements.txt
     #   django
 tomli==2.0.1
-    # via
-    #   build
-    #   coverage
-    #   django-stubs
-    #   mypy
-    #   pyproject-hooks
-    #   pytest
+    # via django-stubs
 types-cachetools==5.3.0.4
     # via -r requirements-dev.in
 types-dj-database-url==1.2.0.1
