@@ -8,6 +8,6 @@ ModelT = TypeVar("ModelT", bound=Model)
 
 def get_object_or_none(model: type[ModelT], **kwargs: Any) -> ModelT | None:
     try:
-        return model.objects.get(**kwargs)
-    except model.DoesNotExist:
+        return model.objects.get(**kwargs)  # type: ignore[attr-defined]
+    except model.DoesNotExist:  # type: ignore[attr-defined]
         return None
