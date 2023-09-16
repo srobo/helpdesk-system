@@ -121,7 +121,7 @@ class Ticket(models.Model):
 
         Must be called only when the Ticket has with_event_fields()
         """
-        lookups = {val: name for val, name in TicketStatus.choices}
+        lookups = dict(TicketStatus.choices)
         return lookups.get(self.status, "Unknown")  # type: ignore[attr-defined]
 
     @property

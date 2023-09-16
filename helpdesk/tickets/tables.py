@@ -26,5 +26,5 @@ class TicketTable(tables.Table):
         order_by = 'created_at'
 
     def render_status(self, value: str) -> str:
-        lookups = {val: name for val, name in TicketStatus.choices}
+        lookups = dict(TicketStatus.choices)
         return lookups.get(value, "Unknown")
