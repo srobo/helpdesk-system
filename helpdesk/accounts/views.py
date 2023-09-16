@@ -60,7 +60,7 @@ class OnboardingView(LoginRequiredMixin, UpdateView):
         form.fields['first_name'].required = True
         form.fields['first_name'].label = "Given name"
         return form
-    
+
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         messages.info(self.request, f"Welcome to {settings.SYSTEM_TITLE}!")
         self.object.onboarded_at = timezone.now()

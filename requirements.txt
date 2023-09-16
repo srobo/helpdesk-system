@@ -20,7 +20,7 @@ cryptography==41.0.3
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
-django==4.2.3
+django==4.2.5
     # via
     #   -r requirements.in
     #   crispy-bulma
@@ -37,7 +37,7 @@ django-crispy-forms==1.14.0
     #   crispy-bulma
 django-filter==22.1
     # via -r requirements.in
-django-stubs-ext==0.7.0
+django-stubs-ext==4.2.2
     # via -r requirements.in
 django-tables2==2.5.2
     # via

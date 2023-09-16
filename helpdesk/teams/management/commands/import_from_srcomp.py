@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 slug=slug,
                 defaults={"name": location_data["display_name"]},
             )
-    
+
     def _import_teams(self, srcomp_url: str) -> None:
         resp = requests.get(f"{srcomp_url}/teams", timeout=5)
         resp.raise_for_status()

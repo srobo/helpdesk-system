@@ -56,7 +56,7 @@ class SearchResult(TypedDict):
 
 
 class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
-    
+
     template_name = "search.html"
     table_class = SearchTable
 
@@ -73,7 +73,7 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
             Ticket: Q(title__icontains=q) | Q(events__comment__icontains=q) | Q(id=ticket_id),
             Team: Q(tla__icontains=q) | Q(name__icontains=q),
         }
-    
+
     def get_result_count(self, q: str) -> int:
         filters = self._get_filters(q)
         return sum(
