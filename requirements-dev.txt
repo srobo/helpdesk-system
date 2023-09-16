@@ -65,7 +65,7 @@ django-stubs[compatible-mypy]==1.14.0
     #   -r requirements-dev.in
     #   django-filter-stubs
     #   djangorestframework-stubs
-django-stubs-ext==0.7.0
+django-stubs-ext==4.2.2
     # via
     #   -r requirements.txt
     #   django-stubs
