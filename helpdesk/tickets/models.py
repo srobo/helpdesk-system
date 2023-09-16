@@ -32,13 +32,13 @@ class TicketQueue(models.Model):
         if self.description:
             return f"{self.name} - {self.description}"
         return self.name
-    
+
     def attention_count(self) -> int:
         tickets = self.tickets.with_event_fields().exclude(
             models.Q(status=TicketStatus.RESOLVED) | models.Q(assignee_id__isnull=False),
         )
         return tickets.count()
-    
+
     def in_progress_count(self) -> int:
         tickets = self.tickets.with_event_fields().filter(
             status=TicketStatus.OPEN,
@@ -53,7 +53,7 @@ class TicketQuerySet(models.QuerySet['Ticket']):
             ticket_id=models.OuterRef("pk"),
         ).order_by("-created_at")
         return self.annotate(status=models.Subquery(events.values("new_status")[:1]))
-    
+
     def with_assignee(self) -> TicketQuerySet:
         events = TicketEvent.objects.annotate(
             assignee=models.F("assignee_change__user"),
@@ -62,13 +62,13 @@ class TicketQuerySet(models.QuerySet['Ticket']):
             assignee_change__isnull=False,
         ).order_by("-created_at")
         return self.annotate(assignee_id=models.Subquery(events.values("assignee")[:1]))
-    
+
     def with_event_fields(self) -> TicketQuerySet:
         return self.with_assignee().with_status()
 
 
 class TicketManager(models.Manager):
-    
+
     def get_queryset(self) -> TicketQuerySet:  # type: ignore[override]
         return TicketQuerySet(self.model, using=self._db)
 
@@ -104,7 +104,7 @@ class Ticket(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse_lazy('tickets:ticket_detail', kwargs={'pk': self.id})
-    
+
     @property
     def assignee(self) -> User | None:
         """
@@ -113,22 +113,22 @@ class Ticket(models.Model):
         Must be called only when the Ticket has with_event_fields()
         """
         return get_object_or_none(User, pk=self.assignee_id)  # type: ignore[attr-defined]
-    
+
     @property
     def status_name(self) -> str:
         """
         Get the name of the status.
-        
+
         Must be called only when the Ticket has with_event_fields()
         """
         lookups = {val: name for val, name in TicketStatus.choices}
         return lookups.get(self.status, "Unknown")  # type: ignore[attr-defined]
-    
+
     @property
     def status_css_tag(self) -> str:
         """
         Get the CSS class of the status.
-        
+
         Must be called only when the Ticket has with_event_fields()
         """
         lookup = {
@@ -140,21 +140,21 @@ class Ticket(models.Model):
     @property
     def is_escalatable(self) -> bool:
         return self.queue.escalation_queue is not None
-    
+
     @property
     def last_updated(self) -> datetime:
         return max(self.updated_at, self.created_at, *self.events.values_list("created_at", flat=True))
 
 
 class TicketStatus(models.TextChoices):
-    OPEN = "OP", "Open" 
+    OPEN = "OP", "Open"
     RESOLVED = "RS", "Resolved"
 
 
 class TicketEventAssigneeChange(models.Model):
     """
     For a given ticket event, this model exists iff the assignee changed.
-    
+
     We need a separate table for this so that we can differentiate
     between changing of an assignee and removal.
 

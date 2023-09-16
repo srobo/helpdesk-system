@@ -32,7 +32,7 @@ class Team(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse_lazy('teams:team_detail', args=[self.tla])
-    
+
     class Meta:
         ordering = ["tla"]
 

@@ -54,7 +54,7 @@ class TeamDetailCommentsView(LoginRequiredMixin, DetailView):
             comment_form=CommentSubmitForm(),
             **kwargs,
         )
-    
+
 class TeamSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
 
     http_method_names = ['post', 'put']
@@ -86,10 +86,10 @@ class TeamDetailTicketsView(LoginRequiredMixin, SingleTableMixin, DetailView):
 
     def get_ticket_queryset(self) -> QuerySet[Ticket]:
         return self.get_object().tickets.with_event_fields()
-    
+
     def get_ticket_filter(self) -> TicketFilter:
         queryset = self.get_ticket_queryset()
-        
+
         return TicketFilter(
             data=self.request.GET or None,
             request=self.request,

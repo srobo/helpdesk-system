@@ -16,7 +16,7 @@ class SignupForm(UserCreationForm):
         widget=forms.PasswordInput(),
         required=True,
     )
-    
+
     class Meta:
         model = User
         fields = ("username",)
