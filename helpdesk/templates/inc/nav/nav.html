@@ -9,7 +9,7 @@
         <span aria-hidden="true"></span>
       </a>
     </div>
-    
+
     <div class="navbar-menu" id="navMenu">
       {% if user.is_authenticated and user.onboarded_at %}
         <div class="navbar-start">
@@ -27,14 +27,14 @@
           </a>
         </div>
       {% endif %}
-    
+
       <div class="navbar-end">
           {% if user.is_authenticated and user.onboarded_at %}
             {% include "inc/parts/search_bar.html" %}
             <a class="navbar-item" href="{% url 'tickets:ticket_create' %}">
               New Ticket
             </a>
-            <a class="navbar-item" target="_blank" href="https://tinyurl.com/3zerezd4">
+            <a class="navbar-item" target="_blank" href="https://studentrobotics.org/runbook/competition/team-support/">
               Docs
             </a>
           {% endif %}
@@ -44,7 +44,7 @@
               <a class="navbar-link">
                 {{ user.get_full_name|default:"Welcome!" }}
               </a>
-          
+
               <div class="navbar-dropdown is-right">
                 {% if user.is_staff %}
                 <a class="navbar-item" href="{% url 'admin:index' %}">
