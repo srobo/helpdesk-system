@@ -4,11 +4,11 @@
   {% include "inc/nav/nav.html" %}
   <main>
     <div class="container is-fluid" style="margin-top: 1em;">
-      <div class="columns is-flex is-vcentered">
+      <div class="columns is-vcentered mb-3">
         <div class="column">
-          <h2 class="title" style="margin-bottom: 0.3em;">{% block page_title %}{% endblock %}</h2>
+          <h2 class="title">{% block page_title %}{% endblock %}</h2>
         </div>
-        <div class="column is-one-quarter has-text-right">
+        <div class="column has-text-right-tablet">
           {% block page_buttons %}{% endblock %}
         </div>
       </div>
