@@ -193,7 +193,7 @@ STATIC_URL = f"/{BASE_PATH}static/"
 
 # Authentication URLs
 LOGIN_URL = f"/{BASE_PATH}auth/login/"
-LOGOUT_REDIRECT_URL = BASE_PATH
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
