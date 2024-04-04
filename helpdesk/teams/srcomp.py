@@ -29,7 +29,7 @@ class SRComp:
             return None
         except ConnectionError:
             return None
-    
+
         try:
             return resp.json()
         except JSONDecodeError:
@@ -39,7 +39,7 @@ class SRComp:
     def get_score_info_for_team(self, tla: str) -> ScoreInfo | None:
         if not self._base_url:
             return None
-        
+
         if data := self._get(f"teams/{tla}"):
             return ScoreInfo(
                 league_pos=data.get("league_pos"),  # type: ignore[arg-type]

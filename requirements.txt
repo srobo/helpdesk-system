@@ -37,7 +37,7 @@ django-crispy-forms==1.14.0
     #   crispy-bulma
 django-filter==22.1
     # via -r requirements.in
-django-stubs-ext==0.7.0
+django-stubs-ext==4.2.2
     # via -r requirements.in
 django-tables2==2.5.2
     # via
@@ -52,9 +52,7 @@ oauthlib==3.2.2
 pycparser==2.21
     # via cffi
 pyjwt[crypto]==2.6.0
-    # via
-    #   django-allauth
-    #   pyjwt
+    # via django-allauth
 python3-openid==3.2.0
     # via django-allauth
 requests==2.31.0

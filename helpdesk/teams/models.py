@@ -27,14 +27,14 @@ class Team(models.Model):
     is_rookie = models.BooleanField("Is Rookie")
     pit_location = models.ForeignKey(TeamPitLocation, on_delete=models.PROTECT)
 
+    class Meta:
+        ordering = ["tla"]
+
     def __str__(self) -> str:
         return f"{self.tla} - {self.name}"
 
     def get_absolute_url(self) -> str:
         return reverse_lazy('teams:team_detail', args=[self.tla])
-    
-    class Meta:
-        ordering = ["tla"]
 
 
 class TeamComment(models.Model):

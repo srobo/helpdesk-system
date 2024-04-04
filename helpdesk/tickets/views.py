@@ -37,10 +37,10 @@ class TicketQueueDetailView(LoginRequiredMixin, SingleTableMixin, DetailView):
         if "status" not in self.request.GET:
             queryset = queryset.filter(status=TicketStatus.OPEN)
         return queryset
-    
+
     def get_ticket_filter(self) -> TicketFilter:
         queryset = self.get_ticket_queryset()
-        
+
         return TicketFilter(
             data=self.request.GET or None,
             request=self.request,
@@ -76,7 +76,7 @@ class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context["ticket_queues"] = TicketQueue.objects.all()
         return context
-    
+
 
 class TicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = TicketFilter
@@ -106,7 +106,7 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """The same template is used for updating tickets."""
         return super().get_context_data(create=True, **kwargs)
-    
+
     def get_initial(self) -> dict[str, Any]:
         return {
             "team": get_object_or_none(Team, tla=self.request.GET.get("team")),
