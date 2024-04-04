@@ -242,8 +242,8 @@ LOGGING = {
     },
     "formatters": {
         "verbose": {
-            "format": "[%(asctime)s][%(process)d][%(levelname)s][%(name)s] %(message)s"
-        }
+            "format": "[%(asctime)s][%(process)d][%(levelname)s][%(name)s] %(message)s",
+        },
     },
     "loggers": {
         "django.request": {
