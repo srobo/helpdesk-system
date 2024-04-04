@@ -227,3 +227,34 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SRCOMP_HTTP_BASE_URL = getattr(configuration, "SRCOMP_HTTP_BASE_URL", None)
 VOLUNTEER_SIGNUP_CODE = getattr(configuration, "VOLUNTEER_SIGNUP_CODE")
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        # Send logs with at least INFO level to the console.
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s][%(process)d][%(levelname)s][%(name)s] %(message)s"
+        }
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}
