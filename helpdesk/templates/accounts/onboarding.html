@@ -5,13 +5,13 @@
 {% block title %}Welcome to {{SYSTEM_TITLE}}{% endblock %}
 
 {% block content %}
-<div class="block">
-    <p>Hi! 👋</p>
-    <p>Let's get started by filling out some details. You can always update your information later in your profile settings.</p>    
-</div>
-<form class="block" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input class="button is-primary" type="submit" value="Let's go!">
-</form>
+    <div class="block">
+        <p>Hi! 👋</p>
+        <p>Let's get started by filling out some details. You can always update your information later in your profile settings.</p>
+    </div>
+    <form class="block" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="button is-primary" type="submit" value="Let's go!">
+    </form>
 {% endblock %}

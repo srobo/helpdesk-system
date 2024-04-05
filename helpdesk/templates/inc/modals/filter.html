@@ -1,22 +1,22 @@
 {% load crispy_forms_tags %}
 <div id="modal-filter" class="modal">
     <div class="modal-background"></div>
-    
+
     <div class="modal-content">
         <header class="modal-card-head">
             <p class="modal-card-title">Filter</p>
-        <button class="delete" aria-label="close"></button>
+            <button class="delete" aria-label="close"></button>
         </header>
         <form class="block" method="get">
-          <section class="modal-card-body">
-                  {{ filter.form|crispy }}          
-          </section>
-          <footer class="modal-card-foot">
-              <input type="submit" class="button is-success" value="Filter Results" />
-              <button class="button">Cancel</button>
-          </footer>
-      </form> 
+            <section class="modal-card-body">
+                {{ filter.form|crispy }}
+            </section>
+            <footer class="modal-card-foot">
+                <input type="submit" class="button is-success" value="Filter Results" />
+                <button class="button">Cancel</button>
+            </footer>
+        </form>
     </div>
-    
+
     <button class="modal-close is-large" aria-label="close"></button>
-  </div>
+</div>

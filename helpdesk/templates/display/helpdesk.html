@@ -1,54 +1,54 @@
 {% extends "layouts/base.html" %}
 
 {% block body %}
-<main>
-    <div class="container">
-        <section class="hero">
-            <div class="hero-body">
-                <div class="container">
-                    <h1 class="title has-text-centered">{{SYSTEM_TITLE}} Status</h1>
-                    <div class="columns is-centered">
-                        <div class="column">
-                            <article class="panel is-warning">
-                                <p class="panel-heading">
-                                    In Progress <span class="tag">{{in_progress.count}}</span>
-                                </p>
-                                {% for ticket in in_progress %}
-                                <a class="panel-block">
-                                    <div>
-                                        <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
-                                        <p>Assigned to: {{ticket.assignee}} via {{ticket.queue}}</p>
-                                        <p><em>Last Updated: {{ticket.last_updated}}</em></p>
-                                    </div>
-                                </a>
-                                {% endfor %}
-                            </article>
-                        </div>
-                        <div class="column">
-                            <article class="panel is-danger">
-                                <p class="panel-heading">
-                                    Unassigned <span class="tag">{{unassigned.count}}</span>
-                                </p>
-                                {% for ticket in unassigned %}
-                                <a class="panel-block">
-                                    <div>
-                                        <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
-                                        <p>Waiting in {{ticket.queue}}</p>
-                                        <p><em>Last Updated: {{ticket.last_updated}}</em></p>
-                                    </div>
-                                </a>
-                                {% endfor %}
-                            </article>
+    <main>
+        <div class="container">
+            <section class="hero">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title has-text-centered">{{SYSTEM_TITLE}} Status</h1>
+                        <div class="columns is-centered">
+                            <div class="column">
+                                <article class="panel is-warning">
+                                    <p class="panel-heading">
+                                        In Progress <span class="tag">{{in_progress.count}}</span>
+                                    </p>
+                                    {% for ticket in in_progress %}
+                                        <a class="panel-block">
+                                            <div>
+                                                <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
+                                                <p>Assigned to: {{ticket.assignee}} via {{ticket.queue}}</p>
+                                                <p><em>Last Updated: {{ticket.last_updated}}</em></p>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </article>
+                            </div>
+                            <div class="column">
+                                <article class="panel is-danger">
+                                    <p class="panel-heading">
+                                        Unassigned <span class="tag">{{unassigned.count}}</span>
+                                    </p>
+                                    {% for ticket in unassigned %}
+                                        <a class="panel-block">
+                                            <div>
+                                                <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
+                                                <p>Waiting in {{ticket.queue}}</p>
+                                                <p><em>Last Updated: {{ticket.last_updated}}</em></p>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-</main>
-<script>
-    setTimeout(function(){
-        window.location.reload();
-    }, 5000);
-</script>
+            </section>
+        </div>
+    </main>
+    <script>
+        setTimeout(function(){
+            window.location.reload();
+        }, 5000);
+    </script>
 {% endblock %}

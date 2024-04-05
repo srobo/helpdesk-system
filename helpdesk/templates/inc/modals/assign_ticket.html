@@ -1,23 +1,23 @@
 {% load crispy_forms_tags %}
 <div id="modal-assign-ticket" class="modal">
     <div class="modal-background"></div>
-    
+
     <div class="modal-content">
         <header class="modal-card-head">
             <p class="modal-card-title">Assign Ticket</p>
-        <button class="delete" aria-label="close"></button>
+            <button class="delete" aria-label="close"></button>
         </header>
         <form class="block" method="post" action="{% url 'tickets:ticket_assign_to_user' object.id %}">
-          <section class="modal-card-body">
-            <p>Choose a user to assign the ticket to, or blank if unassigned.</p>
-            {% csrf_token %}
-            {{ assign_form|crispy }}          
-          </section>
-          <footer class="modal-card-foot">
-              <input type="submit" class="button is-success" value="Assign Ticket" />
-          </footer>
-      </form> 
+            <section class="modal-card-body">
+                <p>Choose a user to assign the ticket to, or blank if unassigned.</p>
+                {% csrf_token %}
+                {{ assign_form|crispy }}
+            </section>
+            <footer class="modal-card-foot">
+                <input type="submit" class="button is-success" value="Assign Ticket" />
+            </footer>
+        </form>
     </div>
-    
+
     <button class="modal-close is-large" aria-label="close"></button>
-  </div>
+</div>
