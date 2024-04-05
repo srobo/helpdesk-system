@@ -9,9 +9,11 @@ SPHINX_ARGS:=docs/ docs/_build -nWE
 all: type test format lint
 
 format:
+	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml
 	$(CMD) ruff format $(PYMODULE)
 
 format-check:
+	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml --check
 	$(CMD) ruff format --check $(PYMODULE)
 
 lint: 
