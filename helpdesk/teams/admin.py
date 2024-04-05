@@ -4,18 +4,20 @@ from teams.models import Team, TeamComment, TeamPitLocation
 
 
 class TeamPitLocationAdmin(admin.ModelAdmin):
-    list_display = ("name", )
+    list_display = ("name",)
+
 
 class TeamCommentAdmin(admin.StackedInline):
     model = TeamComment
     extra = 1
 
-    readonly_fields = ('created_at', )
+    readonly_fields = ("created_at",)
+
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ("tla", "name", "is_rookie")
     list_filter = ("is_rookie",)
-    inlines = (TeamCommentAdmin, )
+    inlines = (TeamCommentAdmin,)
 
 
 admin.site.register(TeamPitLocation, TeamPitLocationAdmin)

@@ -4,7 +4,6 @@ from django.urls import reverse
 
 
 class AccountAdapter(DefaultAccountAdapter):
-
     def is_open_for_signup(self, request: HttpRequest) -> bool:
         """
         Checks whether or not the site is open for signups.
@@ -17,4 +16,3 @@ class AccountAdapter(DefaultAccountAdapter):
         if request.path.rstrip("/") == reverse("account_signup").rstrip("/"):
             return False
         return True
-

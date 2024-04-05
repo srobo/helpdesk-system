@@ -114,8 +114,8 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         }
 
     def form_valid(self, form: forms.Form) -> HttpResponse:
-        resp =  super().form_valid(form)
-        ticket = form.instance # type: ignore[attr-defined]
+        resp = super().form_valid(form)
+        ticket = form.instance  # type: ignore[attr-defined]
         ticket.events.create(
             new_status=TicketStatus.OPEN,
             user=self.request.user,
@@ -123,18 +123,19 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         )
         return resp
 
+
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
     model = Ticket
-    fields = ('title', 'queue', 'team')
+    fields = ("title", "queue", "team")
+
 
 class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
-
-    http_method_names = ['post', 'put']
+    http_method_names = ["post", "put"]
     model = Ticket
     form_class = Form
 
     def get_success_url(self) -> str:
-        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: Form) -> HttpResponse:
         assert self.request.user.is_authenticated
@@ -156,8 +157,7 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
 
 
 class TicketAssignToUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
-
-    http_method_names = ['post', 'put']
+    http_method_names = ["post", "put"]
     model = Ticket
     form_class = TicketAssignForm
 
@@ -165,7 +165,7 @@ class TicketAssignToUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixi
         return Ticket.objects.with_event_fields().all()
 
     def get_success_url(self) -> str:
-        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: Form) -> HttpResponse:
         assert self.request.user.is_authenticated
@@ -187,8 +187,7 @@ class TicketAssignToUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixi
 
 
 class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, ProcessFormView):
-
-    http_method_names = ['post', 'put']
+    http_method_names = ["post", "put"]
     model = Ticket
     form_class = CommentSubmitForm
     new_status = ""
@@ -197,14 +196,14 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
         return super().get_queryset().with_event_fields()  # type: ignore[attr-defined]
 
     def get_success_url(self) -> str:
-        return reverse_lazy('tickets:ticket_detail', kwargs={"pk": self.get_object().id})
+        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated
         ticket = self.get_object()
         ticket.events.create(
             new_status=self.new_status,
-            comment=form.cleaned_data['comment'],
+            comment=form.cleaned_data["comment"],
             user=self.request.user,
         )
         return HttpResponseRedirect(redirect_to=self.get_success_url())
@@ -214,7 +213,6 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
 
 
 class TicketResolveFormView(TicketSubmitCommentFormView):
-
     new_status = TicketStatus.RESOLVED
 
     def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
@@ -228,7 +226,7 @@ class TicketResolveFormView(TicketSubmitCommentFormView):
 
         ticket.events.create(
             new_status=self.new_status,
-            comment=form.cleaned_data['comment'],
+            comment=form.cleaned_data["comment"],
             user=self.request.user,
             assignee_change=assignee_change,
         )
@@ -236,5 +234,4 @@ class TicketResolveFormView(TicketSubmitCommentFormView):
 
 
 class TicketReOpenFormView(TicketSubmitCommentFormView):
-
     new_status = TicketStatus.OPEN

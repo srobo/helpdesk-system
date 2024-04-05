@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tickets', '0007_ticketqueue_description'),
+        ("tickets", "0007_ticketqueue_description"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ticketqueue',
-            name='show_in_overview',
-            field=models.BooleanField(default=True, verbose_name='Show in Display Overview'),
+            model_name="ticketqueue",
+            name="show_in_overview",
+            field=models.BooleanField(default=True, verbose_name="Show in Display Overview"),
         ),
     ]

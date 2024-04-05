@@ -17,7 +17,6 @@ from .models import User
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-
     model = User
     fields = ["first_name", "last_name", "default_ticket_queue"]
 
@@ -28,8 +27,8 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_form(self, form_class: type[BaseModelForm] | None = None) -> BaseModelForm:
         form = super().get_form(form_class)
         # Modify generated form to require a name.
-        form.fields['first_name'].required = True
-        form.fields['first_name'].label = "Given name"
+        form.fields["first_name"].required = True
+        form.fields["first_name"].label = "Given name"
         return form
 
     def get_success_url(self) -> str:
@@ -38,7 +37,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class OnboardingView(LoginRequiredMixin, UpdateView):
-
     model = User
     fields = ["first_name", "last_name", "default_ticket_queue"]
     template_name = "accounts/onboarding.html"
@@ -57,8 +55,8 @@ class OnboardingView(LoginRequiredMixin, UpdateView):
     def get_form(self, form_class: type[BaseModelForm] | None = None) -> BaseModelForm:
         form = super().get_form(form_class)
         # Modify generated form to require a name.
-        form.fields['first_name'].required = True
-        form.fields['first_name'].label = "Given name"
+        form.fields["first_name"].required = True
+        form.fields["first_name"].label = "Given name"
         return form
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
@@ -72,5 +70,5 @@ class OnboardingView(LoginRequiredMixin, UpdateView):
 
 class SignupView(CreateView):
     form_class = SignupForm
-    success_url = reverse_lazy('account_login')
-    template_name = 'accounts/signup.html'
+    success_url = reverse_lazy("account_login")
+    template_name = "accounts/signup.html"

@@ -55,9 +55,7 @@ SECRET_KEY = getattr(configuration, "SECRET_KEY")
 ADMINS = getattr(configuration, "ADMINS", [])
 BASE_PATH = getattr(configuration, "BASE_PATH", "")
 if BASE_PATH:
-    BASE_PATH = (
-        BASE_PATH.strip("/") + "/"
-    )  # Enforce trailing slash only  # pragma: nocover
+    BASE_PATH = BASE_PATH.strip("/") + "/"  # Enforce trailing slash only  # pragma: nocover
 DEBUG = getattr(configuration, "DEBUG", False)
 EMAIL = getattr(configuration, "EMAIL", {})
 SYSTEM_TITLE = getattr(configuration, "SYSTEM_TITLE", "Helpdesk")
@@ -101,12 +99,12 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bulma",
     "django_filters",
-    'django_tables2',
-    'django_tables2_bulma_template',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    "django_tables2",
+    "django_tables2_bulma_template",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -128,8 +126,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -210,16 +208,16 @@ DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
 
 # Django AllAuth
 
-ACCOUNT_ADAPTER = 'helpdesk.account_adapter.AccountAdapter'
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_ADAPTER = "helpdesk.account_adapter.AccountAdapter"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
         ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
+        "AUTH_PARAMS": {
+            "access_type": "online",
         },
     },
 }

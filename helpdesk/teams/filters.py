@@ -4,7 +4,6 @@ from .models import Team, TeamPitLocation
 
 
 class TeamFilterset(FilterSet):
-
     is_rookie = filters.BooleanFilter()
     pit_location = filters.ModelChoiceFilter(queryset=TeamPitLocation.objects.all())
 

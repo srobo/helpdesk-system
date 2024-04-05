@@ -5,24 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('teams', '0001_create_team_model'),
+        ("teams", "0001_create_team_model"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TeamPitLocation',
+            name="TeamPitLocation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='Name')),
-                ('slug', models.CharField(max_length=30, verbose_name='Slug')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100, verbose_name="Name")),
+                ("slug", models.CharField(max_length=30, verbose_name="Slug")),
             ],
         ),
         migrations.AddField(
-            model_name='team',
-            name='pit_location',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='teams.teampitlocation'),
+            model_name="team",
+            name="pit_location",
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to="teams.teampitlocation"),
             preserve_default=False,
         ),
     ]

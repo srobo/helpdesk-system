@@ -5,7 +5,6 @@ from django.db import models
 
 
 class User(AbstractUser):
-
     # Helpdesk Specific Fields
     default_ticket_queue = models.ForeignKey(
         "tickets.TicketQueue",
