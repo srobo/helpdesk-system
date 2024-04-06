@@ -7,7 +7,6 @@ from tickets.models import Ticket, TicketStatus
 
 
 class HelpdeskDisplayView(TemplateView):
-
     template_name = "display/helpdesk.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

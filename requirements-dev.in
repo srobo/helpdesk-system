@@ -1,6 +1,7 @@
 pip-tools
 
 -r requirements.txt
+djhtml
 ruff
 isort
 pytest

@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 
 
 class TeamPitLocation(models.Model):
-
     name = models.CharField("Name", max_length=100)
     slug = models.CharField("Slug", max_length=30, unique=True)
 
@@ -34,7 +33,7 @@ class Team(models.Model):
         return f"{self.tla} - {self.name}"
 
     def get_absolute_url(self) -> str:
-        return reverse_lazy('teams:team_detail', args=[self.tla])
+        return reverse_lazy("teams:team_detail", args=[self.tla])
 
 
 class TeamComment(models.Model):

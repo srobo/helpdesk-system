@@ -5,6 +5,7 @@ from teams.models import Team, TeamPitLocation
 
 DEFAULT_SRCOMP = "https://srcomp.studentrobotics.org/comp-api"
 
+
 class Command(BaseCommand):
     help = "Import teams and pit locations from SRComp"  # noqa: A003
 

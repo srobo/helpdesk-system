@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tickets', '0006_assignee_change_events'),
+        ("tickets", "0006_assignee_change_events"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ticketqueue',
-            name='description',
-            field=models.CharField(default='', max_length=100, verbose_name='Description'),
+            model_name="ticketqueue",
+            name="description",
+            field=models.CharField(default="", max_length=100, verbose_name="Description"),
             preserve_default=False,
         ),
     ]

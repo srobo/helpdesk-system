@@ -6,32 +6,32 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-    New Ticket for {{ object.tla }}
-</a>
+    <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
+        New Ticket for {{ object.tla }}
+    </a>
 {% endblock %}
 
 {% block content %}
-{% include "inc/nav/team-tabs.html" with active="comments" team=object %}
-{% for comment in object.comments.all %}
-    <article class="message">
-        <div class="message-header">
-            <p>{{ comment.created_at }} - {{ comment.author }}</p>
-        </div>
+    {% include "inc/nav/team-tabs.html" with active="comments" team=object %}
+    {% for comment in object.comments.all %}
+        <article class="message">
+            <div class="message-header">
+                <p>{{ comment.created_at }} - {{ comment.author }}</p>
+            </div>
+            <div class="message-body">
+                {{comment.content|linebreaks}}
+            </div>
+        </article>
+    {% endfor %}
+    <article class="message is-info">
         <div class="message-body">
-            {{comment.content|linebreaks}}
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form | crispy }}
+                <div class="control">
+                    <button class="button is-info" type="submit" formaction="{% url 'teams:team_detail_comments_post' object.tla %}">Comment</button>
+                </div>
+            </form>
         </div>
     </article>
-{% endfor %}
-<article class="message is-info">
-    <div class="message-body">
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form | crispy }}
-            <div class="control">
-              <button class="button is-info" type="submit" formaction="{% url 'teams:team_detail_comments_post' object.tla %}">Comment</button>
-            </div>
-        </form>
-    </div>
-</article>
 {% endblock %}

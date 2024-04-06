@@ -9,7 +9,6 @@ from accounts.models import User
 
 
 class SignupForm(UserCreationForm):
-
     signup_code = forms.CharField(
         label="Volunteer Signup Code",
         help_text="This code verifies that you are a volunteer. It can be found in the break room.",
@@ -20,7 +19,7 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username",)
-        field_classes = {'username': UsernameField}
+        field_classes = {"username": UsernameField}
 
     def clean_signup_code(self) -> None:
         signup_code = self.cleaned_data.get("signup_code")

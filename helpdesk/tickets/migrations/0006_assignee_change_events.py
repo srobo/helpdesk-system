@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.RemoveField(
-            model_name='ticket',
-            name='assignee',
+            model_name="ticket",
+            name="assignee",
         ),
     ]

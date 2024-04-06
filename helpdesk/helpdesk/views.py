@@ -22,7 +22,8 @@ class DefaultHomeView(LoginRequiredMixin, RedirectView):
         # Redirect the user to a default queue if they have one
         if ticket_queue := self.request.user.default_ticket_queue:
             return reverse_lazy(
-                "tickets:queue_detail", kwargs={"slug": ticket_queue.slug},
+                "tickets:queue_detail",
+                kwargs={"slug": ticket_queue.slug},
             )
         else:
             return reverse_lazy("teams:team_list")
@@ -44,19 +45,18 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
             return reverse_lazy("teams:team_list")
 
         return reverse_lazy(
-            "tickets:queue_detail", kwargs={"slug": ticket_queue.slug},
+            "tickets:queue_detail",
+            kwargs={"slug": ticket_queue.slug},
         )
 
 
 class SearchResult(TypedDict):
-
     result_type: Literal["team"] | Literal["ticket"]
     title: str
     url: str
 
 
 class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
-
     template_name = "search.html"
     table_class = SearchTable
 
@@ -77,20 +77,17 @@ class SearchView(LoginRequiredMixin, SingleTableMixin, TemplateView):
     def get_result_count(self, q: str) -> int:
         filters = self._get_filters(q)
         return sum(
-            [
-                model.objects.filter(q_filter).distinct().count()
-                for model, q_filter in filters.items()
-            ],
+            [model.objects.filter(q_filter).distinct().count() for model, q_filter in filters.items()],
         )
 
     def get_results(self, q: str) -> Generator[SearchResult, None, None]:
         filters = self._get_filters(q)
 
         for team in Team.objects.filter(filters[Team]):
-            yield SearchResult(result_type='team', title=team.name, url=team.get_absolute_url())
+            yield SearchResult(result_type="team", title=team.name, url=team.get_absolute_url())
 
         for ticket in Ticket.objects.filter(filters[Ticket]).distinct():
-            yield SearchResult(result_type='ticket', title=ticket.title, url=ticket.get_absolute_url())
+            yield SearchResult(result_type="ticket", title=ticket.title, url=ticket.get_absolute_url())
 
     def get_table_data(self) -> Generator[SearchResult, None, None]:
         q = self._get_query()

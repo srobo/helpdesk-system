@@ -46,7 +46,8 @@ def create_events(apps: StateApps, schema_editor: BaseDatabaseSchemaEditor) -> N
 
 
 def create_old_objects(
-    apps: StateApps, schema_editor: BaseDatabaseSchemaEditor,
+    apps: StateApps,
+    schema_editor: BaseDatabaseSchemaEditor,
 ) -> None:
     Ticket = apps.get_model("tickets", "Ticket")  # noqa: N806
     TicketComment = apps.get_model("tickets", "TicketComment")  # noqa: N806
@@ -149,38 +150,38 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(create_events, create_old_objects),
         migrations.AlterField(
-            model_name='ticketevent',
-            name='created_at',
+            model_name="ticketevent",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True),
         ),
         migrations.RemoveField(
-            model_name='ticketresolution',
-            name='ticket',
+            model_name="ticketresolution",
+            name="ticket",
         ),
         migrations.RemoveField(
-            model_name='ticketresolution',
-            name='user',
+            model_name="ticketresolution",
+            name="user",
         ),
         migrations.RemoveField(
-            model_name='ticketcomment',
-            name='author',
+            model_name="ticketcomment",
+            name="author",
         ),
         migrations.RemoveField(
-            model_name='ticketcomment',
-            name='ticket',
+            model_name="ticketcomment",
+            name="ticket",
         ),
         migrations.DeleteModel(
-            name='TicketResolution',
+            name="TicketResolution",
         ),
         migrations.DeleteModel(
-            name='TicketComment',
+            name="TicketComment",
         ),
         migrations.RemoveField(
-            model_name='ticket',
-            name='description',
+            model_name="ticket",
+            name="description",
         ),
         migrations.RemoveField(
-            model_name='ticket',
-            name='opened_by',
+            model_name="ticket",
+            name="opened_by",
         ),
     ]

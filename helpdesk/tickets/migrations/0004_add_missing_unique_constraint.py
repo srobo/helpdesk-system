@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tickets', '0003_add_escalation_field'),
+        ("tickets", "0003_add_escalation_field"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ticketqueue',
-            name='slug',
-            field=models.SlugField(max_length=32, unique=True, verbose_name='Slug'),
+            model_name="ticketqueue",
+            name="slug",
+            field=models.SlugField(max_length=32, unique=True, verbose_name="Slug"),
         ),
     ]

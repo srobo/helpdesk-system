@@ -1,4 +1,4 @@
-.PHONY: all clean lint type test test-cov
+.PHONY: all clean format format-check lint type test test-cov
 
 CMD:=
 PYMODULE:=helpdesk
@@ -6,7 +6,15 @@ MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=helpdesk accounts display teams tickets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: type test lint
+all: type test format lint
+
+format:
+	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml
+	$(CMD) ruff format $(PYMODULE)
+
+format-check:
+	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml --check
+	$(CMD) ruff format --check $(PYMODULE)
 
 lint: 
 	$(CMD) ruff check $(PYMODULE)

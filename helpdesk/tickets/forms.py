@@ -6,7 +6,6 @@ from .models import Ticket, TicketQueue
 
 
 class TicketCreationForm(forms.ModelForm):
-
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": "5"}))
 
     # Exclude queues that are escalated.
@@ -14,10 +13,9 @@ class TicketCreationForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        fields = ('title', 'queue', 'team')
+        fields = ("title", "queue", "team")
 
 
 class TicketAssignForm(forms.Form):
-
     user = forms.ModelChoiceField(User.objects.all(), to_field_name="username", required=False)
     comment = forms.CharField(label="Optional Comment", widget=forms.Textarea(attrs={"rows": "3"}), required=False)

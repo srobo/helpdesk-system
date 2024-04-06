@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('teams', '0002_add_team_pit_locations'),
+        ("teams", "0002_add_team_pit_locations"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='teampitlocation',
-            name='slug',
-            field=models.CharField(max_length=30, unique=True, verbose_name='Slug'),
+            model_name="teampitlocation",
+            name="slug",
+            field=models.CharField(max_length=30, unique=True, verbose_name="Slug"),
         ),
     ]

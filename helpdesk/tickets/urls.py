@@ -21,7 +21,9 @@ app_name = "tickets"
 urlpatterns = [
     path("", RedirectToDefaultTicketQueue.as_view(), name="queue_default"),
     path(
-        "assigned-to-me", AssignedTicketListView.as_view(), name="ticket_assigned_list",
+        "assigned-to-me",
+        AssignedTicketListView.as_view(),
+        name="ticket_assigned_list",
     ),
     path("new", TicketCreateView.as_view(), name="ticket_create"),
     path("all", TicketListView.as_view(), name="ticket_all"),

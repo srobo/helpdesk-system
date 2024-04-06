@@ -5,43 +5,43 @@
 {% block title %}Queue: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
+  <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+  <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
     New Ticket
-</a>
+  </a>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="columns">
-    <div class="column is-one-fifth">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-one-fifth">
         <aside class="menu" style="padding-top: 2em;">
-            <p class="menu-label">
-              Queues
-            </p>
-            <ul class="menu-list">
-              {% for queue in ticket_queues %}
+          <p class="menu-label">
+            Queues
+          </p>
+          <ul class="menu-list">
+            {% for queue in ticket_queues %}
               <li>
                 {% if queue.slug == object.slug %}
-                    <a class="is-active" href="{% url 'tickets:queue_detail' queue.slug %}">
+                  <a class="is-active" href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% else %}
-                    <a href="{% url 'tickets:queue_detail' queue.slug %}">
+                  <a href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% endif %}
-                        {{ queue.name }}
-                        {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
-                        {% if queue.in_progress_count %}<span class="tag is-info is-rounded">{{queue.in_progress_count}}</span>{% endif %}
-                        
-                    </a>
+                {{ queue.name }}
+                {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
+                {% if queue.in_progress_count %}<span class="tag is-info is-rounded">{{queue.in_progress_count}}</span>{% endif %}
+
+              </a>
               </li>
-              {% endfor %}
-            </ul>
+            {% endfor %}
+          </ul>
         </aside>
-    </div>
-    <div class="column">
-      <p class="block">{{ object.description }}</p>
-      {% render_table table %}
+      </div>
+      <div class="column">
+        <p class="block">{{ object.description }}</p>
+        {% render_table table %}
+      </div>
     </div>
   </div>
-</div>
-{% include "inc/modals/filter.html" %}
+  {% include "inc/modals/filter.html" %}
 {% endblock %}

@@ -5,13 +5,13 @@
 {% block title %}My Tickets{% endblock %}
 
 {% block page_buttons %}
-<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+  <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="columns">
-    {% render_table table %}
-</div>
-{% include "inc/modals/filter.html" %}
+  <div class="container">
+    <div class="columns">
+      {% render_table table %}
+    </div>
+    {% include "inc/modals/filter.html" %}
 {% endblock %}

@@ -8,7 +8,6 @@ from django.urls import resolve
 
 
 class ProfileMiddleware:
-
     EXCLUDED_PATHS: set[tuple[str | None, str]] = {
         (None, "account_logout"),
         ("accounts", "onboarding"),
@@ -19,11 +18,13 @@ class ProfileMiddleware:
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         profile_complete = getattr(request.user, "onboarded_at", None)
-        if all([
-            request.user.is_authenticated,
-            not profile_complete,
-            self._request_requires_profile(request),
-        ]):
+        if all(
+            [
+                request.user.is_authenticated,
+                not profile_complete,
+                self._request_requires_profile(request),
+            ]
+        ):
             return redirect("accounts:onboarding")
         return self.get_response(request)
 
