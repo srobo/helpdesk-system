@@ -15,27 +15,37 @@ jobs:
         python: [3.9, "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
+
       - name: Create virtualenv
         run: python3 -m venv venv
+
       - uses: actions/cache@v3
         with:
           path: venv/
           key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements-dev.txt') }}
+
       - name: Use virtualenv
         run: source venv/bin/activate
+
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
+
       - name: Use the dev configuration
         run: cp helpdesk/helpdesk/configuration.dev.py helpdesk/helpdesk/configuration.py
+
       - name: Static type checking
         run: make type
+
       - name: Lint
         run: make lint
+
       - name: Unit tests
         run: make test
+
       - name: Django Static Checks
         run: make check
