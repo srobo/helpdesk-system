@@ -21,17 +21,6 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Create virtualenv
-        run: python3 -m venv venv
-
-      - uses: actions/cache@v3
-        with:
-          path: venv/
-          key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements-dev.txt') }}
-
-      - name: Use virtualenv
-        run: source venv/bin/activate
-
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
 
