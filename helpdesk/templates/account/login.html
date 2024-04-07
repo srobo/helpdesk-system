@@ -6,6 +6,8 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}
+  {% get_providers as socialaccount_providers %}
+
   <figure class="image is-128x128 inline-block" style="margin: 0 auto 2em auto;">
     <img src="https://srobo.github.io/style/assets/logo.svg" width="50%" />
   </figure>
@@ -18,7 +20,9 @@
       <button class="button is-info is-fullwidth" type="submit">Log In</button>
     </div>
     <div class="control" style="margin-top: 1em;">
-      <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
+      {% if socialaccount_providers %}
+        <a class="button is-info is-fullwidth" href="{% provider_login_url 'google' %}">Log In With SR Google Account</a>
+      {% endif %}
     </div>
   </form>
   <div class="control">
