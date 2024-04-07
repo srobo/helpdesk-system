@@ -10,7 +10,7 @@
   </figure>
   <h2 class="title has-text-centered">{{ SYSTEM_TITLE }}</h2>
   <h3 class="subtitle has-text-centered">Sign In Via Google</h3>
-  <p class="has-text-centered">Non-SR Google accounts will not work. If you do not have an SR Google Account, please go back and sign up.</p>
+  <p class="has-text-centered">Non-SR Google accounts will not work. If you do not have an SR Google Account, please <a href="{% url 'accounts:signup' %}">go back and sign up</a>.</p>
   <form method="post" style="margin: 1em 0;">
     {% csrf_token %}
     {{ form | crispy }}
