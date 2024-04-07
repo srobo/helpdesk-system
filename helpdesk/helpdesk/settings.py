@@ -55,9 +55,7 @@ SECRET_KEY = getattr(configuration, "SECRET_KEY")
 ADMINS = getattr(configuration, "ADMINS", [])
 BASE_PATH = getattr(configuration, "BASE_PATH", "")
 if BASE_PATH:
-    BASE_PATH = (
-        BASE_PATH.strip("/") + "/"
-    )  # Enforce trailing slash only  # pragma: nocover
+    BASE_PATH = BASE_PATH.strip("/") + "/"  # Enforce trailing slash only  # pragma: nocover
 DEBUG = getattr(configuration, "DEBUG", False)
 EMAIL = getattr(configuration, "EMAIL", {})
 SYSTEM_TITLE = getattr(configuration, "SYSTEM_TITLE", "Helpdesk")
@@ -101,12 +99,12 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bulma",
     "django_filters",
-    'django_tables2',
-    'django_tables2_bulma_template',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    "django_tables2",
+    "django_tables2_bulma_template",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -123,12 +121,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "accounts.middleware.ProfileMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -193,7 +192,7 @@ STATIC_URL = f"/{BASE_PATH}static/"
 
 # Authentication URLs
 LOGIN_URL = f"/{BASE_PATH}auth/login/"
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -209,16 +208,16 @@ DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
 
 # Django AllAuth
 
-ACCOUNT_ADAPTER = 'helpdesk.account_adapter.AccountAdapter'
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_ADAPTER = "helpdesk.account_adapter.AccountAdapter"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
         ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
+        "AUTH_PARAMS": {
+            "access_type": "online",
         },
     },
 }
@@ -227,3 +226,34 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SRCOMP_HTTP_BASE_URL = getattr(configuration, "SRCOMP_HTTP_BASE_URL", None)
 VOLUNTEER_SIGNUP_CODE = getattr(configuration, "VOLUNTEER_SIGNUP_CODE")
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        # Send logs with at least INFO level to the console.
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s][%(process)d][%(levelname)s][%(name)s] %(message)s",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}

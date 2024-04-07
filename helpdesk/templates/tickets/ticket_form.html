@@ -17,14 +17,14 @@
 {% endblock %}
 
 {% block content %}
-{% if create %}
-<p>Most tickets should be assigned after they are created so that teams do not skip the queue. Please do not assign tickets to a volunteer unless you know that there are no other teams waiting in the queue.</p>
-{% else %}
-<p>If you need to edit something that cannot be edited here, contact an administrator or create a new ticket.</p>
-{% endif %}
-<form class="block" method="post">
-    {% csrf_token %}
-    {{form|crispy}}
-    <input class="button is-primary" type="submit" value="Save changes">
-</form>
+    {% if create %}
+        <p>Most tickets should be assigned after they are created so that teams do not skip the queue. Please do not assign tickets to a volunteer unless you know that there are no other teams waiting in the queue.</p>
+    {% else %}
+        <p>If you need to edit something that cannot be edited here, contact an administrator or create a new ticket.</p>
+    {% endif %}
+    <form class="block" method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input class="button is-primary" type="submit" value="Save changes">
+    </form>
 {% endblock %}

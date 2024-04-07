@@ -1,4 +1,5 @@
 """A basic client for SRComp HTTP."""
+
 from __future__ import annotations
 
 from json import JSONDecodeError
@@ -10,14 +11,12 @@ from django.conf import settings
 
 
 class ScoreInfo(NamedTuple):
-
     league_pos: int
     game_score: int
     league_score: int
 
 
 class SRComp:
-
     def __init__(self, *, base_url: str | None = None) -> None:
         self._base_url = base_url or settings.SRCOMP_HTTP_BASE_URL
 
@@ -47,5 +46,6 @@ class SRComp:
                 league_score=data.get("scores", {}).get("league"),
             )
         return None
+
 
 srcomp = SRComp()

@@ -6,27 +6,27 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-    New Ticket for {{ object.tla }}
-</a>
+    <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
+        New Ticket for {{ object.tla }}
+    </a>
 {% endblock %}
 
 {% block content %}
-{% include "inc/nav/team-tabs.html" with active="about" team=object %}
-<div class="container">
-    <div class="box">
-        <p><strong>Team Name:</strong> {{object.name}}</p>
-        <p><strong>TLA:</strong> {{object.tla}}</p>
-        <p><strong>Rookie:</strong> {{object.is_rookie}}</p>
-        <p><strong>Pit Location:</strong> {{object.pit_location}}</p>
-    </div>
+    {% include "inc/nav/team-tabs.html" with active="about" team=object %}
+    <div class="container">
+        <div class="box">
+            <p><strong>Team Name:</strong> {{object.name}}</p>
+            <p><strong>TLA:</strong> {{object.tla}}</p>
+            <p><strong>Rookie:</strong> {{object.is_rookie}}</p>
+            <p><strong>Pit Location:</strong> {{object.pit_location}}</p>
+        </div>
 
-    {% if score_info %}
-    <div class="box">
-        <p><strong>League Position:</strong> {{score_info.league_pos}}</p>
-        <p><strong>League Points:</strong> {{score_info.league_score}}</p>
-        <p><strong>Game Points:</strong> {{score_info.game_score}}</p>
+        {% if score_info %}
+            <div class="box">
+                <p><strong>League Position:</strong> {{score_info.league_pos}}</p>
+                <p><strong>League Points:</strong> {{score_info.league_score}}</p>
+                <p><strong>Game Points:</strong> {{score_info.game_score}}</p>
+            </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
 {% endblock %}

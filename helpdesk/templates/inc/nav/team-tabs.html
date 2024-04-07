@@ -13,16 +13,16 @@
             </a>
         </li>
         <li {% if active == "comments" %}class="is-active"{% endif %}></li>
-            <a href="{% url 'teams:team_detail_comments' team.tla %}">
-                <span class="icon is-small"><i class="fas fa-comment" aria-hidden="true"></i></span>
-                <span>Comments</span>
-            </a>
-        </li>
-        <li {% if active == "timeline" %}class="is-active"{% endif %}></li>
-            <a href="{% url 'teams:team_detail_timeline' team.tla %}">
-                <span class="icon is-small"><i class="fas fa-timeline" aria-hidden="true"></i></span>
-                <span>Timeline</span>
-            </a>
-        </li>
-    </ul>
+        <a href="{% url 'teams:team_detail_comments' team.tla %}">
+            <span class="icon is-small"><i class="fas fa-comment" aria-hidden="true"></i></span>
+            <span>Comments</span>
+        </a>
+    </li>
+    <li {% if active == "timeline" %}class="is-active"{% endif %}></li>
+    <a href="{% url 'teams:team_detail_timeline' team.tla %}">
+        <span class="icon is-small"><i class="fas fa-timeline" aria-hidden="true"></i></span>
+        <span>Timeline</span>
+    </a>
+</li>
+</ul>
 </div>

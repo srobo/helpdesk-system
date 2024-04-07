@@ -6,14 +6,14 @@
 {% block title %}Teams{% endblock %}
 
 {% block page_buttons %}
-<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+    <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
 {% endblock %}
 
 {% block content %}
-<div class="container columns">
-    <div class="column">
-        {% render_table table %}
+    <div class="container columns">
+        <div class="column">
+            {% render_table table %}
+        </div>
     </div>
-</div>
-{% include "inc/modals/filter.html" %}
+    {% include "inc/modals/filter.html" %}
 {% endblock %}

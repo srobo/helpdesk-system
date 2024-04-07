@@ -6,18 +6,18 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-<button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
-<a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-    New Ticket for {{ object.tla }}
-</a>
+    <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+    <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
+        New Ticket for {{ object.tla }}
+    </a>
 {% endblock %}
 
 {% block content %}
-{% include "inc/nav/team-tabs.html" with active="tickets" team=object %}
-<div class="container columns">
-    <div class="column">
-        {% render_table table %}
+    {% include "inc/nav/team-tabs.html" with active="tickets" team=object %}
+    <div class="container columns">
+        <div class="column">
+            {% render_table table %}
+        </div>
     </div>
-</div>
-{% include "inc/modals/filter.html" %}
+    {% include "inc/modals/filter.html" %}
 {% endblock %}

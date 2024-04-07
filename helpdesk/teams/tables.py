@@ -4,11 +4,10 @@ from .models import Team
 
 
 class TeamTable(tables.Table):
-
     tla = tables.Column()
-    name = tables.LinkColumn('teams:team_detail', args=[tables.A('tla')])
+    name = tables.LinkColumn("teams:team_detail", args=[tables.A("tla")])
     is_rookie = tables.BooleanColumn()
-    actions = tables.LinkColumn('teams:team_detail', args=[tables.A('tla')], text="View")
+    actions = tables.LinkColumn("teams:team_detail", args=[tables.A("tla")], text="View")
 
     class Meta:
         model = Team

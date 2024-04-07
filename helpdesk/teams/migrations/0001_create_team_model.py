@@ -29,7 +29,8 @@ class Migration(migrations.Migration):
                         unique=True,
                         validators=[
                             django.core.validators.RegexValidator(
-                                "^[A-Z]{3}\\d*$", "Must match TLA format.",
+                                "^[A-Z]{3}\\d*$",
+                                "Must match TLA format.",
                             ),
                         ],
                         verbose_name="TLA",

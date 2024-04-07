@@ -32,6 +32,17 @@ The `Makefile` contains commands that can be used to run tests and linting:
 - `make test` - Run unit tests
 - `make type` - Type checking
 
-## SR2023 Deployment
+## Deployment
 
-This system was deployed for the helpdesk at the SR2023 competition as an experiment and received positive feedback. It was deployed on a 512MB 1 core machine on [Fly](https://fly.io) with a separate Postgres database server of the same specifications.
+This system is deployed using our [Ansible](https://github.com/srobo/ansible/) configuration.
+
+### Login with Google
+
+Credentials are configured through the Django admin. OAuth credentials need to be configured as below:
+
+- User type: Internal (this ensures it's only SR accounts which can be used)
+- Scopes: `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `openid`
+- Redirect URIs: `https://studentrobotics.org/helpdesk/auth/google/login/callback/`
+- Authorised JavaScript origins: `https://studentrobotics.org`
+
+A [project](https://console.cloud.google.com/home/dashboard?project=helpdesk-419320) exists for this in our Google Cloud account.

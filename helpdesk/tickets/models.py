@@ -17,12 +17,12 @@ class TicketQueue(models.Model):
     display_priority = models.PositiveSmallIntegerField("Display Priority", default=1)
     show_in_overview = models.BooleanField("Show in Display Overview", default=True)
     escalation_queue = models.ForeignKey(
-        'tickets.TicketQueue',
+        "tickets.TicketQueue",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='escalates_to',
-        related_query_name='escalates_to',
+        related_name="escalates_to",
+        related_query_name="escalates_to",
     )
 
     class Meta:
@@ -46,21 +46,29 @@ class TicketQueue(models.Model):
         )
         return tickets.count()
 
-class TicketQuerySet(models.QuerySet['Ticket']):
 
+class TicketQuerySet(models.QuerySet["Ticket"]):
     def with_status(self) -> TicketQuerySet:
-        events = TicketEvent.objects.exclude(new_status__exact="").filter(
-            ticket_id=models.OuterRef("pk"),
-        ).order_by("-created_at")
+        events = (
+            TicketEvent.objects.exclude(new_status__exact="")
+            .filter(
+                ticket_id=models.OuterRef("pk"),
+            )
+            .order_by("-created_at")
+        )
         return self.annotate(status=models.Subquery(events.values("new_status")[:1]))
 
     def with_assignee(self) -> TicketQuerySet:
-        events = TicketEvent.objects.annotate(
-            assignee=models.F("assignee_change__user"),
-        ).filter(
-            ticket_id=models.OuterRef("pk"),
-            assignee_change__isnull=False,
-        ).order_by("-created_at")
+        events = (
+            TicketEvent.objects.annotate(
+                assignee=models.F("assignee_change__user"),
+            )
+            .filter(
+                ticket_id=models.OuterRef("pk"),
+                assignee_change__isnull=False,
+            )
+            .order_by("-created_at")
+        )
         return self.annotate(assignee_id=models.Subquery(events.values("assignee")[:1]))
 
     def with_event_fields(self) -> TicketQuerySet:
@@ -68,7 +76,6 @@ class TicketQuerySet(models.QuerySet['Ticket']):
 
 
 class TicketManager(models.Manager):
-
     def get_queryset(self) -> TicketQuerySet:  # type: ignore[override]
         return TicketQuerySet(self.model, using=self._db)
 
@@ -103,7 +110,7 @@ class Ticket(models.Model):
         return f"#{self.id} - {self.title}"
 
     def get_absolute_url(self) -> str:
-        return reverse_lazy('tickets:ticket_detail', kwargs={'pk': self.id})
+        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.id})
 
     @property
     def assignee(self) -> User | None:
@@ -160,6 +167,7 @@ class TicketEventAssigneeChange(models.Model):
 
     One instance of this model exists per user.
     """
+
     user = models.OneToOneField(
         "accounts.User",
         on_delete=models.PROTECT,
@@ -205,9 +213,9 @@ class TicketEvent(models.Model):
         constraints = [
             models.CheckConstraint(
                 check=models.Q(
-                    ~models.Q(new_status__exact="") |
-                    ~models.Q(comment__exact="") |
-                    models.Q(assignee_change__isnull=False),
+                    ~models.Q(new_status__exact="")
+                    | ~models.Q(comment__exact="")
+                    | models.Q(assignee_change__isnull=False),
                 ),
                 name="valid_event",
             ),

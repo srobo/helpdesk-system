@@ -11,13 +11,14 @@ class TicketEventAdmin(admin.StackedInline):
     model = TicketEvent
     extra = 1
 
-    readonly_fields = ('created_at', )
+    readonly_fields = ("created_at",)
+
 
 class TicketAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "team", "queue")
     list_filter = ("queue", "team")
 
-    inlines = (TicketEventAdmin, )
+    inlines = (TicketEventAdmin,)
 
     can_delete = False
 

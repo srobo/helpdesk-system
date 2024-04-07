@@ -2,67 +2,67 @@
 {% load crispy_forms_tags %}
 
 {% block page_title %}
-<span class="tag {{ object.status_css_tag }} is-large is-rounded">{{ object.status_name }}</span>
-{{ object.title }} #{{object.id}}
+    <span class="tag {{ object.status_css_tag }} is-large is-rounded">{{ object.status_name }}</span>
+    {{ object.title }} #{{object.id}}
 {% endblock %}
 {% block title %}{{ object.title }} #{{object.id}}{% endblock %}
 
 {% block page_buttons %}
-{% if object.is_escalatable %}
-<form method="post" style="display: inline;">
-    {% csrf_token %}
-    <button class="button is-danger" type="submit" formaction="{% url 'tickets:ticket_escalate' object.id %}">
-        Escalate
-    </button>
-</form>
-{% endif %}
-<button class="button is-info js-modal-trigger" data-target="modal-assign-ticket">Assign Ticket</button>
-{% if object.assignee != user %}
-<form method="post" style="display: inline;">
-    {% csrf_token %}
-    <input type="hidden" name="user" value="{{ user.username }}"/>
-    <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_assign_to_user' object.id %}">
-        Assign to me
-    </button>
-</form>
-{% endif %}
-<a class="button is-warning" href="{% url 'tickets:ticket_edit' object.id %}">
-    Edit Details
-</a>
+    {% if object.is_escalatable %}
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button class="button is-danger" type="submit" formaction="{% url 'tickets:ticket_escalate' object.id %}">
+                Escalate
+            </button>
+        </form>
+    {% endif %}
+    <button class="button is-info js-modal-trigger" data-target="modal-assign-ticket">Assign Ticket</button>
+    {% if object.assignee != user %}
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ user.username }}"/>
+            <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_assign_to_user' object.id %}">
+                Assign to me
+            </button>
+        </form>
+    {% endif %}
+    <a class="button is-warning" href="{% url 'tickets:ticket_edit' object.id %}">
+        Edit Details
+    </a>
 {% endblock %}
 
 {% block content %}
-<div class="container columns">
-    <div class="column is-one-fifth">
-        <article class="panel is-info">
-            <a class="panel-block">
-              {% if object.assignee %}
-              Assigned to: {{ object.assignee }}
-              {% else %}
-              Unassigned
-              {% endif %}
-            </a>
-            <a class="panel-block" href="{% url 'teams:team_detail' object.team.tla %}">
-              {{ object.team }}
-            </a>
-            <a class="panel-block" href="{% url 'tickets:queue_detail' object.queue.slug %}">
-                {{ object.queue }}
-            </a>
-          </article>
-    </div>
-    <div class="column">
-        {% for event in object.events.all %}
-            {% if event.new_status == "OP" %}
-                <article class="message is-info">       
-            {% elif event.new_status == "RS" %}
-                <article class="message is-success">
-            {% else %}
-            <article class="message">
-            {% endif %}
+    <div class="container columns">
+        <div class="column is-one-fifth">
+            <article class="panel is-info">
+                <a class="panel-block">
+                    {% if object.assignee %}
+                        Assigned to: {{ object.assignee }}
+                    {% else %}
+                        Unassigned
+                    {% endif %}
+                </a>
+                <a class="panel-block" href="{% url 'teams:team_detail' object.team.tla %}">
+                    {{ object.team }}
+                </a>
+                <a class="panel-block" href="{% url 'tickets:queue_detail' object.queue.slug %}">
+                    {{ object.queue }}
+                </a>
+            </article>
+        </div>
+        <div class="column">
+            {% for event in object.events.all %}
+                {% if event.new_status == "OP" %}
+                    <article class="message is-info">
+                {% elif event.new_status == "RS" %}
+                    <article class="message is-success">
+                {% else %}
+                    <article class="message">
+                {% endif %}
                 <div class="message-header">
                     <p>
                         {% if event.new_status == "OP" %}
-                            Opened at {{ event.created_at }} by {{ event.user }}       
+                            Opened at {{ event.created_at }} by {{ event.user }}
                         {% elif event.new_status == "RS" %}
                             Resolved at {{ event.created_at }} by {{ event.user }}
                         {% else %}
@@ -70,9 +70,9 @@
                         {% endif %}
                         {% if event.assignee_change %}
                             {% if event.assignee_change.user %}
-                            - Assigned to {{ event.assignee_change.user }}
+                                - Assigned to {{ event.assignee_change.user }}
                             {% else %}
-                            - Unassigned
+                                - Unassigned
                             {% endif %}
                         {% endif %}
 
@@ -83,27 +83,27 @@
                         {{event.comment|linebreaks}}
                     {% endif %}
                 </div>
-            </article>
-        {% endfor %}
+                </article>
+            {% endfor %}
 
-        <article class="message is-info">
-            <div class="message-body">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ comment_form | crispy }}
-                    <div class="control">
-                      <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_comment' object.id %}">Comment</button>
-                      {% if object.status != "RS" %}
-                      <button class="button is-warning" type="submit" formaction="{% url 'tickets:ticket_resolve' object.id %}">Comment and Resolve</button>
-                      {% endif %}
-                      {% if object.status != "OP" %}
-                      <button class="button is-success" type="submit" formaction="{% url 'tickets:ticket_reopen' object.id %}">Comment and Re-Open</button>
-                      {% endif %}
-                    </div>
-                </form>
-            </div>
-        </article>
+            <article class="message is-info">
+                <div class="message-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ comment_form | crispy }}
+                        <div class="control">
+                            <button class="button is-info" type="submit" formaction="{% url 'tickets:ticket_comment' object.id %}">Comment</button>
+                            {% if object.status != "RS" %}
+                                <button class="button is-success" type="submit" formaction="{% url 'tickets:ticket_resolve' object.id %}">Comment and Resolve</button>
+                            {% endif %}
+                            {% if object.status != "OP" %}
+                                <button class="button is-warning" type="submit" formaction="{% url 'tickets:ticket_reopen' object.id %}">Comment and Re-Open</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </article>
+        </div>
     </div>
-</div>
-{% include "inc/modals/assign_ticket.html" %}
+    {% include "inc/modals/assign_ticket.html" %}
 {% endblock %}
