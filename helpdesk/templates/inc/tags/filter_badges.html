@@ -1,0 +1,14 @@
+{# render using the render_filter_badges templatetag #}
+{% if filter_badges %}
+    <div class="field is-grouped is-grouped-multiline">
+        {% for label, value in filter_badges %}
+            <div class="control">
+                <div class="tags has-addons">
+                    <span class="tag is-dark">{{ label }}</span>
+                    <a class="tag is-link">{{ value }}</a>
+                    <a class="tag is-delete js-modal-trigger" data-target="modal-filter"></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

@@ -1,5 +1,6 @@
 {% extends "layouts/base_app.html" %}
 {% load render_table from django_tables2 %}
+{% load filter_helpers %}
 
 {% block page_title %}All Tickets{% endblock %}
 {% block title %}All Tickets{% endblock %}
@@ -13,6 +14,7 @@
 
 {% block content %}
   <div class="container">
+    {% render_filter_badges %}
     <div class="columns">
       {% render_table table %}
     </div>
