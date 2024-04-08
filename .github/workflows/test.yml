@@ -24,6 +24,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
 
+      - name: Validate dependencies
+        uses: PeterJCLaw/validate-generated-files@v1
+        if: matrix.python == '3.10'
+        with:
+          command: ./script/compile-requirements.sh
+          files: requirements*.txt
+
       - name: Use the dev configuration
         run: cp helpdesk/helpdesk/configuration.dev.py helpdesk/helpdesk/configuration.py
 
