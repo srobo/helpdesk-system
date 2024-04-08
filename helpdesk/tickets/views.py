@@ -13,7 +13,7 @@ from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
-from helpdesk.utils import get_object_or_none
+from helpdesk.utils import get_object_or_none, is_filterset_filtered
 from teams.models import Team
 
 from .filters import TicketFilter
@@ -75,6 +75,7 @@ class AssignedTicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["ticket_queues"] = TicketQueue.objects.all()
+        context["is_filtered"] = is_filterset_filtered(self.filterset)
         return context
 
 
@@ -83,6 +84,11 @@ class TicketListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     table_class = TicketTable
     template_name = "tickets/tickets_all.html"
     queryset = Ticket.objects.with_event_fields().all()
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["is_filtered"] = is_filterset_filtered(self.filterset)
+        return context
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):

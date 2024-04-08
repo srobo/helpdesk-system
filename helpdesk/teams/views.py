@@ -13,6 +13,7 @@ from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
+from helpdesk.utils import is_filterset_filtered
 from tickets.filters import TicketFilter
 from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
@@ -31,6 +32,11 @@ class TeamListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = Team
     table_class = TeamTable
     filterset_class = TeamFilterset
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["is_filtered"] = is_filterset_filtered(self.filterset)
+        return context
 
 
 class TeamDetailAboutView(LoginRequiredMixin, DetailView):

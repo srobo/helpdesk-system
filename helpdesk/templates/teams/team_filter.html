@@ -2,8 +2,8 @@
 {% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
 
-{% block page_title %}Teams{% endblock %}
-{% block title %}Teams{% endblock %}
+{% block page_title %}Teams {% if is_filtered %}<span class="is-size-5">(filtered)</span>{% endif %}{% endblock %}
+{% block title %}Teams {% if is_filtered %}(filtered){% endif %}{% endblock %}
 
 {% block page_buttons %}
     <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
