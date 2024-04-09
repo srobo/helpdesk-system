@@ -16,7 +16,7 @@
 {% block content %}
     {% include "inc/nav/team-tabs.html" with active="tickets" team=object %}
     <div class="container">
-        {% render_filter_badges %}
+        {% render_filter_badges filter %}
         <div class="columns">
             <div class="column">
                 {% render_table table %}
