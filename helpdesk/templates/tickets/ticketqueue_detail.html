@@ -1,5 +1,6 @@
 {% extends "layouts/base_app.html" %}
 {% load render_table from django_tables2 %}
+{% load filter_helpers %}
 
 {% block page_title %}Queue: {{ object.name }}{% endblock %}
 {% block title %}Queue: {{ object.name }}{% endblock %}
@@ -38,6 +39,7 @@
         </aside>
       </div>
       <div class="column">
+        {% render_filter_badges filter %}
         <p class="block">{{ object.description }}</p>
         {% render_table table %}
       </div>
