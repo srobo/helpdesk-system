@@ -4,7 +4,7 @@ from typing import Any
 
 import django_filters
 
-from teams.models import Team
+from teams.models import Team, TeamPitLocation
 
 from .models import Ticket, TicketQueue, TicketStatus
 
@@ -30,6 +30,10 @@ class TicketFilter(django_filters.FilterSet):
         queryset=Team.objects.all(),
         field_name="team",
         to_field_name="tla",
+    )
+    team__pit_location = django_filters.ModelChoiceFilter(
+        label="Pit location",
+        queryset=TeamPitLocation.objects.all(),
     )
 
     class Meta:
