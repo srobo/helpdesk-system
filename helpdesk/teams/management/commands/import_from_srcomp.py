@@ -53,6 +53,6 @@ class Command(BaseCommand):
             )
 
             # If not created, synchronise the pit locations.
-            if not created and team.pit_location.slug != team_data["location"]["name"]:
+            if not created and team.pit_location and team.pit_location.slug != team_data["location"]["name"]:
                 team.pit_location = TeamPitLocation.objects.get(slug=team_data["location"]["name"])
                 team.save(update_fields=["pit_location"])

@@ -24,7 +24,7 @@ class Team(models.Model):
     )
     name = models.CharField("Team Name", max_length=100)
     is_rookie = models.BooleanField("Is Rookie")
-    pit_location = models.ForeignKey(TeamPitLocation, on_delete=models.PROTECT)
+    pit_location = models.ForeignKey(TeamPitLocation, on_delete=models.PROTECT, null=True)
 
     class Meta:
         ordering = ["tla"]
