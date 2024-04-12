@@ -46,7 +46,7 @@ django-tables2==2.7.0
     #   django-tables2-bulma-template
 django-tables2-bulma-template==0.2.0
     # via -r requirements.in
-idna==3.6
+idna==3.7
     # via requests
 oauthlib==3.2.2
     # via requests-oauthlib

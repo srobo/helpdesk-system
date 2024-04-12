@@ -84,7 +84,7 @@ faker==24.7.1
     # via -r requirements-dev.in
 freezegun==1.4.0
     # via -r requirements-dev.in
-idna==3.6
+idna==3.7
     # via
     #   -r requirements.txt
     #   requests
