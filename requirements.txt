@@ -63,7 +63,7 @@ requests==2.31.0
     #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via django-allauth
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via django
 typing-extensions==4.11.0
     # via
