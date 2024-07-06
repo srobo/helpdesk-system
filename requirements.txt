@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 cachetools==5.3.3
     # via -r requirements.in
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 cffi==1.16.0
     # via cryptography
