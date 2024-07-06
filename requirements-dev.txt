@@ -84,7 +84,7 @@ faker==24.7.1
     # via -r requirements-dev.in
 freezegun==1.4.0
     # via -r requirements-dev.in
-idna==3.6
+idna==3.7
     # via
     #   -r requirements.txt
     #   requests
@@ -140,7 +140,7 @@ python3-openid==3.2.0
     # via
     #   -r requirements.txt
     #   django-allauth
-requests==2.31.0
+requests==2.32.0
     # via
     #   -r requirements.txt
     #   django-allauth
@@ -190,7 +190,7 @@ typing-extensions==4.11.0
     #   django-stubs-ext
     #   djangorestframework-stubs
     #   mypy
-urllib3==2.2.1
+urllib3==2.2.2
     # via
     #   -r requirements.txt
     #   requests
