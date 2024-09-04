@@ -16,7 +16,7 @@ charset-normalizer==3.3.2
     # via requests
 crispy-bulma==0.11.0
     # via -r requirements.in
-cryptography==42.0.5
+cryptography==43.0.1
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
