@@ -2,6 +2,7 @@ import platform
 from pathlib import Path
 
 import django_stubs_ext
+import sentry_sdk
 from django.core.exceptions import ImproperlyConfigured
 from pkg_resources import parse_version
 
@@ -38,6 +39,12 @@ except ImportError as e:  # pragma: nocover
             "Configuration file is not present. Please define helpdesk/helpdesk/configuration.py per the documentation.",  # noqa: E501
         ) from None
     raise
+
+sentry_sdk.init(
+    dsn=getattr(configuration, "SENTRY_DSN", None),
+    traces_sample_rate=getattr(configuration, "SENTRY_TRACES_SAMPLE_RATE", 1.0),
+    profiles_sample_rate=getattr(configuration, "SENTRY_PROFILES_SAMPLE_RATE", 1.0),
+)
 
 # Enforce required configuration parameters
 for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
