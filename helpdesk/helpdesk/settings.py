@@ -42,8 +42,8 @@ except ImportError as e:  # pragma: nocover
 
 sentry_sdk.init(
     dsn=getattr(configuration, "SENTRY_DSN", None),
-    traces_sample_rate=getattr(configuration, "SENTRY_TRACES_SAMPLE_RATE", 1.0),
-    profiles_sample_rate=getattr(configuration, "SENTRY_PROFILES_SAMPLE_RATE", 1.0),
+    traces_sample_rate=getattr(configuration, "SENTRY_TRACES_SAMPLE_RATE", 0.0),
+    profiles_sample_rate=getattr(configuration, "SENTRY_PROFILES_SAMPLE_RATE", 0.0),
 )
 
 # Enforce required configuration parameters
