@@ -9,7 +9,9 @@ asgiref==3.8.1
 cachetools==5.3.3
     # via -r requirements.in
 certifi==2024.7.4
-    # via requests
+    # via
+    #   requests
+    #   sentry-sdk
 cffi==1.16.0
     # via cryptography
 charset-normalizer==3.3.2
@@ -30,6 +32,7 @@ django==4.2.11
     #   django-stubs-ext
     #   django-tables2
     #   django-tables2-bulma-template
+    #   sentry-sdk
 django-allauth==0.61.1
     # via -r requirements.in
 django-crispy-forms==2.1
@@ -63,6 +66,8 @@ requests==2.32.0
     #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via django-allauth
+sentry-sdk[django]==2.19.2
+    # via -r requirements.in
 sqlparse==0.5.0
     # via django
 typing-extensions==4.11.0
@@ -70,4 +75,6 @@ typing-extensions==4.11.0
     #   asgiref
     #   django-stubs-ext
 urllib3==2.2.2
-    # via requests
+    # via
+    #   requests
+    #   sentry-sdk
