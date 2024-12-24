@@ -15,7 +15,7 @@ class TicketTable(tables.Table):
     status = tables.Column()
     assignee_id = tables.TemplateColumn(
         verbose_name="Assignee",
-        template_code='{{record.assignee|default:"-"}}',
+        template_code='{{record.assignee|default:"—"}}',
     )
     actions = tables.LinkColumn("tickets:ticket_detail", args=[tables.A("id")], text="View")
 
