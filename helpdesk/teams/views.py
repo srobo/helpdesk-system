@@ -3,25 +3,26 @@ from __future__ import annotations
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import CharField, F, QuerySet, Value
+from django.db.models import CharField, F, Prefetch, QuerySet, Value
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, RedirectView
+from django.views.generic import CreateView, DetailView, ListView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
-from helpdesk.utils import is_filterset_filtered
+from helpdesk.utils import get_object_or_none, is_filterset_filtered
 from tickets.filters import TicketFilter
 from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
-from .models import Team, TeamComment
+from .forms import TeamAttendanceLogForm
+from .models import Team, TeamAttendanceEvent, TeamComment
 from .srcomp import srcomp
-from .tables import TeamTable
+from .tables import TeamAttendanceTable, TeamTable
 
 
 class TicketDetailRedirectView(RedirectView):
@@ -172,3 +173,49 @@ class TeamDetailTimelineView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         return super().get_context_data(entries=self.get_entries(), **kwargs)
+
+
+class TeamAttendanceView(LoginRequiredMixin, SingleTableMixin, ListView):
+    model = Team
+    table_class = TeamAttendanceTable
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Team.objects.all().prefetch_related(
+            Prefetch(
+                "team_attendance_events",
+                TeamAttendanceEvent.objects.order_by("-created_at")[:1],
+                to_attr="latest_event",
+            )
+        )
+
+
+class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
+    http_method_names = ["get", "post"]
+    model = TeamAttendanceEvent
+    form_class = TeamAttendanceLogForm
+
+    def get_initial(self) -> dict[str, Any]:
+        return {
+            "team": get_object_or_none(Team, tla=self.kwargs["tla"]),
+        }
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("teams:team_list_attendance")
+
+    def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
+        assert self.request.user.is_authenticated
+        team = form.cleaned_data["team"]
+        team.team_attendance_events.create(
+            type=form.cleaned_data["type"],
+            comment=form.cleaned_data["comment"],
+            user=self.request.user,
+        )
+        return HttpResponseRedirect(redirect_to=self.get_success_url())
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["team"] = self.get_initial()["team"]
+        return context
+
+    def form_invalid(self, form: TeamAttendanceLogForm) -> HttpResponse:
+        return HttpResponse("Please fill out the form correctly.")
