@@ -1,6 +1,6 @@
 from django import forms
 
-from teams.models import Team, TeamAttendanceEvent, TeamAttendanceEventType, Team
+from teams.models import Team, TeamAttendanceEvent, TeamAttendanceEventType
 
 
 class TeamAttendanceLogForm(forms.ModelForm):
