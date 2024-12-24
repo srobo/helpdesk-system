@@ -74,9 +74,16 @@ class TeamAttendanceEvent(models.Model):
         related_name="team_attendance_events",
         related_query_name="team_attendance_events",
     )
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+    )
     type = models.TextField(
         max_length=2,
         choices=TeamAttendanceEventType.choices,
     )
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Attendance Event: {self.team.name} {self.type} at {self.created_at}"
