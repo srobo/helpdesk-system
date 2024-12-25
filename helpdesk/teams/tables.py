@@ -21,8 +21,8 @@ class TeamAttendanceTable(tables.Table):
     latest_event__0__comment = tables.Column("Comment")
     latest_event__0__created_at = tables.DateTimeColumn(verbose_name="Time")
     user = tables.TemplateColumn(
-        verbose_name="Created by",
-        template_code='{{record.user|default:"—"}}',
+        verbose_name="Logged by",
+        template_code='{{record.latest_event.0.user|default:"—"}}',
     )
     actions = tables.LinkColumn("teams:team_log_attendance_form", args=[tables.A("tla")], text="Log")
 
