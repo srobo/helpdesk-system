@@ -19,9 +19,19 @@
         <a class="navbar-item" href="{% url 'tickets:queue_default' %}">
           Queues
         </a>
-        <a class="navbar-item" href="{% url 'teams:team_list' %}">
-          Teams
-        </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Teams
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'teams:team_list' %}">
+              All Teams
+            </a>
+            <a class="navbar-item" href="{% url 'teams:team_list_attendance' %}">
+              Attendance
+            </a>
+          </div>
+        </div>
         <a class="navbar-item" href="{% url 'tickets:ticket_all' %}">
           All Tickets
         </a>
