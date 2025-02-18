@@ -13,19 +13,6 @@ from __future__ import annotations
 
 ALLOWED_HOSTS: list[str] = []
 
-# Database configuration. See the Django documentation for a complete list of available parameters:
-#   https://docs.djangoproject.com/en/stable/ref/settings/#databases
-# For production, you should probably use PostgreSQL
-DATABASE = {
-    "ENGINE": "django.db.backends.postgresql",
-    "NAME": "helpdesk",  # Database name
-    "USER": "",  # PostgreSQL username
-    "PASSWORD": "",  # PostgreSQL password
-    "HOST": "localhost",  # Database server
-    "PORT": "",  # Database port (leave blank for default)
-    "CONN_MAX_AGE": 300,  # Max database connection age
-}
-
 # This key is used for secure generation of random numbers and strings. It must never be exposed outside of this file.
 # For optimal security, SECRET_KEY should be at least 50 characters in length and contain a mix of letters, numbers, and
 # symbols. Helpdesk will not run without this defined. For more information, see

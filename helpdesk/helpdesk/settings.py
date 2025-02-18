@@ -47,7 +47,7 @@ sentry_sdk.init(
 )
 
 # Enforce required configuration parameters
-for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
+for parameter in ["ALLOWED_HOSTS", "SECRET_KEY"]:
     if not hasattr(configuration, parameter):
         raise ImproperlyConfigured(  # pragma: nocover
             f"Required parameter {parameter} is missing from configuration.py.",
@@ -55,7 +55,6 @@ for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
 
 # Set required parameters
 ALLOWED_HOSTS = getattr(configuration, "ALLOWED_HOSTS")
-DATABASE = getattr(configuration, "DATABASE")
 SECRET_KEY = getattr(configuration, "SECRET_KEY")
 
 # Set optional parameters
@@ -73,7 +72,12 @@ TIME_ZONE = getattr(configuration, "TIME_ZONE", "UTC")
 # Database
 #
 
-DATABASES = {"default": DATABASE}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite",
+    }
+}
 
 
 #
