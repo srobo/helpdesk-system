@@ -104,6 +104,7 @@ INSTALLED_APPS = [
     "helpdesk",
     "teams",
     "tickets",
+    "core",
     "crispy_forms",
     "crispy_bulma",
     "django_filters",
