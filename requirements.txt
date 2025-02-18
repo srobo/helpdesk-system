@@ -39,6 +39,8 @@ django-crispy-forms==2.1
     # via
     #   -r requirements.in
     #   crispy-bulma
+django-environ==0.12.0
+    # via -r requirements.in
 django-filter==24.2
     # via -r requirements.in
 django-stubs-ext==4.2.7

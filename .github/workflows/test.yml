@@ -35,9 +35,6 @@ jobs:
           command: ./script/compile-requirements.sh
           files: requirements*.txt
 
-      - name: Use the dev configuration
-        run: cp helpdesk/helpdesk/configuration.dev.py helpdesk/helpdesk/configuration.py
-
       - name: Static type checking
         run: make type
 

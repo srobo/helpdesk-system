@@ -21,10 +21,9 @@ This is a Django application.
 3. `source venv/bin/activate`
 4. `pip3 install -r requirements-dev.txt`
 5. `cd helpdesk`
-6. `cp helpdesk/configuration.dev.py helpdesk/configuration.py`
-7. `./manage.py migrate`
-8. `./manage.py createsuperuser`
-9. `./manage.py runserver`
+6. `./manage.py migrate`
+7. `./manage.py createsuperuser`
+8. `./manage.py runserver`
 
 The `Makefile` contains commands that can be used to run tests and linting:
 
