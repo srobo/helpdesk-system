@@ -16,7 +16,7 @@ env = Env(
     SECRET_KEY=(str, "django-insecure-rT1%IHNOY&jAn9b-7(uoOdlVKb(giEcBhMK$6+sGp3UO-X^FPe"),
     BASE_PATH=(str, ""),
     SRCOMP_HTTP_BASE_URL=(str, ""),
-    VOLUNTEER_SIGNUP_CODE=(str, "sr")
+    VOLUNTEER_SIGNUP_CODE=(str, "sr"),
 )
 
 #
