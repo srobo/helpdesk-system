@@ -18,7 +18,7 @@ disallow_untyped_decorators = true
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["django_tables2.*", "allauth.*"]
+module = ["django_tables2.*", "allauth.*", "environ"]
 ignore_missing_imports = true
 
 [tool.ruff]

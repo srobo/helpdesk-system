@@ -8,18 +8,12 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python: [3.9, "3.10", "3.11"]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python }}
+      - name: Set up Python
         uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
 
       # Workaround for https://github.com/jazzband/pip-tools/issues/2131
       - name: Downgrade pip
@@ -30,13 +24,9 @@ jobs:
 
       - name: Validate dependencies
         uses: PeterJCLaw/validate-generated-files@v1
-        if: matrix.python == '3.10'
         with:
           command: ./script/compile-requirements.sh
           files: requirements*.txt
-
-      - name: Use the dev configuration
-        run: cp helpdesk/helpdesk/configuration.dev.py helpdesk/helpdesk/configuration.py
 
       - name: Static type checking
         run: make type

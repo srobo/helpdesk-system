@@ -3,16 +3,25 @@ from pathlib import Path
 
 import django_stubs_ext
 import sentry_sdk
-from django.core.exceptions import ImproperlyConfigured
-from pkg_resources import parse_version
+from environ import Env
 
 django_stubs_ext.monkeypatch()
+
+Env.read_env()
+
+env = Env(
+    DEBUG=(bool, True),
+    SENTRY_DSN=(str, ""),
+    ALLOWED_HOSTS=(list, ["*"]),
+    SECRET_KEY=(str, "django-insecure-rT1%IHNOY&jAn9b-7(uoOdlVKb(giEcBhMK$6+sGp3UO-X^FPe"),
+    BASE_PATH=(str, ""),
+    SRCOMP_HTTP_BASE_URL=(str, ""),
+    VOLUNTEER_SIGNUP_CODE=(str, "sr"),
+)
 
 #
 # Environment setup
 #
-
-VERSION = "0.2.0-dev"
 
 # Hostname
 HOSTNAME = platform.node()
@@ -20,79 +29,36 @@ HOSTNAME = platform.node()
 # Set the base directory two levels up
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Validate Python version
-if parse_version(platform.python_version()) < parse_version("3.9.0"):  # pragma: nocover
-    raise RuntimeError(
-        f"Helpdesk requires Python 3.9 or higher (current: Python {platform.python_version()})",
-    )
-
-#
-# Configuration import
-#
-
-# Import configuration parameters
-try:
-    from helpdesk import configuration
-except ImportError as e:  # pragma: nocover
-    if getattr(e, "name") == "configuration":
-        raise ImproperlyConfigured(
-            "Configuration file is not present. Please define helpdesk/helpdesk/configuration.py per the documentation.",  # noqa: E501
-        ) from None
-    raise
-
 sentry_sdk.init(
-    dsn=getattr(configuration, "SENTRY_DSN", None),
-    traces_sample_rate=getattr(configuration, "SENTRY_TRACES_SAMPLE_RATE", 0.0),
-    profiles_sample_rate=getattr(configuration, "SENTRY_PROFILES_SAMPLE_RATE", 0.0),
+    dsn=env("SENTRY_DSN"),
+    traces_sample_rate=0,
+    profiles_sample_rate=0,
 )
 
-# Enforce required configuration parameters
-for parameter in ["ALLOWED_HOSTS", "DATABASE", "SECRET_KEY"]:
-    if not hasattr(configuration, parameter):
-        raise ImproperlyConfigured(  # pragma: nocover
-            f"Required parameter {parameter} is missing from configuration.py.",
-        )
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
-# Set required parameters
-ALLOWED_HOSTS = getattr(configuration, "ALLOWED_HOSTS")
-DATABASE = getattr(configuration, "DATABASE")
-SECRET_KEY = getattr(configuration, "SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
-# Set optional parameters
-ADMINS = getattr(configuration, "ADMINS", [])
-BASE_PATH = getattr(configuration, "BASE_PATH", "")
+BASE_PATH = env("BASE_PATH")
 if BASE_PATH:
     BASE_PATH = BASE_PATH.strip("/") + "/"  # Enforce trailing slash only  # pragma: nocover
-DEBUG = getattr(configuration, "DEBUG", False)
-EMAIL = getattr(configuration, "EMAIL", {})
-SYSTEM_TITLE = getattr(configuration, "SYSTEM_TITLE", "Helpdesk")
-TIME_ZONE = getattr(configuration, "TIME_ZONE", "UTC")
+
+
+DEBUG = env("DEBUG")
+SYSTEM_TITLE = "Helpdesk"
+TIME_ZONE = "Europe/London"
 
 
 #
 # Database
 #
 
-DATABASES = {"default": DATABASE}
-
-
-#
-# Email
-#
-
-EMAIL_BACKEND = EMAIL.get("BACKEND", "django.core.mail.backends.smtp.EmailBackend")
-EMAIL_HOST = EMAIL.get("SERVER")
-EMAIL_HOST_USER = EMAIL.get("USERNAME")
-EMAIL_HOST_PASSWORD = EMAIL.get("PASSWORD")
-EMAIL_PORT = EMAIL.get("PORT", 25)
-EMAIL_SSL_CERTFILE = EMAIL.get("SSL_CERTFILE")
-EMAIL_SSL_KEYFILE = EMAIL.get("SSL_KEYFILE")
-EMAIL_SUBJECT_PREFIX = EMAIL.get("SUBJECT_PREFIX", "[Helpdesk] ")
-EMAIL_USE_SSL = EMAIL.get("USE_SSL", False)
-EMAIL_USE_TLS = EMAIL.get("USE_TLS", False)
-EMAIL_TIMEOUT = EMAIL.get("TIMEOUT", 10)
-SERVER_EMAIL = EMAIL.get("FROM_EMAIL")
-
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite",
+    }
+}
 
 #
 # Django
@@ -234,8 +200,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Application
 
-SRCOMP_HTTP_BASE_URL = getattr(configuration, "SRCOMP_HTTP_BASE_URL", None)
-VOLUNTEER_SIGNUP_CODE = getattr(configuration, "VOLUNTEER_SIGNUP_CODE")
+SRCOMP_HTTP_BASE_URL = env("SRCOMP_HTTP_BASE_URL")
+VOLUNTEER_SIGNUP_CODE = env("VOLUNTEER_SIGNUP_CODE")
 
 
 LOGGING = {
