@@ -34,9 +34,20 @@
         <a class="navbar-item" href="{% url 'tickets:ticket_create' %}">
           New Ticket
         </a>
-        <a class="navbar-item" target="_blank" href="https://studentrobotics.org/runbook/competition/team-support/">
-          Docs
-        </a>
+      {% endif %}
+
+      {% if links %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Links
+          </a>
+
+          <div class="navbar-dropdown">
+            {% for link in links %}
+              <a class="navbar-item" href="{{ link.url }}">{{ link.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
       {% endif %}
 
       {% if user.is_authenticated %}
