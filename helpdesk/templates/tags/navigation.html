@@ -36,19 +36,17 @@
         </a>
       {% endif %}
 
-      {% if links %}
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            Links
-          </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Links
+        </a>
 
-          <div class="navbar-dropdown">
-            {% for link in links %}
-              <a class="navbar-item" href="{{ link.url }}">{{ link.name }}</a>
-            {% endfor %}
-          </div>
+        <div class="navbar-dropdown">
+          {% for link in links %}
+            <a class="navbar-item" href="{{ link.url }}">{{ link.name }}</a>
+          {% endfor %}
         </div>
-      {% endif %}
+      </div>
 
       {% if user.is_authenticated %}
         <div class="navbar-item has-dropdown is-hoverable">
