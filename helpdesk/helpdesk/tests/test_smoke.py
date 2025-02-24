@@ -19,3 +19,9 @@ def test_landing_page_redirects(client: Client, admin_user: User) -> None:
     resp = client.get("/")
     assert resp.status_code == 302
     assert resp["Location"] == "/accounts/onboarding/"
+
+
+def test_onboarding(client: Client, admin_user: User) -> None:
+    client.force_login(admin_user)
+    resp = client.get("/accounts/onboarding/")
+    assert resp.status_code == 200
