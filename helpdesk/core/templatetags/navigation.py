@@ -11,7 +11,7 @@ STATIC_LINKS = [
     NavigationLink("Competition details", "https://srobo.org/comp"),
     NavigationLink("Docs", "https://srobo.org/docs"),
     NavigationLink("Rules", "https://srobo.org/rules"),
-    NavigationLink("Runbook", "https://srobo.org/runbook/")
+    NavigationLink("Runbook", "https://srobo.org/runbook/"),
 ]
 
 
