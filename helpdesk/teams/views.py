@@ -5,6 +5,7 @@ from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import CharField, F, Prefetch, QuerySet, Value
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
@@ -190,32 +191,22 @@ class TeamAttendanceView(LoginRequiredMixin, SingleTableMixin, ListView):
 
 
 class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
-    http_method_names = ["get", "post"]
     model = TeamAttendanceEvent
     form_class = TeamAttendanceLogForm
-
-    def get_initial(self) -> dict[str, Any]:
-        return {
-            "team": get_object_or_none(Team, tla=self.kwargs["tla"]),
-        }
+    slug_field = "tla"
 
     def get_success_url(self) -> str:
         return reverse_lazy("teams:team_list_attendance")
 
+    def get_initial(self):
+        return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data["team"] = self.kwargs["slug"]
+        return context_data
+
     def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
-        assert self.request.user.is_authenticated
-        team = form.cleaned_data["team"]
-        team.team_attendance_events.create(
-            type=form.cleaned_data["type"],
-            comment=form.cleaned_data["comment"],
-            user=self.request.user,
-        )
-        return HttpResponseRedirect(redirect_to=self.get_success_url())
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["team"] = self.get_initial()["team"]
-        return context
-
-    def form_invalid(self, form: TeamAttendanceLogForm) -> HttpResponse:
-        return HttpResponse("Please fill out the form correctly.")
