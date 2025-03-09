@@ -61,10 +61,10 @@ class TeamComment(models.Model):
 
 
 class TeamAttendanceEventType(models.TextChoices):
-    ARRIVED = "AR", "Arrived"
-    LEFT = "LE", "Left"
-    DELAYED = "DE", "Delayed"
-    DROPPED_OUT = "DO", "Dropped Out"
+    ARRIVED = "ARRIVED", "Arrived"
+    LEFT = "LEFT", "Left"
+    DELAYED = "DELAYED", "Delayed"
+    DROPPED_OUT = "DROPPED_OUT", "Dropped Out"
 
 
 class TeamAttendanceEvent(models.Model):
@@ -79,7 +79,7 @@ class TeamAttendanceEvent(models.Model):
         on_delete=models.PROTECT,
     )
     type = models.TextField(
-        max_length=2,
+        max_length=11,
         choices=TeamAttendanceEventType.choices,
     )
     comment = models.TextField()
