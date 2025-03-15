@@ -19,7 +19,7 @@ class TeamAttendanceTable(tables.Table):
     name = tables.LinkColumn("teams:team_detail", args=[tables.A("tla")])
     latest_event__0__type = tables.Column("Latest Event")
     latest_event__0__comment = tables.Column("Comment")
-    latest_event__0__created_at = tables.DateTimeColumn(verbose_name="Time")
+    latest_event__0__created_at = tables.DateTimeColumn(verbose_name="Time", format="D H:i")
     user = tables.TemplateColumn(
         verbose_name="Logged by",
         template_code='{{record.latest_event.0.user|default:"—"}}',
