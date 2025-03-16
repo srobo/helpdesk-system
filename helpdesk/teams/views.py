@@ -14,7 +14,7 @@ from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
-from helpdesk.utils import get_object_or_none, is_filterset_filtered
+from helpdesk.utils import is_filterset_filtered
 from tickets.filters import TicketFilter
 from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
@@ -198,10 +198,10 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
     def get_success_url(self) -> str:
         return reverse_lazy("teams:team_list_attendance")
 
-    def get_initial(self):
+    def get_initial(self) -> dict[str, Any]:
         return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context_data = super().get_context_data(**kwargs)
         context_data["team"] = self.kwargs["slug"]
         return context_data
