@@ -203,7 +203,7 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context_data = super().get_context_data(**kwargs)
-        context_data["team"] = self.kwargs["slug"]
+        context_data["team"] = context_data["form"].initial["team"]
         return context_data
 
     def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:

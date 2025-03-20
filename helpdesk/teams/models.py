@@ -65,6 +65,7 @@ class TeamAttendanceEventType(models.TextChoices):
     LEFT = "LEFT", "Left"
     DELAYED = "DELAYED", "Delayed"
     DROPPED_OUT = "DROPPED_OUT", "Dropped Out"
+    UNKNOWN = "UNKNOWN", "Unknown"
 
 
 class TeamAttendanceEvent(models.Model):
@@ -82,7 +83,7 @@ class TeamAttendanceEvent(models.Model):
         max_length=11,
         choices=TeamAttendanceEventType.choices,
     )
-    comment = models.TextField()
+    comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
