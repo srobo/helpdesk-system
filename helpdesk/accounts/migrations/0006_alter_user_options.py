@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('accounts', '0005_user_onboarded_at'),
+        ("accounts", "0005_user_onboarded_at"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
-            options={'ordering': ['first_name', 'last_name']},
+            name="user",
+            options={"ordering": ["first_name", "last_name"]},
         ),
     ]
