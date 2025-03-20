@@ -21,9 +21,9 @@ HOSTNAME = platform.node()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Validate Python version
-if parse_version(platform.python_version()) < parse_version("3.9.0"):  # pragma: nocover
+if parse_version(platform.python_version()) < parse_version("3.10.0"):  # pragma: nocover
     raise RuntimeError(
-        f"Helpdesk requires Python 3.9 or higher (current: Python {platform.python_version()})",
+        f"Helpdesk requires Python 3.10 or higher (current: Python {platform.python_version()})",
     )
 
 #

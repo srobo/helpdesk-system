@@ -58,3 +58,33 @@ class TeamComment(models.Model):
 
     def __str__(self) -> str:
         return f"Comment on {self.team.name} at {self.created_at} by {self.author}"
+
+
+class TeamAttendanceEventType(models.TextChoices):
+    ARRIVED = "ARRIVED", "Arrived"
+    LEFT = "LEFT", "Left"
+    DELAYED = "DELAYED", "Delayed"
+    DROPPED_OUT = "DROPPED_OUT", "Dropped Out"
+    UNKNOWN = "UNKNOWN", "Unknown"
+
+
+class TeamAttendanceEvent(models.Model):
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name="team_attendance_events",
+        related_query_name="team_attendance_events",
+    )
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+    )
+    type = models.TextField(
+        max_length=11,
+        choices=TeamAttendanceEventType.choices,
+    )
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Attendance Event: {self.team.name} {self.type} at {self.created_at}"
