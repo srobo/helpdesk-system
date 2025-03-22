@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from .models import Team, TeamAttendanceEventType
+from .models import Team, TeamAttendanceEventType, TeamAttendanceEvent
 
 
 class TeamTable(tables.Table):
@@ -15,7 +15,7 @@ class TeamTable(tables.Table):
         order_by = "tla"
 
 
-class TeamAttendanceTable(tables.Table):
+class TeamAttendanceOverviewTable(tables.Table):
     name = tables.LinkColumn("teams:team_detail", args=[tables.A("tla")])
     latest_event__0__type = tables.Column("Latest Event")
     latest_event__0__comment = tables.Column("Comment")
@@ -33,3 +33,16 @@ class TeamAttendanceTable(tables.Table):
     class Meta:
         model = Team
         exclude = ["id", "tla", "is_rookie", "pit_location"]
+
+class TeamAttendanceListTable(tables.Table):
+    type = tables.Column()
+    comment = tables.Column()
+    created_at = tables.DateTimeColumn(verbose_name="Time", format="D H:i")
+    user = tables.TemplateColumn(
+        verbose_name="Logged by",
+        template_code='{{record.user|default:"—"}}',
+    )
+
+    class Meta:
+        model = TeamAttendanceEvent
+        order_by = "-created_at"
