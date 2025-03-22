@@ -23,7 +23,7 @@ from .filters import TeamFilterset
 from .forms import TeamAttendanceLogForm
 from .models import Team, TeamAttendanceEvent, TeamComment
 from .srcomp import srcomp
-from .tables import TeamAttendanceOverviewTable, TeamTable, TeamAttendanceListTable
+from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamTable
 
 
 class TicketDetailRedirectView(RedirectView):
@@ -204,7 +204,9 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context_data = super().get_context_data(**kwargs)
         context_data["team"] = context_data["form"].initial["team"]
-        context_data["events"] = TeamAttendanceEvent.objects.filter(team=context_data["team"]).order_by("-created_at").all()
+        context_data["events"] = (
+            TeamAttendanceEvent.objects.filter(team=context_data["team"]).order_by("-created_at").all()
+        )
         context_data["table"] = TeamAttendanceListTable(context_data["events"])
         return context_data
 

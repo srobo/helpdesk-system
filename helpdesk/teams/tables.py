@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from .models import Team, TeamAttendanceEventType, TeamAttendanceEvent
+from .models import Team, TeamAttendanceEvent, TeamAttendanceEventType
 
 
 class TeamTable(tables.Table):
@@ -33,6 +33,7 @@ class TeamAttendanceOverviewTable(tables.Table):
     class Meta:
         model = Team
         exclude = ["id", "tla", "is_rookie", "pit_location"]
+
 
 class TeamAttendanceListTable(tables.Table):
     type = tables.Column()
