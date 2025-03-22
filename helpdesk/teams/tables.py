@@ -46,4 +46,6 @@ class TeamAttendanceListTable(tables.Table):
 
     class Meta:
         model = TeamAttendanceEvent
+        sequence = ("created_at", "type", "comment", "user")
         order_by = "-created_at"
+        exclude = ["id", "team"]
