@@ -1,0 +1,26 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+    Log attendance for {{ team.tla }}
+{% endblock %}
+{% block title %}
+    Log attendance for {{ team.tla }}
+{% endblock %}
+
+{% block content %}
+    {% if events %}
+        {% render_table table %}
+    {% else %}
+        <article class="message">
+            <div class="message-body">Attendance has not yet been logged for this team.</div>
+        </article>
+    {% endif %}
+
+    <form class="block" method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input class="button is-primary" type="submit" value="Save">
+    </form>
+{% endblock %}

@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import CharField, F, QuerySet, Value
+from django.db.models import CharField, F, Prefetch, QuerySet, Value
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, RedirectView
+from django.views.generic import CreateView, DetailView, ListView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin, ProcessFormView
 from django_filters.views import FilterView
@@ -19,9 +20,10 @@ from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
-from .models import Team, TeamComment
+from .forms import TeamAttendanceLogForm
+from .models import Team, TeamAttendanceEvent, TeamComment
 from .srcomp import srcomp
-from .tables import TeamTable
+from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamTable
 
 
 class TicketDetailRedirectView(RedirectView):
@@ -172,3 +174,42 @@ class TeamDetailTimelineView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         return super().get_context_data(entries=self.get_entries(), **kwargs)
+
+
+class TeamAttendanceView(LoginRequiredMixin, SingleTableMixin, ListView):
+    model = Team
+    table_class = TeamAttendanceOverviewTable
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Team.objects.all().prefetch_related(
+            Prefetch(
+                "team_attendance_events",
+                TeamAttendanceEvent.objects.order_by("-created_at")[:1],
+                to_attr="latest_event",
+            )
+        )
+
+
+class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
+    model = TeamAttendanceEvent
+    form_class = TeamAttendanceLogForm
+    slug_field = "tla"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("teams:team_list_attendance")
+
+    def get_initial(self) -> dict[str, Any]:
+        return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context_data = super().get_context_data(**kwargs)
+        context_data["team"] = context_data["form"].initial["team"]
+        context_data["events"] = (
+            TeamAttendanceEvent.objects.filter(team=context_data["team"]).order_by("-created_at").all()
+        )
+        context_data["table"] = TeamAttendanceListTable(context_data["events"])
+        return context_data
+
+    def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super().form_valid(form)
