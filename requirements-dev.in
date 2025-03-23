@@ -3,7 +3,6 @@ pip-tools
 -r requirements.txt
 djhtml
 ruff
-isort
 pytest
 pytest-cov
 pytest-django
@@ -14,6 +13,3 @@ django-filter-stubs
 types-cachetools
 types-dj-database-url
 types-setuptools
-
-faker
-freezegun
