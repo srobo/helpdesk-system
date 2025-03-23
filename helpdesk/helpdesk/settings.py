@@ -7,7 +7,6 @@ from environ import Env
 
 django_stubs_ext.monkeypatch()
 
-Env.read_env()
 
 env = Env(
     DEBUG=(bool, True),
@@ -28,6 +27,9 @@ HOSTNAME = platform.node()
 
 # Set the base directory two levels up
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Read environment variables file from the repository root.
+Env.read_env(BASE_DIR.parent / ".env")
 
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
