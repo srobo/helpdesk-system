@@ -3,13 +3,12 @@ from pathlib import Path
 
 import django_stubs_ext
 import sentry_sdk
-from environ import Env
+from environ import FileAwareEnv
 
 django_stubs_ext.monkeypatch()
 
-Env.read_env()
 
-env = Env(
+env = FileAwareEnv(
     DEBUG=(bool, True),
     SENTRY_DSN=(str, ""),
     ALLOWED_HOSTS=(list, ["*"]),
@@ -28,6 +27,9 @@ HOSTNAME = platform.node()
 
 # Set the base directory two levels up
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Read environment variables file from the repository root.
+env.read_env(BASE_DIR.parent / ".env")
 
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
