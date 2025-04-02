@@ -34,6 +34,7 @@ class TeamListView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = Team
     table_class = TeamTable
     filterset_class = TeamFilterset
+    paginate_by = 40
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -179,6 +180,7 @@ class TeamDetailTimelineView(LoginRequiredMixin, DetailView):
 class TeamAttendanceView(LoginRequiredMixin, SingleTableMixin, ListView):
     model = Team
     table_class = TeamAttendanceOverviewTable
+    paginate_by = 40
 
     def get_queryset(self) -> QuerySet[Any]:
         return Team.objects.all().prefetch_related(
