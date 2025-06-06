@@ -22,7 +22,7 @@ cryptography==44.0.2
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
-django==4.2.20
+django==4.2.22
     # via
     #   -r requirements.in
     #   crispy-bulma
