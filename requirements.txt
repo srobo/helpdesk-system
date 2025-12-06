@@ -74,7 +74,7 @@ sqlparse==0.5.3
     # via django
 typing-extensions==4.12.2
     # via django-stubs-ext
-urllib3==2.3.0
+urllib3==2.6.0
     # via
     #   requests
     #   sentry-sdk
