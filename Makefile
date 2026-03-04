@@ -1,6 +1,6 @@
 .PHONY: all clean format format-check lint type test test-cov
 
-CMD:=
+CMD:=uv run
 PYMODULE:=helpdesk
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=helpdesk accounts display teams tickets
@@ -16,10 +16,10 @@ format-check:
 	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml --check
 	$(CMD) ruff format --check $(PYMODULE)
 
-lint: 
+lint:
 	$(CMD) ruff check $(PYMODULE)
 
-lint-fix: 
+lint-fix:
 	$(CMD) ruff check --fix $(PYMODULE)
 
 check:
@@ -28,7 +28,7 @@ check:
 dev:
 	$(MANAGEPY) runserver
 
-type: 
+type:
 	cd helpdesk && mypy $(APPS)
 
 test: | $(PYMODULE)
