@@ -29,13 +29,13 @@ dev:
 	$(MANAGEPY) runserver
 
 type:
-	cd helpdesk && mypy $(APPS)
+	cd helpdesk && $(CMD) mypy $(APPS)
 
 test: | $(PYMODULE)
-	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE)
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings $(CMD) pytest --cov=. $(APPS) $(PYMODULE)
 
 test-cov:
-	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings $(CMD) pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
 
 clean:
 	git clean -Xdf # Delete all files in .gitignore
