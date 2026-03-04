@@ -1,0 +1,36 @@
+[project]
+name = "helpdesk-system"
+version = "0.1.0"
+description = "Student Robotics Helpdesk system"
+requires-python = ">=3.11"
+dependencies = [
+    "cachetools",
+    "crispy-bulma",
+    "django>=4.2,<4.3", # LTS
+    "django-allauth",
+    "django-crispy-forms",
+    "django-filter",
+    "django-stubs-ext",
+    "django-tables2",
+    "django-tables2-bulma-template",
+    "requests",
+    "sentry-sdk[django]",
+    "django-environ",
+    "pyjwt>=2.11.0",
+    "cryptography>=46.0.5",
+]
+
+[dependency-groups]
+dev = [
+    "djhtml",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "mypy",
+    "django-stubs[compatible-mypy]",
+    "django-filter-stubs",
+    "types-cachetools",
+    "types-dj-database-url",
+    "types-setuptools",
+]
