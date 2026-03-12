@@ -1,6 +1,6 @@
 .PHONY: all clean format format-check lint type test test-cov
 
-CMD:=
+CMD:=uv run
 PYMODULE:=helpdesk
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=helpdesk accounts display teams tickets
@@ -16,10 +16,10 @@ format-check:
 	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml --check
 	$(CMD) ruff format --check $(PYMODULE)
 
-lint: 
+lint:
 	$(CMD) ruff check $(PYMODULE)
 
-lint-fix: 
+lint-fix:
 	$(CMD) ruff check --fix $(PYMODULE)
 
 check:
@@ -28,14 +28,14 @@ check:
 dev:
 	$(MANAGEPY) runserver
 
-type: 
-	cd helpdesk && mypy $(APPS)
+type:
+	cd helpdesk && $(CMD) mypy $(APPS)
 
 test: | $(PYMODULE)
-	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE)
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings $(CMD) pytest --cov=. $(APPS) $(PYMODULE)
 
 test-cov:
-	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
+	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings $(CMD) pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
 
 clean:
 	git clean -Xdf # Delete all files in .gitignore

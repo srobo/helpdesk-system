@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from django.core.validators import RegexValidator
 from django.db import models
-from django.urls import reverse_lazy
+from django.urls import reverse
 
 
 class TeamPitLocation(models.Model):
@@ -33,7 +33,7 @@ class Team(models.Model):
         return f"{self.tla} - {self.name}"
 
     def get_absolute_url(self) -> str:
-        return reverse_lazy("teams:team_detail", args=[self.tla])
+        return reverse("teams:team_detail", args=[self.tla])
 
 
 class TeamComment(models.Model):
