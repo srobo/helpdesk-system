@@ -4,7 +4,7 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.urls import reverse_lazy
+from django.urls import reverse
 
 from accounts.models import User
 from helpdesk.utils import get_object_or_none
@@ -110,7 +110,7 @@ class Ticket(models.Model):
         return f"#{self.id} - {self.title}"
 
     def get_absolute_url(self) -> str:
-        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.id})
+        return reverse("tickets:ticket_detail", kwargs={"pk": self.id})
 
     @property
     def assignee(self) -> User | None:

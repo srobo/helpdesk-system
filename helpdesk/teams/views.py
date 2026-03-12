@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import CharField, F, Prefetch, QuerySet, Value
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin, ProcessFormView
@@ -71,7 +71,7 @@ class TeamSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin
     form_class = CommentSubmitForm
 
     def get_success_url(self) -> str:
-        return reverse_lazy("teams:team_detail_comments", kwargs={"slug": self.get_object().tla})
+        return reverse("teams:team_detail_comments", kwargs={"slug": self.get_object().tla})
 
     def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated
@@ -198,7 +198,7 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
     slug_field = "tla"
 
     def get_success_url(self) -> str:
-        return reverse_lazy("teams:team_list_attendance")
+        return reverse("teams:team_list_attendance")
 
     def get_initial(self) -> dict[str, Any]:
         return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}

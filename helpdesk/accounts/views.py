@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import CreateView, UpdateView
 
@@ -33,7 +33,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self) -> str:
         messages.success(self.request, "Profile updated.")
-        return reverse_lazy("accounts:profile_update")
+        return reverse("accounts:profile_update")
 
 
 class OnboardingView(LoginRequiredMixin, UpdateView):
@@ -45,7 +45,7 @@ class OnboardingView(LoginRequiredMixin, UpdateView):
         assert self.request.user.is_authenticated
         if self.request.user.onboarded_at:
             messages.warning(self.request, "Unable to onboard twice.")
-            return HttpResponseRedirect(redirect_to=reverse_lazy("home"))
+            return HttpResponseRedirect(redirect_to=reverse("home"))
         return super().dispatch(request, *args, **kwargs)  # type: ignore[return-value]
 
     def get_object(self, queryset: models.QuerySet[User] | None = None) -> User:
@@ -65,10 +65,10 @@ class OnboardingView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self) -> str:
-        return reverse_lazy("home")
+        return reverse("home")
 
 
 class SignupView(CreateView):
     form_class = SignupForm
-    success_url = reverse_lazy("account_login")
+    success_url = reverse("account_login")
     template_name = "accounts/signup.html"

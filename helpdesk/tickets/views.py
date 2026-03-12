@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import DetailView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, FormMixin, ProcessFormView
@@ -141,7 +141,7 @@ class TicketEscalateFormView(LoginRequiredMixin, FormMixin, SingleObjectMixin, P
     form_class = Form
 
     def get_success_url(self) -> str:
-        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
+        return reverse("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: Form) -> HttpResponse:
         assert self.request.user.is_authenticated
@@ -171,7 +171,7 @@ class TicketAssignToUserFormView(LoginRequiredMixin, FormMixin, SingleObjectMixi
         return Ticket.objects.with_event_fields().all()
 
     def get_success_url(self) -> str:
-        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
+        return reverse("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: Form) -> HttpResponse:
         assert self.request.user.is_authenticated
@@ -202,7 +202,7 @@ class TicketSubmitCommentFormView(LoginRequiredMixin, FormMixin, SingleObjectMix
         return super().get_queryset().with_event_fields()  # type: ignore[attr-defined]
 
     def get_success_url(self) -> str:
-        return reverse_lazy("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
+        return reverse("tickets:ticket_detail", kwargs={"pk": self.get_object().id})
 
     def form_valid(self, form: CommentSubmitForm) -> HttpResponse:
         assert self.request.user.is_authenticated

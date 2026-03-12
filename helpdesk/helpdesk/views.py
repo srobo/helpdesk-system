@@ -6,7 +6,7 @@ from typing import Any, Literal, TypedDict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import RedirectView, TemplateView
 from django_tables2 import SingleTableMixin
 
@@ -21,12 +21,12 @@ class DefaultHomeView(LoginRequiredMixin, RedirectView):
 
         # Redirect the user to a default queue if they have one
         if ticket_queue := self.request.user.default_ticket_queue:
-            return reverse_lazy(
+            return reverse(
                 "tickets:queue_detail",
                 kwargs={"slug": ticket_queue.slug},
             )
         else:
-            return reverse_lazy("teams:team_list")
+            return reverse("teams:team_list")
 
 
 class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
@@ -42,9 +42,9 @@ class RedirectToDefaultTicketQueue(LoginRequiredMixin, RedirectView):
 
         # If no queues exist, redirect to teams list.
         if not ticket_queue:
-            return reverse_lazy("teams:team_list")
+            return reverse("teams:team_list")
 
-        return reverse_lazy(
+        return reverse(
             "tickets:queue_detail",
             kwargs={"slug": ticket_queue.slug},
         )
