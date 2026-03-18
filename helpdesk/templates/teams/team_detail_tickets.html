@@ -7,10 +7,8 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-    <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
-    <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-        New Ticket for {{ object.tla }}
-    </a>
+    <button class="button is-secondary js-modal-trigger" data-target="modal-filter">Filter</button>
+    {% include "inc/nav/team-detail-buttons.html" %}
 {% endblock %}
 
 {% block content %}

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import CharField, F, Prefetch, QuerySet, Value
+from django.db.models import Case, CharField, F, Prefetch, QuerySet, Value, When
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -15,15 +15,16 @@ from django_tables2 import SingleTableMixin
 
 from helpdesk.forms import CommentSubmitForm
 from helpdesk.utils import is_filterset_filtered
+from teams.models import TeamEvent, TeamEventType
 from tickets.filters import TicketFilter
 from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
-from .forms import TeamAttendanceLogForm
+from .forms import TeamAttendanceLogForm, TeamEventForm
 from .models import Team, TeamAttendanceEvent, TeamComment
 from .srcomp import srcomp
-from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamTable
+from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamEventListTable, TeamTable
 
 
 class TicketDetailRedirectView(RedirectView):
@@ -171,7 +172,23 @@ class TeamDetailTimelineView(LoginRequiredMixin, DetailView):
             .values(*fields)
         )
 
-        return ticket_comments.union(ticket_opens, ticket_resolves, team_comments).order_by("-entry_timestamp")
+        team_events = (
+            TeamEvent.objects.filter(team=self.object)
+            .order_by()
+            .annotate(
+                # HACK: Show the display version of the "type" field
+                entry_type=Case(*[When(type=k, then=Value(v)) for k, v in TeamEventType.choices], default=F("type")),
+                entry_timestamp=F("created_at"),
+                entry_user=F("user"),
+                entry_content=F("comment"),
+                entry_style_info=Value("", output_field=CharField()),
+            )
+            .values(*fields)
+        )
+
+        return ticket_comments.union(ticket_opens, ticket_resolves, team_comments, team_events).order_by(
+            "-entry_timestamp"
+        )
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         return super().get_context_data(entries=self.get_entries(), **kwargs)
@@ -213,5 +230,29 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
         return context_data
 
     def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class TeamDetailEvents(LoginRequiredMixin, CreateView):
+    model = TeamEvent
+    form_class = TeamEventForm
+    slug_field = "tla"
+    template_name = "teams/team_detail_events.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("teams:team_detail_timeline", args=[self.kwargs["slug"]])
+
+    def get_initial(self) -> dict[str, Any]:
+        return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context_data = super().get_context_data(**kwargs)
+        context_data["team"] = context_data["form"].initial["team"]
+        context_data["events"] = TeamEvent.objects.filter(team=context_data["team"]).order_by("-created_at").all()
+        context_data["table"] = TeamEventListTable(context_data["events"])
+        return context_data
+
+    def form_valid(self, form: TeamEventForm) -> HttpResponse:
         form.instance.user = self.request.user
         return super().form_valid(form)

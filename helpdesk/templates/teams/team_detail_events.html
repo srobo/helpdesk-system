@@ -1,0 +1,33 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}{{team.tla}}: {{ team.name }}{% endblock %}
+{% block title %}{{team.tla}}: {{ team.name }}{% endblock %}
+
+{% block page_buttons %}
+    {% include "inc/nav/team-detail-buttons.html" %}
+{% endblock %}
+
+{% block content %}
+    {% include "inc/nav/team-tabs.html" with active="events" %}
+    <div class="container">
+        {% if events %}
+            {% render_table table %}
+        {% else %}
+            <article class="message">
+                <div class="message-body">No events have been logged for this team.</div>
+            </article>
+        {% endif %}
+
+        <article class="message is-info mt-5">
+            <div class="message-body">
+                <form class="block" method="post">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input class="button is-primary" type="submit" value="Save">
+                </form>
+            </div>
+        </article>
+    </div>
+{% endblock %}

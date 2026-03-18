@@ -6,6 +6,12 @@
                 <span>About</span>
             </a>
         </li>
+        <li {% if active == "events" %}class="is-active"{% endif %}>
+            <a href="{% url 'teams:team_detail_events' team.tla %}">
+                <span class="icon is-small"><i class="fas fa-circle-info" aria-hidden="true"></i></span>
+                <span>Events</span>
+            </a>
+        </li>
         <li {% if active == "tickets" %}class="is-active"{% endif %}>
             <a href="{% url 'teams:team_detail_tickets' team.tla %}">
                 <span class="icon is-small"><i class="fas fa-ticket" aria-hidden="true"></i></span>
