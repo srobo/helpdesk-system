@@ -16,6 +16,7 @@ class TeamTable(tables.Table):
 
 
 class TeamAttendanceOverviewTable(tables.Table):
+    tla = tables.Column()
     name = tables.LinkColumn("teams:team_detail", args=[tables.A("tla")])
     latest_event__0__type = tables.Column("Latest Event")
     latest_event__0__comment = tables.Column("Comment")
@@ -32,7 +33,7 @@ class TeamAttendanceOverviewTable(tables.Table):
 
     class Meta:
         model = Team
-        exclude = ["id", "tla", "is_rookie", "pit_location"]
+        exclude = ["id", "is_rookie", "pit_location"]
 
 
 class TeamAttendanceListTable(tables.Table):
