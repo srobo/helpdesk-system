@@ -104,6 +104,7 @@ packaging==24.2
     # via
     #   build
     #   pytest
+    #   wheel
 pip-tools==7.4.1
     # via -r requirements-dev.in
 pluggy==1.5.0
@@ -177,7 +178,7 @@ urllib3==2.3.0
     #   requests
     #   sentry-sdk
     #   types-requests
-wheel==0.45.1
+wheel==0.46.2
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
