@@ -2,14 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import CharField, F, Prefetch, QuerySet, Value
+from django.db.models import CharField, F, Prefetch, Q, QuerySet, Value
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import FormMixin, ProcessFormView
+from django.views.generic.edit import FormMixin, ProcessFormView, UpdateView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
@@ -20,10 +21,10 @@ from tickets.models import Ticket, TicketEvent
 from tickets.tables import TicketTable
 
 from .filters import TeamFilterset
-from .forms import TeamAttendanceLogForm
-from .models import Team, TeamAttendanceEvent, TeamComment
+from .forms import TeamAttendanceLogForm, TeamBatteryLoanForm, TeamBatteryLoanReturnForm
+from .models import Team, TeamAttendanceEvent, TeamAttendanceEventType, TeamBatteryLoan, TeamComment
 from .srcomp import srcomp
-from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamTable
+from .tables import TeamAttendanceListTable, TeamAttendanceOverviewTable, TeamBatteryLoanTable, TeamTable
 
 
 class TicketDetailRedirectView(RedirectView):
@@ -198,6 +199,13 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
     slug_field = "tla"
 
     def get_success_url(self) -> str:
+        if self.object and self.object.type == TeamAttendanceEventType.LEFT:
+            return reverse_lazy("teams:team_battery_loan_form", kwargs=self.kwargs)
+        if self.object and self.object.type == TeamAttendanceEventType.ARRIVED:
+            messages.info(
+                self.request,
+                f"Make sure to place the battery in the pile going to {self.object.team.pit_location.name}",
+            )
         return reverse_lazy("teams:team_list_attendance")
 
     def get_initial(self) -> dict[str, Any]:
@@ -215,3 +223,64 @@ class TeamAttendanceFormView(LoginRequiredMixin, CreateView):
     def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class TeamBatteryLoanListView(LoginRequiredMixin, SingleTableMixin, ListView):
+    model = TeamBatteryLoan
+    table_class = TeamBatteryLoanTable
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        return super().get_context_data(**kwargs, show_returned="returned" in self.request.GET)
+
+    def get_queryset(self) -> QuerySet[TeamBatteryLoan]:
+        if "returned" in self.request.GET:
+            return TeamBatteryLoan.objects.filter(
+                Q(battery_1_returned_at__isnull=False)
+                & Q(battery_2_returned_at__isnull=False)
+                & Q(charger_returned_at__isnull=False)
+                & Q(charger_psu_returned_at__isnull=False)
+                & Q(battery_bag_returned_at__isnull=False)
+            )
+        else:
+            return (
+                TeamBatteryLoan.objects.filter(
+                    Q(battery_1_returned_at__isnull=True)
+                    | Q(battery_2_returned_at__isnull=True)
+                    | Q(charger_returned_at__isnull=True)
+                    | Q(charger_psu_returned_at__isnull=True)
+                    | Q(battery_bag_returned_at__isnull=True)
+                )
+                .order_by("-created_at")
+                .all()
+            )
+
+
+class TeamBatteryLoanFormView(LoginRequiredMixin, CreateView):
+    model = TeamBatteryLoan
+    form_class = TeamBatteryLoanForm
+    slug_field = "tla"
+
+    def get_initial(self) -> dict[str, Any]:
+        return {"team": get_object_or_404(Team, tla=self.kwargs["slug"])}
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context_data = super().get_context_data(**kwargs)
+        context_data["team"] = context_data["form"].initial["team"]
+        return context_data
+
+    def form_valid(self, form: TeamAttendanceLogForm) -> HttpResponse:
+        form.instance.team = get_object_or_404(Team, tla=self.kwargs["slug"])
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("teams:team_list_attendance")
+
+
+class TeamBatteryLoanReturnFormView(LoginRequiredMixin, UpdateView):
+    model = TeamBatteryLoan
+    form_class = TeamBatteryLoanReturnForm
+    slug_field = "id"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("teams:team_battery_loan_list")

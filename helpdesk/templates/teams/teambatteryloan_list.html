@@ -1,0 +1,36 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+    {% if show_returned %}
+        Returned Battery Loans
+    {% else %}
+        Outstanding Battery Loans
+    {% endif %}
+{% endblock %}
+{% block title %}Battery Loans{% endblock %}
+
+{% block page_buttons %}
+    {% if show_returned %}
+        <a class="button is-warning" href=".">
+            <span class="icon is-small"><i class="fa fa-question"></i></span>
+            <span>Show outstanding</span>
+        </a>
+    {% else %}
+        <a class="button is-success" href="?returned">
+            <span class="icon is-small"><i class="fa fa-check-double"></i></span>
+            <span>Show returned</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                {% render_table table %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
