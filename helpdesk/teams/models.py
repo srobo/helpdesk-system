@@ -88,3 +88,31 @@ class TeamAttendanceEvent(models.Model):
 
     def __str__(self) -> str:
         return f"Attendance Event: {self.team.name} {self.type} at {self.created_at}"
+
+class TeamBatteryLoan(models.Model):
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+    )
+
+    battery_1_asset_code = models.CharField("Battery 1 Asset Code", max_length=7)
+    battery_2_asset_code = models.CharField("Battery 2 Asset Code", max_length=7)
+    charger_asset_code = models.CharField("Charger Asset Code", max_length=7)
+    charger_psu_asset_code = models.CharField("Charger PSU Asset Code", max_length=7)
+    battery_bag_asset_code = models.CharField("Battery Bag Asset Code", max_length=7)
+
+    notes = models.CharField("Notes", max_length=100)
+
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    returned_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        text = f"Battery Loan for team {self.team.tla} issued at {self.created_at} by {self.user}"
+        if self.notes:
+            text += self.notes
+        return text
