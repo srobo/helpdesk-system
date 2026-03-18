@@ -171,7 +171,7 @@ typing-extensions==4.12.2
     #   django-stubs-ext
     #   djangorestframework-stubs
     #   mypy
-urllib3==2.3.0
+urllib3==2.6.3
     # via
     #   -r requirements.txt
     #   requests
