@@ -139,7 +139,7 @@ class Ticket(models.Model):
         Must be called only when the Ticket has with_event_fields()
         """
         lookup = {
-            TicketStatus.RESOLVED: "is-info",
+            TicketStatus.RESOLVED: "is-success",
             TicketStatus.OPEN: "is-primary",
         }
         return lookup.get(self.status, "is-primary")  # type: ignore[attr-defined]

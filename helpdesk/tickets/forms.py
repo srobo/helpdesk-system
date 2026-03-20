@@ -6,6 +6,7 @@ from .models import Ticket, TicketQueue
 
 
 class TicketCreationForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True}))
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": "5"}))
 
     # Exclude queues that are escalated.

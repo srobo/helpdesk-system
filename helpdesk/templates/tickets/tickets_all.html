@@ -6,9 +6,13 @@
 {% block title %}All Tickets {% if is_filtered %}(filtered){% endif %}{% endblock %}
 
 {% block page_buttons %}
-  <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+  <button class="button is-warning js-modal-trigger" data-target="modal-filter">
+    <span class="icon is-small"><i class="fa fa-filter"></i></span>
+    <span>Filter</span>
+  </button>
   <a class="button is-primary" href="{% url 'tickets:ticket_create' %}">
-    New Ticket
+    <span class="icon is-small"><i class="fa-solid fa-file-circle-plus"></i></span>
+    <span>New Ticket</span>
   </a>
 {% endblock %}
 
@@ -19,4 +23,5 @@
       {% render_table table %}
     </div>
     {% include "inc/modals/filter.html" %}
+  </div>
 {% endblock %}
