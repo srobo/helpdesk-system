@@ -8,6 +8,7 @@
 {% block page_buttons %}
   <button class="button is-warning js-modal-trigger" data-target="modal-filter"><i class="fa fa-filter"></i>&nbsp;Filter</button>
   <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
+    <i class="fa-solid fa-file-circle-plus"></i>&nbsp;
     New Ticket
   </a>
 {% endblock %}
