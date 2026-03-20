@@ -7,9 +7,13 @@
 {% block title %}{{object.tla}}: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-    <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+    <button class="button is-warning js-modal-trigger" data-target="modal-filter">
+        <span class="icon is-small"><i class="fa fa-filter"></i></span>
+        <span>Filter</span>
+    </button>
     <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-        New Ticket for {{ object.tla }}
+        <span class="icon is-small"><i class="fa-solid fa-file-circle-plus"></i></span>
+        <span>New Ticket for {{ object.tla }}</span>
     </a>
 {% endblock %}
 
