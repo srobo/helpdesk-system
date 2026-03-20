@@ -6,7 +6,7 @@
 {% block title %}Queue: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-  <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+  <button class="button is-warning js-modal-trigger" data-target="modal-filter"><i class="fa fa-filter"></i>&nbsp;Filter</button>
   <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
     New Ticket
   </a>
