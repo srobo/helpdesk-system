@@ -23,6 +23,6 @@ a {
     text-decoration: underline;
 }
 
-.navbar a {
+.navbar a, .tabs a, a.button {
     text-decoration: none;
 }
