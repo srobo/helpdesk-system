@@ -30,13 +30,13 @@
                                         Unassigned <span class="tag">{{unassigned.count}}</span>
                                     </p>
                                     {% for ticket in unassigned %}
-                                        <a class="panel-block">
+                                        <div class="panel-block">
                                             <div>
                                                 <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
                                                 <p>Waiting in {{ticket.queue}}</p>
                                                 <p><em>Last Updated: {{ticket.last_updated}}</em></p>
                                             </div>
-                                        </a>
+                                        </div>
                                     {% endfor %}
                                 </article>
                             </div>
