@@ -184,7 +184,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 CRISPY_TEMPLATE_PACK = "bulma"
 
 # Django Tables 2
-DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
+DJANGO_TABLES2_TEMPLATE = "table.html"
 
 # Django AllAuth
 
