@@ -1,4 +1,11 @@
 :root {
+    --bulma-primary: hsla(220.10695, 84%, 56%, 1);
+    --bulma-primary-h: 220.10695;
+    --bulma-primary-s: 84%;
+    --bulma-primary-l: 56%;
+    --bulma-primary-invert-h: 0;
+    --bulma-primary-invert-s: 0%;
+    --bulma-primary-invert-l: 100%;
     --bulma-family-primary: "Open Sans", system-ui, sans-serif;
 }
 
