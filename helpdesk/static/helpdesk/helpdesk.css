@@ -1,14 +1,28 @@
 :root {
-    --bulma-primary: hsla(220.10695, 84%, 56%, 1);
     --bulma-primary-h: 220.10695;
     --bulma-primary-s: 84%;
     --bulma-primary-l: 56%;
     --bulma-primary-invert-h: 0;
     --bulma-primary-invert-s: 0%;
     --bulma-primary-invert-l: 100%;
+    --bulma-link-h: 27.027027;
+    --bulma-link-s: 100%;
+    --bulma-link-l: 44%;
     --bulma-family-primary: "Open Sans", system-ui, sans-serif;
 }
 
 html, body {
     height: 100vh;
+}
+
+.title {
+    font-family: "Oswald", sans-serif;
+}
+
+a {
+    text-decoration: underline;
+}
+
+.navbar a {
+    text-decoration: none;
 }
