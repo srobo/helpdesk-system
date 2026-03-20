@@ -7,7 +7,8 @@
 
 {% block page_buttons %}
     <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?team={{ object.tla }}">
-        New Ticket for {{ object.tla }}
+        <span class="icon is-small"><i class="fa-solid fa-file-circle-plus"></i></span>
+        <span>New Ticket for {{ object.tla }}</span>
     </a>
 {% endblock %}
 
