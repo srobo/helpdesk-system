@@ -35,13 +35,13 @@
     <div class="container columns">
         <div class="column is-one-fifth">
             <article class="panel is-info">
-                <a class="panel-block">
+                <div class="panel-block">
                     {% if object.assignee %}
                         Assigned to: {{ object.assignee }}
                     {% else %}
                         Unassigned
                     {% endif %}
-                </a>
+                </div>
                 <a class="panel-block" href="{% url 'teams:team_detail' object.team.tla %}">
                     {{ object.team }}
                 </a>
