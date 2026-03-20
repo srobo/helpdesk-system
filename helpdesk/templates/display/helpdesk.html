@@ -40,6 +40,22 @@
                                     {% endfor %}
                                 </article>
                             </div>
+                            <div class="column">
+                                <article class="panel is-success">
+                                    <p class="panel-heading">
+                                        Escalated <span class="tag">{{escalated.count}}</span>
+                                    </p>
+                                    {% for ticket in escalated %}
+                                        <div class="panel-block">
+                                            <div>
+                                                <p><strong>#{{ticket.id}} {{ticket.title}}</strong> - {{ticket.team.tla}}</p>
+                                                <p>Waiting in {{ticket.queue}}</p>
+                                                <p><em>Last Updated: {{ticket.last_updated}}</em></p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
