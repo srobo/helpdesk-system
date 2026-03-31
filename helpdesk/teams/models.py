@@ -60,6 +60,34 @@ class TeamComment(models.Model):
         return f"Comment on {self.team.name} at {self.created_at} by {self.author}"
 
 
+class TeamEventType(models.TextChoices):
+    SAFETY_CHECK_PASS = "SAFETY_CHECK_PASS", "Safety Check (Pass)"
+    SAFETY_CHECK_FAIL = "SAFETY_CHECK_FAIL", "Safety Check (Fail)"
+    REGS_CHECK_PASS = "REGS_CHECK_PASS", "Regulations Check (Pass)"
+    REGS_CHECK_FAIL = "REGS_CHECK_FAIL", "Regulations Check (Fail)"
+
+
+class TeamEvent(models.Model):
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name="events",
+    )
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+    )
+    type = models.CharField(
+        max_length=max(len(value) for value in TeamEventType.values),
+        choices=TeamEventType.choices,
+    )
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Event: {self.team.name} {self.type} at {self.created_at}"
+
+
 class TeamAttendanceEventType(models.TextChoices):
     ARRIVED = "ARRIVED", "Arrived"
     LEFT = "LEFT", "Left"

@@ -5,6 +5,7 @@ from .views import (
     TeamAttendanceView,
     TeamDetailAboutView,
     TeamDetailCommentsView,
+    TeamDetailEvents,
     TeamDetailTicketsView,
     TeamDetailTimelineView,
     TeamListView,
@@ -24,4 +25,5 @@ urlpatterns = [
     path("<slug:slug>/comments/post", TeamSubmitCommentFormView.as_view(), name="team_detail_comments_post"),
     path("<slug:slug>/tickets", TeamDetailTicketsView.as_view(), name="team_detail_tickets"),
     path("<slug:slug>/timeline", TeamDetailTimelineView.as_view(), name="team_detail_timeline"),
+    path("<slug:slug>/events", TeamDetailEvents.as_view(), name="team_detail_events"),
 ]
