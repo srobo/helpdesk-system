@@ -70,7 +70,7 @@ requests-oauthlib==2.0.0
     # via django-allauth
 sentry-sdk[django]==2.24.0
     # via -r requirements.in
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via django
 typing-extensions==4.12.2
     # via django-stubs-ext
