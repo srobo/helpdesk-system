@@ -6,9 +6,13 @@
 {% block title %}Queue: {{ object.name }}{% endblock %}
 
 {% block page_buttons %}
-  <button class="button is-warning js-modal-trigger" data-target="modal-filter">Filter</button>
+  <button class="button is-warning js-modal-trigger" data-target="modal-filter">
+    <span class="icon is-small"><i class="fa fa-filter"></i></span>
+    <span>Filter</span>
+  </button>
   <a class="button is-primary" href="{% url 'tickets:ticket_create' %}?queue={{ object.slug }}">
-    New Ticket
+    <span class="icon is-small"><i class="fa-solid fa-file-circle-plus"></i></span>
+    <span>New Ticket</span>
   </a>
 {% endblock %}
 
@@ -29,7 +33,7 @@
                   <a href="{% url 'tickets:queue_detail' queue.slug %}">
                 {% endif %}
                 {{ queue.name }}
-                {% if queue.attention_count %}<span class="tag is-danger is-rounded">{{queue.attention_count}}</span>{% endif %}
+                {% if queue.attention_count %}<span class="tag is-primary is-rounded">{{queue.attention_count}}</span>{% endif %}
                 {% if queue.in_progress_count %}<span class="tag is-info is-rounded">{{queue.in_progress_count}}</span>{% endif %}
 
               </a>

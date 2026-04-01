@@ -1,6 +1,5 @@
 helpdesk/helpdesk/configuration.py
 helpdesk/db.sqlite
-helpdesk/static
 teams.csv
 
 ### Django ###

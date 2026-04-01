@@ -13,11 +13,13 @@ class HelpdeskDisplayView(TemplateView):
         qs = Ticket.objects.with_event_fields().exclude(
             Q(status=TicketStatus.RESOLVED) | Q(queue__show_in_overview=False),
         )
-        in_progress = qs.filter(assignee_id__isnull=False)
+        in_progress = qs.filter(assignee_id__isnull=False, queue__escalates_to__isnull=False)
         unassigned = qs.filter(assignee_id__isnull=True)
+        escalated = qs.filter(assignee_id__isnull=True, queue__escalates_to__isnull=False)
 
         return super().get_context_data(
             in_progress=in_progress,
             unassigned=unassigned,
+            escalated=escalated,
             **kwargs,
         )

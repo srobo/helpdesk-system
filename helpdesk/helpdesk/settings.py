@@ -164,7 +164,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = str(BASE_DIR) + "/static"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 STATIC_URL = f"/{BASE_PATH}static/"
 
 # Authentication URLs
@@ -182,7 +184,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 CRISPY_TEMPLATE_PACK = "bulma"
 
 # Django Tables 2
-DJANGO_TABLES2_TEMPLATE = "django-tables2/bulma.html"
+DJANGO_TABLES2_TEMPLATE = "table.html"
 
 # Django AllAuth
 

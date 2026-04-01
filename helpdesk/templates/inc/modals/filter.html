@@ -12,8 +12,14 @@
                 {{ filter.form|crispy }}
             </section>
             <footer class="modal-card-foot">
-                <input type="submit" class="button is-success" value="Filter Results" />
-                <button class="button">Cancel</button>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input type="submit" class="button is-primary" value="Filter Results" />
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary is-light">Cancel</button>
+                    </div>
+                </div>
             </footer>
         </form>
     </div>
