@@ -118,7 +118,4 @@ class TeamBatteryLoan(models.Model):
     battery_bag_returned_at = models.DateTimeField(null=True)
 
     def __str__(self) -> str:
-        text = f"Battery Loan for team {self.team.tla} issued at {self.created_at} by {self.user}"
-        if self.notes:
-            text += f"\n{self.notes}"
-        return text
+        return f"Battery Loan for team {self.team.tla} issued at {self.created_at} by {self.user}"
