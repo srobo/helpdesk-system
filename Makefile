@@ -16,10 +16,10 @@ format-check:
 	find $(PYMODULE) -name "*.html" | xargs $(CMD) djhtml --check
 	$(CMD) ruff format --check $(PYMODULE)
 
-lint: 
+lint:
 	$(CMD) ruff check $(PYMODULE)
 
-lint-fix: 
+lint-fix:
 	$(CMD) ruff check --fix $(PYMODULE)
 
 check:
@@ -28,10 +28,11 @@ check:
 dev:
 	$(MANAGEPY) runserver
 
-type: 
+type:
 	cd helpdesk && mypy $(APPS)
 
 test: | $(PYMODULE)
+	$(MANAGEPY) collectstatic --noinput
 	cd helpdesk && DJANGO_SETTINGS_MODULE=helpdesk.settings pytest --cov=. $(APPS) $(PYMODULE)
 
 test-cov:
