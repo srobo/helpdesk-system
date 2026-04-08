@@ -169,6 +169,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = f"/{BASE_PATH}static/"
 
+STATIC_ROOT = BASE_DIR / "collected-static"
+
 # Authentication URLs
 LOGIN_URL = f"/{BASE_PATH}auth/login/"
 LOGOUT_REDIRECT_URL = LOGIN_URL
