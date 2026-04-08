@@ -216,7 +216,7 @@ LOGGING = {
     "handlers": {
         # Send logs with at least INFO level to the console.
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
@@ -236,6 +236,10 @@ LOGGING = {
             "handlers": ["console"],
             "level": "WARNING",
             "propagate": False,
+        },
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": ["console"],
         },
     },
 }
