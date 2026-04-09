@@ -3,6 +3,9 @@ from django.urls import path
 from .views import (
     TeamAttendanceFormView,
     TeamAttendanceView,
+    TeamBatteryLoanFormView,
+    TeamBatteryLoanListView,
+    TeamBatteryLoanReturnFormView,
     TeamDetailAboutView,
     TeamDetailCommentsView,
     TeamDetailTicketsView,
@@ -18,10 +21,13 @@ urlpatterns = [
     path("", TeamListView.as_view(), name="team_list"),
     path("attendance", TeamAttendanceView.as_view(), name="team_list_attendance"),
     path("attendance/<slug:slug>", TeamAttendanceFormView.as_view(), name="team_log_attendance_form"),
+    path("battery-loans/", TeamBatteryLoanListView.as_view(), name="team_battery_loan_list"),
+    path("battery-loans/<slug:slug>", TeamBatteryLoanReturnFormView.as_view(), name="team_battery_loan_edit"),
     path("<slug:slug>/", TicketDetailRedirectView.as_view(), name="team_detail"),
     path("<slug:slug>/about", TeamDetailAboutView.as_view(), name="team_detail_about"),
     path("<slug:slug>/comments", TeamDetailCommentsView.as_view(), name="team_detail_comments"),
     path("<slug:slug>/comments/post", TeamSubmitCommentFormView.as_view(), name="team_detail_comments_post"),
     path("<slug:slug>/tickets", TeamDetailTicketsView.as_view(), name="team_detail_tickets"),
     path("<slug:slug>/timeline", TeamDetailTimelineView.as_view(), name="team_detail_timeline"),
+    path("<slug:slug>/battery-loan/new", TeamBatteryLoanFormView.as_view(), name="team_battery_loan_form"),
 ]

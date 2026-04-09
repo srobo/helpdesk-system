@@ -1,0 +1,23 @@
+{% extends "layouts/base_app.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+    Battery loan for {{ team.tla }}
+{% endblock %}
+{% block title %}
+    Battery loan for {{ team.tla }}
+{% endblock %}
+
+{% block content %}
+    <form class="block" method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        {% if create %}
+            <input class="button is-primary" type="submit" value="Loan">
+            <a class="button" href="{% url 'teams:team_list_attendance' %}">Skip</a>
+        {% else %}
+            <input class="button is-primary" type="submit" value="Save changes">
+        {% endif %}
+    </form>
+{% endblock %}

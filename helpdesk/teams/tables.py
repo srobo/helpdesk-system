@@ -1,6 +1,8 @@
 import django_tables2 as tables
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
-from .models import Team, TeamAttendanceEvent, TeamAttendanceEventType
+from .models import Team, TeamAttendanceEvent, TeamAttendanceEventType, TeamBatteryLoan
 
 
 class TeamTable(tables.Table):
@@ -50,3 +52,48 @@ class TeamAttendanceListTable(tables.Table):
         sequence = ("created_at", "type", "comment", "user")
         order_by = "-created_at"
         exclude = ["id", "team"]
+
+
+class ReturnedColumn(tables.Column):
+    empty_values = ()
+    orderable = False
+    attrs = {"th": {"class": "is-hidden"}}
+
+    def render(self, value: str | None) -> str:
+        if value is not None:
+            return format_html('<i class="fa fa-check has-text-success" title="Returned at {date}"></i>', date=value)
+        return mark_safe('<i class="fa fa-question has-text-warning" title="Not yet returned"></i>')
+
+
+class TeamBatteryLoanTable(tables.Table):
+    team__tla = tables.Column()
+    battery_1_asset_code = tables.Column(verbose_name="Battery 1", attrs={"th": {"colspan": "2"}})
+    battery_2_asset_code = tables.Column(verbose_name="Battery 2", attrs={"th": {"colspan": "2"}})
+    charger_asset_code = tables.Column(verbose_name="Charger", attrs={"th": {"colspan": "2"}})
+    charger_psu_asset_code = tables.Column(verbose_name="Charger PSU", attrs={"th": {"colspan": "2"}})
+    battery_bag_asset_code = tables.Column(verbose_name="Battery Bag", attrs={"th": {"colspan": "2"}})
+    battery_1_returned_at = ReturnedColumn()
+    battery_2_returned_at = ReturnedColumn()
+    charger_returned_at = ReturnedColumn()
+    charger_psu_returned_at = ReturnedColumn()
+    battery_bag_returned_at = ReturnedColumn()
+    actions = tables.LinkColumn("teams:team_battery_loan_edit", args=[tables.A("id")], text="Return")
+
+    class Meta:
+        model = TeamBatteryLoan
+        sequence = (
+            "team__tla",
+            "battery_1_asset_code",
+            "battery_1_returned_at",
+            "battery_2_asset_code",
+            "battery_2_returned_at",
+            "charger_asset_code",
+            "charger_returned_at",
+            "charger_psu_asset_code",
+            "charger_psu_returned_at",
+            "battery_bag_asset_code",
+            "battery_bag_returned_at",
+            "notes",
+            "actions",
+        )
+        exclude = ["id", "team", "user", "created_at"]
