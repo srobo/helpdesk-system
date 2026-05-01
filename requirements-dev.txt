@@ -147,7 +147,7 @@ ruff==0.11.2
     # via -r requirements-dev.in
 sentry-sdk[django]==2.24.0
     # via -r requirements.txt
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via
     #   -r requirements.txt
     #   django
