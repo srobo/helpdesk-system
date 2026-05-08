@@ -1,6 +1,6 @@
 cachetools
 crispy-bulma
-django>=5.2,<5.3  # LTS
+django>=5.2.14,<5.3  # LTS
 django-allauth
 django-crispy-forms
 django-filter
