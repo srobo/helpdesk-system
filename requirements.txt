@@ -57,7 +57,7 @@ oauthlib==3.2.2
     # via requests-oauthlib
 pycparser==2.22
     # via cffi
-pyjwt[crypto]==2.10.1
+pyjwt[crypto]==2.13.0
     # via django-allauth
 python3-openid==3.2.0
     # via django-allauth
