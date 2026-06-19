@@ -12,13 +12,13 @@ certifi==2025.1.31
     # via
     #   requests
     #   sentry-sdk
-cffi==1.17.1
+cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.1
     # via requests
 crispy-bulma==0.11.0
     # via -r requirements.in
-cryptography==44.0.2
+cryptography==48.0.1
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
